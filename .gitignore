@@ -1,0 +1,43 @@
+# === 데이터셋 / 대회 패키지 (외부 배포물, 레포에 올리지 않음) ===
+open/
+data/
+**/data/train/
+**/data/eval/
+*.parquet
+
+# === 모델 가중치 / 체크포인트 (대용량) ===
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.bin
+checkpoints/
+backbone.ckpt
+
+# === 생성 산출물 / 로그 (run_logs 등은 로컬 영구보존, 레포엔 미포함) ===
+*.mp4
+*.avi
+input_videos/
+run_logs/
+outputs/
+wandb/
+*.log
+
+# === 제출물 ===
+submission_features.csv
+submission_kit/input_videos/
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# === OS / 에디터 ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

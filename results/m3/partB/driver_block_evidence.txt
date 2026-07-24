@@ -1,0 +1,18 @@
+===== Part B GPU 블록 증거 (드라이버 불일치) =====
+캡처 시각: 2026-07-25 06:37:02
+
+--- [1] 커널 NVRM 버전 (/proc/driver/nvidia/version) ---
+NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.159.03  Release Build  (dvs-builder@U22-I3-AM27-29-6)  Fri Apr 24 06:03:03 UTC 2026
+GCC version:  gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 
+
+--- [2] nvidia-smi (userspace NVML) ---
+Failed to initialize NVML: Driver/library version mismatch
+NVML library version: 580.173
+
+--- [3] torch CUDA init (새 프로세스) ---
+/home/rils/dlacksdn/miniconda3/envs/wm/lib/python3.10/site-packages/torch/cuda/__init__.py:174: UserWarning: CUDA initialization: Unexpected error from cudaGetDeviceCount(). Did you run some cuda functions before calling NumCudaDevices() that might have already set an error? Error 804: forward compatibility was attempted on non supported HW (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:109.)
+  return torch._C._cuda_getDeviceCount() > 0
+torch 2.7.1+cu128 cuda build 12.8
+cuda.is_available: False
+
+--- [4] dmesg NVRM/nvidia 최근 (권한 있으면) ---

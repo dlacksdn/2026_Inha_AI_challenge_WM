@@ -118,6 +118,8 @@
 - 학습 런처 실행 시 함정 2개를 잡아 고침: (a) `video_utils` PYTHONPATH 누락(§2.2-5), (b) `torch.distributed.launch`가 child traceback을 숨김 → 단일 GPU라 env 수동설정+직접 python 실행으로 전환(traceback 가시).
 - 수정 후 재실행 시 모델 빌드까지 진입 확인: `LatentVisualDiffusion: Running in v-prediction mode` / `Keeping EMAs of 1109` / VAE·timm 로드 진행.
 - 그 프로세스는 **CPU 모델빌드 단계에서 내가 수동 종료(SIGTERM)**했다(partB_train.log 마지막 줄 `종료됨`). 아래 §4.2의 **독립 CUDA 확인으로 블록을 확정한 뒤**였다 → **partB_train.log 자체엔 CUDA 오류·traceback이 없다**(빌드는 CPU라 GPU를 건드리기 전까지 진행됨). 즉 블록의 근거는 이 로그가 아니라 §4.2의 증거 파일이다.
+- **warm-start 경로는 CPU로 사전 검증**(`scripts/m3/verify_warmstart.py`, CUDA 불필요): M3 config로 빌드한 UNet 1107키 ↔ baseline_diffusion.ckpt의 `model.diffusion_model.*` 1107키가 **완전 매칭(unet_missing=0, extra=0)**. 즉 복구 후 warm-start가 전 UNet 가중치를 로드함이 확정.
+- **버그 수정(재개 de-risk)**: M3 학습 config의 CLIP에도 `version: null`을 추가했다. 없으면 학습이 open_clip(3.9GB)를 다운로드하려다 offline에서 실패한다(생성과 동일 함정 §2.2-2). only_reload_modules가 backbone에서 CLIP 실가중치를 로드하므로 안전.
 
 ### 4.2 무엇이 막았나 — NVIDIA 드라이버 userspace/커널 불일치
 - **Part A 완료(≈06:06) 직후** 공유머신에서 NVIDIA 유저스페이스가 업데이트된 것으로 보임: **커널 NVRM 580.159.03 ↔ userspace NVML 580.173** 불일치.
@@ -191,7 +193,7 @@ $CONDA run -n wm python scripts/m3/summarize.py results/m3/partA results/m3/part
 - **guidance_rescale=0.7 고정의 방향성**: rescale은 고-λ의 분산 과증폭을 conditional std로 되당겨 **완화**하는 쪽으로 작동한다. 즉 rescale=0이었다면 고-λ 악화가 **더 컸을** 개연성 → "λ↑ 악화" 결론은 이 설정에 대해 **robust(보수적)**이지, rescale이 만든 인공물이 아니다.
 - **순수 액션 CFG 아님**: uncond 분기가 텍스트·이미지도 null → Part A/B 모두 "액션만" guidance가 아니다. 순수화(uc에 act=None만)는 소규모 코드 수정으로 분리 가능한 후속 실험(004 §5.5). 다만 GT가 정지인 이상 순수화가 방향을 뒤집을 것으로 기대하긴 어렵다.
 - **motion 지표는 픽셀 기반 프록시**(mean |Δframe|)로, DINO/Video의 의미론적 거리와 다르지만 방향(움직임 크기)은 잘 포착한다. M0의 프레임간 변화·프레임별 DINO 상승(드리프트) 진단과 정합. seed=0 단일이라 λ 비교는 paired(정답)이나 절대 수치의 seed 민감도는 미측정.
-- **Part B 미완**은 코드 결함이 아니라 **외부(드라이버) 요인**이다(증거: `results/m3/partB/driver_block_evidence.txt`; §4.2). partB 로그의 마지막 `종료됨`은 내 수동 종료다. 재현 절차(§6)의 **생성·채점 스캐폴드는 Part A에서 실측 검증됐으나**, warm-start **학습 경로(§6 step1)는 CUDA 블록으로 아직 1스텝도 실행되지 못했다**(모델빌드 직전까지만 검증). 특히 warm-start 성공 판정 `unet_missing=0`(baseline_diffusion.ckpt의 `model.diffusion_model.*` 키가 모델과 매칭)는 **아직 미관측 값**이므로 복구 후 첫 실행에서 반드시 확인.
+- **Part B 미완**은 코드 결함이 아니라 **외부(드라이버) 요인**이다(증거: `results/m3/partB/driver_block_evidence.txt`; §4.2). partB 로그의 마지막 `종료됨`은 내 수동 종료다. 재현 절차(§6)의 **생성·채점 스캐폴드는 Part A에서 실측 검증됐으나**, warm-start **학습 경로(§6 step1)는 CUDA 블록으로 아직 1스텝도 실행되지 못했다**(모델빌드 직전까지만 검증). warm-start 키 매칭(`unet_missing=0`)은 **CPU로 사전 검증됨**(§4.1, `verify_warmstart.py`: 1107↔1107 완전 매칭)이나, **실제 학습 스텝(옵티마이저·CUDA)은 미실행**이므로 복구 후 첫 실행에서 warm-start 로그와 loss 하강을 확인.
 - 기존 `tac_*` 체크포인트·`_tac` config(문서에 없는 선행 실험)는 독립성 규칙상 **일절 건드리지 않았다**. M3 산출물은 별도 네임스페이스(`artifacts/m3/`, `results/m3/`, `scripts/m3/`).
 
 ---

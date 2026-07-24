@@ -1,0 +1,1257 @@
+{
+  "n_samples": 96,
+  "seed": 0,
+  "traj_len": 16,
+  "per_dataset_cap": 2,
+  "train_root": "open/data/train",
+  "samples": [
+    {
+      "sid": "sample_000000",
+      "dataset": "ganker5/so100_dataline_20250331",
+      "episode_index": 31,
+      "start_idx": 75,
+      "length": 101,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000001",
+      "dataset": "dragon-95/so100_sorting_3",
+      "episode_index": 173,
+      "start_idx": 12,
+      "length": 177,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000002",
+      "dataset": "samsam0510/tooth_extraction_4",
+      "episode_index": 122,
+      "start_idx": 43,
+      "length": 70,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000003",
+      "dataset": "mikechambers/block_cup_14",
+      "episode_index": 24,
+      "start_idx": 67,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        720,
+        1280
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000004",
+      "dataset": "Odog16/so100_cube_drop_pick_v1",
+      "episode_index": 2,
+      "start_idx": 17,
+      "length": 33,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000005",
+      "dataset": "DorayakiLin/so100_pick_charger_on_tissue",
+      "episode_index": 2,
+      "start_idx": 62,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000006",
+      "dataset": "jpata/so100_pick_place_tangerine",
+      "episode_index": 23,
+      "start_idx": 6,
+      "length": 54,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000007",
+      "dataset": "Jiangeng/so100_413",
+      "episode_index": 48,
+      "start_idx": 37,
+      "length": 76,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000008",
+      "dataset": "triton7777/so100_dataset_mix",
+      "episode_index": 35,
+      "start_idx": 134,
+      "length": 536,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.s_left"
+    },
+    {
+      "sid": "sample_000009",
+      "dataset": "roboticshack/left-arm-grasp-lego-brick",
+      "episode_index": 59,
+      "start_idx": 84,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000010",
+      "dataset": "Chojins/chess_game_000_white_red",
+      "episode_index": 24,
+      "start_idx": 43,
+      "length": 66,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000011",
+      "dataset": "frk2/so100large",
+      "episode_index": 4,
+      "start_idx": 37,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000012",
+      "dataset": "356c/so100_nut_sort_1",
+      "episode_index": 19,
+      "start_idx": 83,
+      "length": 172,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000013",
+      "dataset": "ganker5/so100_push_20250328",
+      "episode_index": 42,
+      "start_idx": 30,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000014",
+      "dataset": "pierfabre/pig2",
+      "episode_index": 39,
+      "start_idx": 19,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000015",
+      "dataset": "sihyun77/mond_1",
+      "episode_index": 8,
+      "start_idx": 64,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000016",
+      "dataset": "FsqZ/so100_1",
+      "episode_index": 36,
+      "start_idx": 22,
+      "length": 99,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000017",
+      "dataset": "roboticshack/team-7-left-arm-grasp-motor",
+      "episode_index": 39,
+      "start_idx": 62,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000018",
+      "dataset": "samsam0510/tooth_extraction_3",
+      "episode_index": 8,
+      "start_idx": 44,
+      "length": 89,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000019",
+      "dataset": "roboticshack/team9-pick_chicken_place_plate",
+      "episode_index": 24,
+      "start_idx": 8,
+      "length": 58,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000020",
+      "dataset": "shreyasgite/so100_legocube_50",
+      "episode_index": 33,
+      "start_idx": 5,
+      "length": 84,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000021",
+      "dataset": "Jiafei1224/so100_pa222per",
+      "episode_index": 24,
+      "start_idx": 21,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000022",
+      "dataset": "AndrejOrsula/lerobot_double_ball_stacking_random",
+      "episode_index": 15,
+      "start_idx": 44,
+      "length": 67,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000023",
+      "dataset": "vladfatu/so100_office",
+      "episode_index": 21,
+      "start_idx": 35,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000024",
+      "dataset": "Loki0929/so100_duck",
+      "episode_index": 86,
+      "start_idx": 44,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000025",
+      "dataset": "356c/so100_duck_reposition_1",
+      "episode_index": 45,
+      "start_idx": 86,
+      "length": 174,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000026",
+      "dataset": "paszea/so100_lego_2cam",
+      "episode_index": 35,
+      "start_idx": 125,
+      "length": 459,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000027",
+      "dataset": "lirislab/red_cube_into_green_lego_block",
+      "episode_index": 12,
+      "start_idx": 34,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000028",
+      "dataset": "ganker5/so100_color_0328",
+      "episode_index": 0,
+      "start_idx": 2,
+      "length": 18,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000029",
+      "dataset": "isadev/bougies3",
+      "episode_index": 79,
+      "start_idx": 26,
+      "length": 57,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000030",
+      "dataset": "paszea/so100_lego",
+      "episode_index": 24,
+      "start_idx": 36,
+      "length": 138,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000031",
+      "dataset": "pierfabre/rabbit",
+      "episode_index": 16,
+      "start_idx": 82,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000032",
+      "dataset": "pranavsaroha/so100_carrot_2",
+      "episode_index": 47,
+      "start_idx": 20,
+      "length": 73,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000033",
+      "dataset": "sihyun77/sihyun_3_17_2",
+      "episode_index": 6,
+      "start_idx": 4,
+      "length": 172,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000034",
+      "dataset": "pierfabre/sheep",
+      "episode_index": 54,
+      "start_idx": 84,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000035",
+      "dataset": "FeiYjf/new_GtoR",
+      "episode_index": 258,
+      "start_idx": 30,
+      "length": 68,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000036",
+      "dataset": "lirislab/close_top_drawer_teabox",
+      "episode_index": 2,
+      "start_idx": 9,
+      "length": 36,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000037",
+      "dataset": "samsam0510/cube_reorientation_2",
+      "episode_index": 172,
+      "start_idx": 100,
+      "length": 126,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000038",
+      "dataset": "lirislab/fold_bottom_right",
+      "episode_index": 8,
+      "start_idx": 9,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000039",
+      "dataset": "pranavsaroha/so100_legos4",
+      "episode_index": 47,
+      "start_idx": 132,
+      "length": 329,
+      "fps": 6,
+      "native_hw": [
+        1080,
+        1920
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000040",
+      "dataset": "ganker5/so100_push_20250331",
+      "episode_index": 28,
+      "start_idx": 24,
+      "length": 136,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000041",
+      "dataset": "bensprenger/chess_game_001_blue_stereo",
+      "episode_index": 137,
+      "start_idx": 1,
+      "length": 68,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000042",
+      "dataset": "ganker5/so100_dataline_0328",
+      "episode_index": 2,
+      "start_idx": 31,
+      "length": 53,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000043",
+      "dataset": "sihyun77/sihyun_main_3",
+      "episode_index": 28,
+      "start_idx": 98,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000044",
+      "dataset": "Chojins/chess_game_009_white",
+      "episode_index": 335,
+      "start_idx": 39,
+      "length": 131,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000045",
+      "dataset": "pierfabre/pig3",
+      "episode_index": 25,
+      "start_idx": 92,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000046",
+      "dataset": "Ityl/so100_recording2",
+      "episode_index": 23,
+      "start_idx": 60,
+      "length": 88,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000047",
+      "dataset": "sixpigs1/so100_stack_cube_error",
+      "episode_index": 67,
+      "start_idx": 0,
+      "length": 57,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000048",
+      "dataset": "roboticshack/team16-can-stacking",
+      "episode_index": 13,
+      "start_idx": 12,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000049",
+      "dataset": "pietroom/holdthis",
+      "episode_index": 12,
+      "start_idx": 47,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000050",
+      "dataset": "sihyun77/suho_main_2",
+      "episode_index": 38,
+      "start_idx": 93,
+      "length": 116,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000051",
+      "dataset": "aimihat/so100_tape",
+      "episode_index": 5,
+      "start_idx": 31,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000052",
+      "dataset": "HITHY/so100_peach4",
+      "episode_index": 399,
+      "start_idx": 19,
+      "length": 39,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000053",
+      "dataset": "Beegbrain/pick_lemon_and_drop_in_bowl",
+      "episode_index": 20,
+      "start_idx": 41,
+      "length": 68,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000054",
+      "dataset": "lirislab/sweep_tissue_cube",
+      "episode_index": 7,
+      "start_idx": 143,
+      "length": 179,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000055",
+      "dataset": "samanthalhy/so100_herding_1",
+      "episode_index": 38,
+      "start_idx": 245,
+      "length": 556,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000056",
+      "dataset": "pierfabre/chicken",
+      "episode_index": 35,
+      "start_idx": 49,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000057",
+      "dataset": "HITHY/so100_strawberry",
+      "episode_index": 115,
+      "start_idx": 12,
+      "length": 50,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000058",
+      "dataset": "lirislab/guess_who_so100",
+      "episode_index": 40,
+      "start_idx": 20,
+      "length": 44,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000059",
+      "dataset": "tkc79/so100_lego_box_2",
+      "episode_index": 17,
+      "start_idx": 49,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000060",
+      "dataset": "therarelab/so100_pick_place_2",
+      "episode_index": 12,
+      "start_idx": 6,
+      "length": 67,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000061",
+      "dataset": "ad330/cubePlace",
+      "episode_index": 46,
+      "start_idx": 11,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000062",
+      "dataset": "nbaron99/so100_pick_and_place4",
+      "episode_index": 66,
+      "start_idx": 16,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000063",
+      "dataset": "weiye11/so100_410_zwy",
+      "episode_index": 74,
+      "start_idx": 54,
+      "length": 73,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000064",
+      "dataset": "Odog16/so100_cube_stacking_v1",
+      "episode_index": 15,
+      "start_idx": 25,
+      "length": 154,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000065",
+      "dataset": "NONHUMAN-RESEARCH/SOARM100_TASK_VENDA",
+      "episode_index": 108,
+      "start_idx": 36,
+      "length": 102,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000066",
+      "dataset": "LemonadeDai/so100_coca",
+      "episode_index": 47,
+      "start_idx": 10,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000067",
+      "dataset": "Beegbrain/sweep_tissue_cube",
+      "episode_index": 6,
+      "start_idx": 71,
+      "length": 99,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000068",
+      "dataset": "dragon-95/so100_sorting",
+      "episode_index": 25,
+      "start_idx": 68,
+      "length": 299,
+      "fps": 10,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000069",
+      "dataset": "RasmusP/so100_Orange2Green",
+      "episode_index": 47,
+      "start_idx": 73,
+      "length": 119,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000070",
+      "dataset": "pranavsaroha/so100_onelego2",
+      "episode_index": 21,
+      "start_idx": 58,
+      "length": 80,
+      "fps": 6,
+      "native_hw": [
+        1080,
+        1920
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000071",
+      "dataset": "lirislab/put_banana_bowl",
+      "episode_index": 27,
+      "start_idx": 26,
+      "length": 54,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000072",
+      "dataset": "00ri/so100_battery",
+      "episode_index": 38,
+      "start_idx": 49,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000073",
+      "dataset": "sixpigs1/so100_pick_cube_in_box",
+      "episode_index": 71,
+      "start_idx": 26,
+      "length": 50,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000074",
+      "dataset": "Chojins/chess_game_001_blue_stereo",
+      "episode_index": 478,
+      "start_idx": 29,
+      "length": 104,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000075",
+      "dataset": "00ri/so100_battery_bin_center",
+      "episode_index": 27,
+      "start_idx": 35,
+      "length": 57,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000076",
+      "dataset": "pierfabre/horse",
+      "episode_index": 39,
+      "start_idx": 10,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000077",
+      "dataset": "Beegbrain/pick_place_green_block",
+      "episode_index": 12,
+      "start_idx": 11,
+      "length": 83,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000078",
+      "dataset": "tkc79/so100_lego_box_1",
+      "episode_index": 46,
+      "start_idx": 54,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000079",
+      "dataset": "lirislab/red_cube_into_blue_cube",
+      "episode_index": 1,
+      "start_idx": 20,
+      "length": 66,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000080",
+      "dataset": "koenvanwijk/orange50-variation-2",
+      "episode_index": 40,
+      "start_idx": 4,
+      "length": 25,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000081",
+      "dataset": "sihyun77/sihyun_main_2",
+      "episode_index": 32,
+      "start_idx": 63,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000082",
+      "dataset": "lirislab/unfold_bottom_right",
+      "episode_index": 26,
+      "start_idx": 26,
+      "length": 57,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000083",
+      "dataset": "Mohamedal/put_banana",
+      "episode_index": 20,
+      "start_idx": 105,
+      "length": 173,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000084",
+      "dataset": "pierfabre/cow2",
+      "episode_index": 7,
+      "start_idx": 44,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000085",
+      "dataset": "paszea/so100_whale_3",
+      "episode_index": 16,
+      "start_idx": 51,
+      "length": 119,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000086",
+      "dataset": "bensprenger/right_arm_p_brick_in_box_with_y_noise_v0",
+      "episode_index": 36,
+      "start_idx": 60,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000087",
+      "dataset": "koenvanwijk/orange50-1",
+      "episode_index": 11,
+      "start_idx": 6,
+      "length": 23,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000088",
+      "dataset": "vladfatu/so100_above",
+      "episode_index": 17,
+      "start_idx": 31,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000089",
+      "dataset": "sihyun77/suho_3_17_1",
+      "episode_index": 7,
+      "start_idx": 8,
+      "length": 174,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000090",
+      "dataset": "liuhuanjim013/so100_th",
+      "episode_index": 20,
+      "start_idx": 14,
+      "length": 83,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000091",
+      "dataset": "lirislab/lemon_into_bowl",
+      "episode_index": 37,
+      "start_idx": 18,
+      "length": 67,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000092",
+      "dataset": "dragon-95/so100_sorting_2",
+      "episode_index": 61,
+      "start_idx": 20,
+      "length": 75,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000093",
+      "dataset": "pietroom/actualeasytask",
+      "episode_index": 27,
+      "start_idx": 33,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000094",
+      "dataset": "CSCSXX/pick_place_cube_1.18",
+      "episode_index": 12,
+      "start_idx": 3,
+      "length": 64,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image"
+    },
+    {
+      "sid": "sample_000095",
+      "dataset": "pranavsaroha/so100_onelego3",
+      "episode_index": 28,
+      "start_idx": 40,
+      "length": 86,
+      "fps": 6,
+      "native_hw": [
+        1080,
+        1920
+      ],
+      "camera_key": "observation.images.image"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+# 로컬 모의채점(M0)에 필요한 최소 패키지. python 3.10 기준.
+# torch는 CUDA 휠로 별도 설치: pip install torch==2.7.1 torchvision==0.22.1
+numpy==1.26.4
+pytorch-lightning==1.9.3
+setuptools<70            # pytorch-lightning 1.9.3 의 pkg_resources 의존
+torchmetrics>=0.11,<2
+einops==0.6.0
+av>=10
+imageio>=2.9.0,<3
+imageio-ffmpeg           # submission_kit과 동일한 libx264 인코딩 강제용
+pillow>=9.5,<12
+timm>=0.9,<2
+PyYAML>=6.0.1,<7
+omegaconf==2.1.1         # action_extractor.ckpt 언피클에 필요(submission_kit 미명시 암묵 의존성)
+pandas>=1.5,<2.3         # 홀드아웃 빌더 parquet 읽기
+pyarrow

@@ -23,6 +23,9 @@ outputs/
 wandb/
 *.log
 
+# === 재현 가능한 산출물(홀드아웃 영상/이미지/생성물). 결과 요약은 results/에 별도 추적 ===
+artifacts/
+
 # === 제출물 ===
 submission_features.csv
 submission_kit/input_videos/

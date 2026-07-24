@@ -22,6 +22,13 @@ if [ ! -f "$REPO/open/baseline/checkpoints/backbone.ckpt" ]; then
   exit 1
 fi
 
+# conda wm 환경 자동 활성화(대화형 셸에 conda init이 안 돼 있어도 동작)
+if [ -z "${CONDA_DEFAULT_ENV:-}" ] || [ "${CONDA_DEFAULT_ENV:-}" != "wm" ]; then
+  # shellcheck disable=SC1091
+  source "$HOME/miniconda3/etc/profile.d/conda.sh"
+  conda activate wm
+fi
+
 cd "$CK"
 export USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0
 export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}"

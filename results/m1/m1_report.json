@@ -1,0 +1,588 @@
+{
+  "meta": {
+    "created_utc": "2026-07-24T06:22:20.631291+00:00",
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "torch": "2.7.1+cu128",
+    "cuda_build": "12.8",
+    "holdout": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/artifacts/holdout",
+    "unet_override": {
+      "model_channels": 320,
+      "channel_mult": [
+        1,
+        2,
+        4,
+        4
+      ],
+      "attention_resolutions": [
+        4,
+        2,
+        1
+      ],
+      "num_head_channels": 64
+    },
+    "grid": {
+      "ddim_steps": [
+        50,
+        25,
+        16,
+        10
+      ],
+      "batch": [
+        1,
+        2,
+        4
+      ],
+      "cfg": [
+        1.0,
+        2.5
+      ]
+    },
+    "smoke": false,
+    "warmup_samples": 2,
+    "measure_samples": 8,
+    "budget_s": 3600.0,
+    "n_submission": 216,
+    "a100_s_per_nfe_ref": 0.4
+  },
+  "model": {
+    "unet_params_m": 1462.63898,
+    "total_params_m": 2632.913005,
+    "build_seconds": 17.082610368728638
+  },
+  "cells": [
+    {
+      "steps": 50,
+      "batch": 1,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 9.784212976694107,
+      "peak_vram_gb": 17.106106368,
+      "nfe": 50,
+      "s_per_nfe": 0.19568425953388213,
+      "n_measured": 8,
+      "elapsed_s": 78.27370381355286,
+      "proj_216_s": 2113.390002965927,
+      "within_budget": true
+    },
+    {
+      "steps": 25,
+      "batch": 1,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 5.386851906776428,
+      "peak_vram_gb": 17.106106368,
+      "nfe": 25,
+      "s_per_nfe": 0.21547407627105714,
+      "n_measured": 8,
+      "elapsed_s": 43.094815254211426,
+      "proj_216_s": 1163.5600118637085,
+      "within_budget": true
+    },
+    {
+      "steps": 16,
+      "batch": 1,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 3.7960407435894012,
+      "peak_vram_gb": 17.106106368,
+      "nfe": 16,
+      "s_per_nfe": 0.23725254647433758,
+      "n_measured": 8,
+      "elapsed_s": 30.36832594871521,
+      "proj_216_s": 819.9448006153107,
+      "within_budget": true
+    },
+    {
+      "steps": 10,
+      "batch": 1,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 2.732215404510498,
+      "peak_vram_gb": 17.106106368,
+      "nfe": 10,
+      "s_per_nfe": 0.2732215404510498,
+      "n_measured": 8,
+      "elapsed_s": 21.857723236083984,
+      "proj_216_s": 590.1585273742676,
+      "within_budget": true
+    },
+    {
+      "steps": 50,
+      "batch": 2,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 9.789534270763397,
+      "peak_vram_gb": 20.620373504,
+      "nfe": 50,
+      "s_per_nfe": 0.19579068541526795,
+      "n_measured": 8,
+      "elapsed_s": 78.31627416610718,
+      "proj_216_s": 2114.539402484894,
+      "within_budget": true
+    },
+    {
+      "steps": 25,
+      "batch": 2,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 5.378137290477753,
+      "peak_vram_gb": 20.620373504,
+      "nfe": 25,
+      "s_per_nfe": 0.2151254916191101,
+      "n_measured": 8,
+      "elapsed_s": 43.02509832382202,
+      "proj_216_s": 1161.6776547431946,
+      "within_budget": true
+    },
+    {
+      "steps": 16,
+      "batch": 2,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 3.7818740904331207,
+      "peak_vram_gb": 20.620373504,
+      "nfe": 16,
+      "s_per_nfe": 0.23636713065207005,
+      "n_measured": 8,
+      "elapsed_s": 30.254992723464966,
+      "proj_216_s": 816.8848035335541,
+      "within_budget": true
+    },
+    {
+      "steps": 10,
+      "batch": 2,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "ok",
+      "sec_per_sample": 2.720072954893112,
+      "peak_vram_gb": 20.620373504,
+      "nfe": 10,
+      "s_per_nfe": 0.27200729548931124,
+      "n_measured": 8,
+      "elapsed_s": 21.760583639144897,
+      "proj_216_s": 587.5357582569122,
+      "within_budget": true
+    },
+    {
+      "steps": 50,
+      "batch": 4,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "OOM",
+      "error": "CUDA out of memory. Tried to allocate 7.81 GiB. GPU 0 has a total capacity of 31.35 GiB of which 2.77 GiB is free. Including non-PyTorch memory, this process has 28.25 GiB memory in use. Of the alloca"
+    },
+    {
+      "steps": 25,
+      "batch": 4,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    },
+    {
+      "steps": 16,
+      "batch": 4,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    },
+    {
+      "steps": 10,
+      "batch": 4,
+      "cfg": "off",
+      "cfg_scale": 1.0,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    },
+    {
+      "steps": 50,
+      "batch": 1,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 18.72506257891655,
+      "peak_vram_gb": 17.100944896,
+      "nfe": 100,
+      "s_per_nfe": 0.1872506257891655,
+      "n_measured": 8,
+      "elapsed_s": 149.8005006313324,
+      "proj_216_s": 4044.6135170459747,
+      "within_budget": false
+    },
+    {
+      "steps": 25,
+      "batch": 1,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 9.838446319103241,
+      "peak_vram_gb": 17.100944896,
+      "nfe": 50,
+      "s_per_nfe": 0.1967689263820648,
+      "n_measured": 8,
+      "elapsed_s": 78.70757055282593,
+      "proj_216_s": 2125.1044049263,
+      "within_budget": true
+    },
+    {
+      "steps": 16,
+      "batch": 1,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 6.641104519367218,
+      "peak_vram_gb": 17.100944896,
+      "nfe": 32,
+      "s_per_nfe": 0.20753451623022556,
+      "n_measured": 8,
+      "elapsed_s": 53.128836154937744,
+      "proj_216_s": 1434.478576183319,
+      "within_budget": true
+    },
+    {
+      "steps": 10,
+      "batch": 1,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 4.507013261318207,
+      "peak_vram_gb": 17.100944896,
+      "nfe": 20,
+      "s_per_nfe": 0.22535066306591034,
+      "n_measured": 8,
+      "elapsed_s": 36.056106090545654,
+      "proj_216_s": 973.5148644447327,
+      "within_budget": true
+    },
+    {
+      "steps": 50,
+      "batch": 2,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 18.625031262636185,
+      "peak_vram_gb": 20.621913088,
+      "nfe": 100,
+      "s_per_nfe": 0.18625031262636185,
+      "n_measured": 8,
+      "elapsed_s": 149.00025010108948,
+      "proj_216_s": 4023.006752729416,
+      "within_budget": false
+    },
+    {
+      "steps": 25,
+      "batch": 2,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 9.790553957223892,
+      "peak_vram_gb": 20.621913088,
+      "nfe": 50,
+      "s_per_nfe": 0.19581107914447785,
+      "n_measured": 8,
+      "elapsed_s": 78.32443165779114,
+      "proj_216_s": 2114.7596547603607,
+      "within_budget": true
+    },
+    {
+      "steps": 16,
+      "batch": 2,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 6.60821408033371,
+      "peak_vram_gb": 20.621913088,
+      "nfe": 32,
+      "s_per_nfe": 0.20650669001042843,
+      "n_measured": 8,
+      "elapsed_s": 52.86571264266968,
+      "proj_216_s": 1427.3742413520813,
+      "within_budget": true
+    },
+    {
+      "steps": 10,
+      "batch": 2,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "ok",
+      "sec_per_sample": 4.486141324043274,
+      "peak_vram_gb": 20.621913088,
+      "nfe": 20,
+      "s_per_nfe": 0.2243070662021637,
+      "n_measured": 8,
+      "elapsed_s": 35.88913059234619,
+      "proj_216_s": 969.0065259933472,
+      "within_budget": true
+    },
+    {
+      "steps": 50,
+      "batch": 4,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    },
+    {
+      "steps": 25,
+      "batch": 4,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    },
+    {
+      "steps": 16,
+      "batch": 4,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    },
+    {
+      "steps": 10,
+      "batch": 4,
+      "cfg": "on",
+      "cfg_scale": 2.5,
+      "status": "OOM",
+      "error": "batch OOM (선행 셀에서 확인, 단락)"
+    }
+  ],
+  "summary": {
+    "n_ok": 16,
+    "n_within_budget": 14,
+    "within_budget_cells": [
+      {
+        "steps": 10,
+        "batch": 2,
+        "cfg": "off",
+        "sec_per_sample": 2.720072954893112,
+        "proj_216_min": 9.792262637615204,
+        "peak_vram_gb": 20.620373504
+      },
+      {
+        "steps": 10,
+        "batch": 1,
+        "cfg": "off",
+        "sec_per_sample": 2.732215404510498,
+        "proj_216_min": 9.835975456237794,
+        "peak_vram_gb": 17.106106368
+      },
+      {
+        "steps": 16,
+        "batch": 2,
+        "cfg": "off",
+        "sec_per_sample": 3.7818740904331207,
+        "proj_216_min": 13.614746725559234,
+        "peak_vram_gb": 20.620373504
+      },
+      {
+        "steps": 16,
+        "batch": 1,
+        "cfg": "off",
+        "sec_per_sample": 3.7960407435894012,
+        "proj_216_min": 13.665746676921845,
+        "peak_vram_gb": 17.106106368
+      },
+      {
+        "steps": 10,
+        "batch": 2,
+        "cfg": "on",
+        "sec_per_sample": 4.486141324043274,
+        "proj_216_min": 16.150108766555785,
+        "peak_vram_gb": 20.621913088
+      },
+      {
+        "steps": 10,
+        "batch": 1,
+        "cfg": "on",
+        "sec_per_sample": 4.507013261318207,
+        "proj_216_min": 16.225247740745544,
+        "peak_vram_gb": 17.100944896
+      },
+      {
+        "steps": 25,
+        "batch": 2,
+        "cfg": "off",
+        "sec_per_sample": 5.378137290477753,
+        "proj_216_min": 19.36129424571991,
+        "peak_vram_gb": 20.620373504
+      },
+      {
+        "steps": 25,
+        "batch": 1,
+        "cfg": "off",
+        "sec_per_sample": 5.386851906776428,
+        "proj_216_min": 19.392666864395142,
+        "peak_vram_gb": 17.106106368
+      },
+      {
+        "steps": 16,
+        "batch": 2,
+        "cfg": "on",
+        "sec_per_sample": 6.60821408033371,
+        "proj_216_min": 23.789570689201355,
+        "peak_vram_gb": 20.621913088
+      },
+      {
+        "steps": 16,
+        "batch": 1,
+        "cfg": "on",
+        "sec_per_sample": 6.641104519367218,
+        "proj_216_min": 23.907976269721985,
+        "peak_vram_gb": 17.100944896
+      },
+      {
+        "steps": 50,
+        "batch": 1,
+        "cfg": "off",
+        "sec_per_sample": 9.784212976694107,
+        "proj_216_min": 35.22316671609879,
+        "peak_vram_gb": 17.106106368
+      },
+      {
+        "steps": 50,
+        "batch": 2,
+        "cfg": "off",
+        "sec_per_sample": 9.789534270763397,
+        "proj_216_min": 35.24232337474823,
+        "peak_vram_gb": 20.620373504
+      },
+      {
+        "steps": 25,
+        "batch": 2,
+        "cfg": "on",
+        "sec_per_sample": 9.790553957223892,
+        "proj_216_min": 35.24599424600601,
+        "peak_vram_gb": 20.621913088
+      },
+      {
+        "steps": 25,
+        "batch": 1,
+        "cfg": "on",
+        "sec_per_sample": 9.838446319103241,
+        "proj_216_min": 35.418406748771666,
+        "peak_vram_gb": 17.100944896
+      }
+    ],
+    "s_per_nfe_5090_median": 0.21133000392466783,
+    "speed_ratio_5090_vs_a100": 1.8927742988287968
+  },
+  "extrapolation": {
+    "fit_batch1": {
+      "marginal_s_per_nfe_5090": 0.1776,
+      "fixed_overhead_s": 0.949,
+      "note": "sec/sample = a*NFE + b ; b=VAE encode+decode+CLIP 고정비"
+    },
+    "speed_ratio_5090_vs_a100": {
+      "marginal_unet": 2.25,
+      "median_incl_overhead": 1.89
+    },
+    "rtx_pro_6000_vs_5090_factor": {
+      "low": 1.1,
+      "high": 1.2,
+      "basis": "CUDA cores 24064/21760=1.106, boost ~1.08"
+    },
+    "r_rtx_pro_6000_vs_a100_range": [
+      2.08,
+      2.7
+    ],
+    "budget_on_6000_batch1": [
+      {
+        "steps": 50,
+        "cfg": "off",
+        "nfe": 50,
+        "min_5090": 35.2,
+        "min_6000_range": [
+          29.4,
+          32.0
+        ],
+        "fits_6000_60min": true
+      },
+      {
+        "steps": 25,
+        "cfg": "off",
+        "nfe": 25,
+        "min_5090": 19.4,
+        "min_6000_range": [
+          16.2,
+          17.6
+        ],
+        "fits_6000_60min": true
+      },
+      {
+        "steps": 16,
+        "cfg": "off",
+        "nfe": 16,
+        "min_5090": 13.7,
+        "min_6000_range": [
+          11.4,
+          12.4
+        ],
+        "fits_6000_60min": true
+      },
+      {
+        "steps": 10,
+        "cfg": "off",
+        "nfe": 10,
+        "min_5090": 9.8,
+        "min_6000_range": [
+          8.2,
+          8.9
+        ],
+        "fits_6000_60min": true
+      },
+      {
+        "steps": 50,
+        "cfg": "on",
+        "nfe": 100,
+        "min_5090": 67.4,
+        "min_6000_range": [
+          56.2,
+          61.3
+        ],
+        "fits_6000_60min": false
+      },
+      {
+        "steps": 25,
+        "cfg": "on",
+        "nfe": 50,
+        "min_5090": 35.4,
+        "min_6000_range": [
+          29.5,
+          32.2
+        ],
+        "fits_6000_60min": true
+      },
+      {
+        "steps": 16,
+        "cfg": "on",
+        "nfe": 32,
+        "min_5090": 23.9,
+        "min_6000_range": [
+          19.9,
+          21.7
+        ],
+        "fits_6000_60min": true
+      },
+      {
+        "steps": 10,
+        "cfg": "on",
+        "nfe": 20,
+        "min_5090": 16.2,
+        "min_6000_range": [
+          13.5,
+          14.8
+        ],
+        "fits_6000_60min": true
+      }
+    ]
+  }
+}

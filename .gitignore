@@ -44,3 +44,6 @@ env/
 Thumbs.db
 .idea/
 .vscode/
+
+# === OMC 운영 아티팩트 (레포에 미포함) ===
+.omc/

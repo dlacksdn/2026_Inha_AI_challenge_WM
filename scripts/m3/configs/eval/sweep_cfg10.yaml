@@ -1,0 +1,39 @@
+# M3 λ-CFG sweep config (auto-generated). Only unconditional_guidance_scale varies across the sweep.
+# NOTE: ddim_eta is IGNORED by DDIMSampler.sample() (param name is 'eta'); all runs are deterministic (eta=0).
+# model_config_file is relative to CWD=challenge_kit at run time.
+name: m3_sweep_cfg10
+group: m3_sweep_cfg10
+
+num_batches: 64
+
+model_config_file: /home/rils/dlacksdn/2026_Inha_AI_challenge_WM/scripts/m3/configs/train/inha_action_diffusion_11M_infer.yaml
+act_cond_unet_checkpoint: ../checkpoints/baseline_diffusion.ckpt
+
+ddim_kwargs:
+  ddim_steps: 50
+  unconditional_guidance_scale: 1.0
+  timestep_spacing: uniform_trailing
+  guidance_rescale: 0.7
+  ddim_eta: 0.0
+  verbose: False
+
+data:
+  target: ldwma.lightning.data_modules.lerobot_so100.SO100DataModule
+  params:
+    root: ../../data/eval
+    remote: False
+    dataset_paths: auto
+    action_stats_path: ../../data/train/so100_action_statistics.json
+    normalize_actions: True
+    eval_all_episodes: True
+    batch_size: 1
+    num_workers: 4
+    pin_memory: True
+    target_height: 320
+    target_width: 512
+    pad: True
+    camera_key: observation.images.top
+    traj_len: 16
+    val_fraction: 0.05
+    downsample: 1
+    use_language: False

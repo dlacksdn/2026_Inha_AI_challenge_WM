@@ -18,7 +18,9 @@ MAX_TIME="${2:-}"
 [ -f "$REPO/open/baseline/checkpoints/backbone.ckpt" ] || { echo "ERROR: backbone.ckpt 없음"; exit 1; }
 [ -f "$REPO/open/baseline/checkpoints/baseline_diffusion.ckpt" ] || { echo "ERROR: baseline_diffusion.ckpt 없음"; exit 1; }
 
-export HF_HOME="/home/rils/dlacksdn/.cache/hf" TORCH_HOME="/home/rils/dlacksdn/.cache/torch"
+# 캐시 경로: 이미 export돼 있으면 그 값을 쓰고, 없으면 머신별 기본값(홈 캐시).
+#   5090(공유계정)에서는 recipe 캐시(/home/rils/dlacksdn/.cache/hf)를 미리 export해서 쓴다.
+export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" TORCH_HOME="${TORCH_HOME:-$HOME/.cache/torch}"
 export HF_HUB_DISABLE_TELEMETRY=1 USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0 TOKENIZERS_PARALLELISM=false PYTHONUNBUFFERED=1
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python HOST_GPU_NUM=1
 
@@ -29,7 +31,7 @@ else
   export M3_WARMSTART_UNET="$REPO/open/baseline/checkpoints/baseline_diffusion.ckpt"
 fi
 
-CONDA=/home/rils/dlacksdn/miniconda3/bin/conda
+CONDA="${CONDA_BIN:-$HOME/miniconda3/bin/conda}"
 PYBIN="$($CONDA run -n wm which python)"
 
 cd "$CK"
@@ -40,8 +42,14 @@ if [ -f "/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4" ]; then
   export LD_PRELOAD="/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4"
 fi
 
-# dotlist override (선택)
-OVERRIDES=(lightning.trainer.num_nodes=1)
+# dotlist override
+#   config에 박힌 절대경로(5090 기준)를 이 저장소 기준으로 덮어써서 어느 머신에서도 동작하게 한다.
+#   (5090에서도 같은 값이 되므로 무해)
+OVERRIDES=(lightning.trainer.num_nodes=1
+           "logdir=$REPO/artifacts/m3/train_out"
+           "data.params.root=$REPO/open/data/train"
+           "data.params.action_stats_path=$REPO/open/data/train/so100_action_statistics.json"
+           "model.pretrained_checkpoint=$REPO/open/baseline/checkpoints/backbone.ckpt")
 [ -n "$MAX_STEPS" ] && OVERRIDES+=("lightning.trainer.max_steps=$MAX_STEPS")
 [ -n "$MAX_TIME" ]  && OVERRIDES+=("lightning.trainer.max_time=$MAX_TIME")
 

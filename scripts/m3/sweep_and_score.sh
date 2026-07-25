@@ -25,9 +25,10 @@ CFG_DIR="$REPO/scripts/m3/configs/eval"
 [ -d "$HOLDOUT/images" ] || { echo "[sweep] ERROR: holdout 없음: $HOLDOUT"; exit 1; }
 
 # HF_HOME/TORCH_HOME: 채점 모델(DINOv2=timm HF, R3D=torch hub)이 캐시된 곳(태스크 recipe 경로). repo-local 은 비어있어 실패함.
-export HF_HOME="/home/rils/dlacksdn/.cache/hf" TORCH_HOME="/home/rils/dlacksdn/.cache/torch"
+# 캐시 경로: 이미 export돼 있으면 그 값, 없으면 홈 기본값(머신 이식성)
+export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" TORCH_HOME="${TORCH_HOME:-$HOME/.cache/torch}"
 export HF_HUB_DISABLE_TELEMETRY=1 HF_HUB_OFFLINE=1 USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0 TOKENIZERS_PARALLELISM=false PYTHONUNBUFFERED=1
-CONDA=/home/rils/dlacksdn/miniconda3/bin/conda
+CONDA="${CONDA_BIN:-$HOME/miniconda3/bin/conda}"
 
 mkdir -p "$PRED_ROOT" "$SCORE_ROOT"
 

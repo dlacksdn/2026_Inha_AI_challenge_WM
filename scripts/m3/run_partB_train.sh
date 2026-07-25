@@ -47,6 +47,7 @@ fi
 #   (5090에서도 같은 값이 되므로 무해)
 OVERRIDES=(lightning.trainer.num_nodes=1
            "logdir=$REPO/artifacts/m3/train_out"
+           "lightning.trainer.logger.params.save_dir=$REPO/artifacts/m3/train_out/logs/"
            "data.params.root=$REPO/open/data/train"
            "data.params.action_stats_path=$REPO/open/data/train/so100_action_statistics.json"
            "model.pretrained_checkpoint=$REPO/open/baseline/checkpoints/backbone.ckpt")

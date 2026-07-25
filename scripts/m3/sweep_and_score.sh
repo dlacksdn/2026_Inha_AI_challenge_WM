@@ -20,6 +20,11 @@ CK="$REPO/open/baseline/challenge_kit"
 HOLDOUT="$REPO/artifacts/holdout"
 STATS="../../data/train/so100_action_statistics.json"
 CFG_DIR="$REPO/scripts/m3/configs/eval"
+# config 내부의 절대경로(작성 당시 5090 기준)를 이 저장소 기준으로 치환한 런타임 사본을 만든다.
+#   - infer config 의 model.pretrained_checkpoint  (backbone.ckpt)
+#   - sweep eval config 의 model_config_file       (infer config 경로)
+# open/ 이 심링크인 머신(5090)에서는 CWD 기준 상대경로가 저장소 밖을 가리키므로 절대경로 주입이 필요하다.
+WORKCFG="$REPO/artifacts/m3/_runtime_cfg"
 
 [ -f "$CKPT" ] || { echo "[sweep] ERROR: checkpoint 없음: $CKPT"; exit 1; }
 [ -d "$HOLDOUT/images" ] || { echo "[sweep] ERROR: holdout 없음: $HOLDOUT"; exit 1; }
@@ -30,10 +35,15 @@ export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" TORCH_HOME="${TORCH_HOME:-
 export HF_HUB_DISABLE_TELEMETRY=1 HF_HUB_OFFLINE=1 USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0 TOKENIZERS_PARALLELISM=false PYTHONUNBUFFERED=1
 CONDA="${CONDA_BIN:-$HOME/miniconda3/bin/conda}"
 
-mkdir -p "$PRED_ROOT" "$SCORE_ROOT"
+mkdir -p "$PRED_ROOT" "$SCORE_ROOT" "$WORKCFG"
+sed "s#^  pretrained_checkpoint:.*#  pretrained_checkpoint: $REPO/open/baseline/checkpoints/backbone.ckpt#" \
+    "$REPO/scripts/m3/configs/train/inha_action_diffusion_11M_infer.yaml" > "$WORKCFG/infer.yaml"
+grep -q "^  pretrained_checkpoint: $REPO/" "$WORKCFG/infer.yaml" || { echo "[sweep] ERROR: infer config 경로 치환 실패"; exit 1; }
 
 for tag in "${TAGS[@]}"; do
-  cfg="$CFG_DIR/sweep_cfg${tag}.yaml"
+  cfg_src="$CFG_DIR/sweep_cfg${tag}.yaml"
+  cfg="$WORKCFG/sweep_cfg${tag}.yaml"
+  sed "s#^model_config_file:.*#model_config_file: $WORKCFG/infer.yaml#" "$cfg_src" > "$cfg"
   lam=$(grep -oP 'unconditional_guidance_scale:\s*\K[0-9.]+' "$cfg")
   pred="$PRED_ROOT/cfg${tag}"
   name="${NAME_PREFIX}_cfg${tag}"

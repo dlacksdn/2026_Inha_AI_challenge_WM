@@ -1,0 +1,152 @@
+{
+  "host": "rils-MS-7E32",
+  "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39",
+  "vram_gib": 31.35,
+  "recommended_scope": "action_temporal",
+  "checks": [
+    {
+      "check": "nvidia-smi",
+      "ok": true,
+      "fatal": true,
+      "detail": "NVIDIA GeForce RTX 5090, 32607 MiB, 580.173.02"
+    },
+    {
+      "check": "torch",
+      "ok": true,
+      "fatal": false,
+      "detail": "2.7.1+cu128 (CUDA build 12.8)"
+    },
+    {
+      "check": "torch.cuda.is_available",
+      "ok": true,
+      "fatal": true,
+      "detail": "True"
+    },
+    {
+      "check": "GPU",
+      "ok": true,
+      "fatal": true,
+      "detail": "NVIDIA GeForce RTX 5090 / sm_120 / 31.3GiB"
+    },
+    {
+      "check": "커널 아키텍처 지원",
+      "ok": true,
+      "fatal": false,
+      "detail": "sm_120 in ['sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120', 'compute_120'] — 없으면 cu128 휠 필요(5090/6000=Blackwell)"
+    },
+    {
+      "check": "GPU 커널 실행",
+      "ok": true,
+      "fatal": true,
+      "detail": "matmul OK (sum=-1.033e+04)"
+    },
+    {
+      "check": "fp16 autocast",
+      "ok": true,
+      "fatal": true,
+      "detail": "OK (1.927e+04)"
+    },
+    {
+      "check": "pkg pytorch_lightning",
+      "ok": true,
+      "fatal": true,
+      "detail": "1.9.3"
+    },
+    {
+      "check": "pkg omegaconf",
+      "ok": true,
+      "fatal": true,
+      "detail": "2.1.1"
+    },
+    {
+      "check": "pkg numpy",
+      "ok": true,
+      "fatal": true,
+      "detail": "1.26.4"
+    },
+    {
+      "check": "pkg timm",
+      "ok": true,
+      "fatal": true,
+      "detail": "1.0.28"
+    },
+    {
+      "check": "pkg open_clip",
+      "ok": true,
+      "fatal": false,
+      "detail": "?"
+    },
+    {
+      "check": "pkg imageio_ffmpeg",
+      "ok": true,
+      "fatal": false,
+      "detail": "0.6.0"
+    },
+    {
+      "check": "pkg_resources(setuptools<70)",
+      "ok": true,
+      "fatal": true,
+      "detail": "import OK (pytorch-lightning 1.9.3 요구)"
+    },
+    {
+      "check": "경로 backbone.ckpt",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/baseline/checkpoints/backbone.ckpt (9.72GiB)"
+    },
+    {
+      "check": "경로 train 데이터",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train (56개 항목)"
+    },
+    {
+      "check": "경로 action 통계",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/so100_action_statistics.json"
+    },
+    {
+      "check": "경로 submission_kit",
+      "ok": true,
+      "fatal": false,
+      "detail": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/submission_kit (8개 항목)"
+    },
+    {
+      "check": "경로 action_extractor.ckpt",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/submission_kit/checkpoints/action_extractor.ckpt"
+    },
+    {
+      "check": "경로 1.1B config",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/scripts/branchB/configs/train/inha_action_diffusion_1p1b.yaml"
+    },
+    {
+      "check": "env HF_HOME",
+      "ok": true,
+      "fatal": false,
+      "detail": "/home/rils/dlacksdn/.cache/hf (존재=True)"
+    },
+    {
+      "check": "env TORCH_HOME",
+      "ok": true,
+      "fatal": false,
+      "detail": "/home/rils/dlacksdn/.cache/torch (존재=True)"
+    },
+    {
+      "check": "디스크 여유",
+      "ok": true,
+      "fatal": false,
+      "detail": "1987GiB (체크포인트 1개 ≈10.7GiB → 영구 아카이브 185개분)"
+    },
+    {
+      "check": "학습 범위 추천",
+      "ok": true,
+      "fatal": false,
+      "detail": "VRAM 31.3GiB(가용 28.2) → 추천 scope=**action_temporal**   [full=31.2GB / action_temporal=21.26GB / action_only=15.16GB]"
+    }
+  ]
+}

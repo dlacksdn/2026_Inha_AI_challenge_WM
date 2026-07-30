@@ -1,0 +1,152 @@
+{
+  "host": "DESKTOP-IP77VVV",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.31",
+  "vram_gib": 8.0,
+  "recommended_scope": null,
+  "checks": [
+    {
+      "check": "nvidia-smi",
+      "ok": true,
+      "fatal": true,
+      "detail": "NVIDIA GeForce RTX 4060 Ti, 8188 MiB, 596.21"
+    },
+    {
+      "check": "torch",
+      "ok": true,
+      "fatal": false,
+      "detail": "2.7.1+cu126 (CUDA build 12.6)"
+    },
+    {
+      "check": "torch.cuda.is_available",
+      "ok": true,
+      "fatal": true,
+      "detail": "True"
+    },
+    {
+      "check": "GPU",
+      "ok": true,
+      "fatal": true,
+      "detail": "NVIDIA GeForce RTX 4060 Ti / sm_89 / 8.0GiB"
+    },
+    {
+      "check": "커널 아키텍처 지원",
+      "ok": false,
+      "fatal": false,
+      "detail": "sm_89 in ['sm_50', 'sm_60', 'sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90'] — 없으면 cu128 휠 필요(5090/6000=Blackwell)"
+    },
+    {
+      "check": "GPU 커널 실행",
+      "ok": true,
+      "fatal": true,
+      "detail": "matmul OK (sum=-1.370e+05)"
+    },
+    {
+      "check": "fp16 autocast",
+      "ok": true,
+      "fatal": true,
+      "detail": "OK (-1.898e+04)"
+    },
+    {
+      "check": "pkg pytorch_lightning",
+      "ok": true,
+      "fatal": true,
+      "detail": "1.9.3"
+    },
+    {
+      "check": "pkg omegaconf",
+      "ok": true,
+      "fatal": true,
+      "detail": "2.1.1"
+    },
+    {
+      "check": "pkg numpy",
+      "ok": true,
+      "fatal": true,
+      "detail": "1.26.4"
+    },
+    {
+      "check": "pkg timm",
+      "ok": true,
+      "fatal": true,
+      "detail": "1.0.28"
+    },
+    {
+      "check": "pkg open_clip",
+      "ok": true,
+      "fatal": false,
+      "detail": "?"
+    },
+    {
+      "check": "pkg imageio_ffmpeg",
+      "ok": true,
+      "fatal": false,
+      "detail": "0.6.0"
+    },
+    {
+      "check": "pkg_resources(setuptools<70)",
+      "ok": true,
+      "fatal": true,
+      "detail": "import OK (pytorch-lightning 1.9.3 요구)"
+    },
+    {
+      "check": "경로 backbone.ckpt",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/open/baseline/checkpoints/backbone.ckpt (9.72GiB)"
+    },
+    {
+      "check": "경로 train 데이터",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/open/data/train (57개 항목)"
+    },
+    {
+      "check": "경로 action 통계",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/open/data/train/so100_action_statistics.json"
+    },
+    {
+      "check": "경로 submission_kit",
+      "ok": true,
+      "fatal": false,
+      "detail": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/open/submission_kit (15개 항목)"
+    },
+    {
+      "check": "경로 action_extractor.ckpt",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/open/submission_kit/checkpoints/action_extractor.ckpt"
+    },
+    {
+      "check": "경로 1.1B config",
+      "ok": true,
+      "fatal": true,
+      "detail": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/scripts/branchB/configs/train/inha_action_diffusion_1p1b.yaml"
+    },
+    {
+      "check": "env HF_HOME",
+      "ok": true,
+      "fatal": false,
+      "detail": "미설정 → 런처가 $HOME 기본값을 쓴다"
+    },
+    {
+      "check": "env TORCH_HOME",
+      "ok": true,
+      "fatal": false,
+      "detail": "미설정 → 런처가 $HOME 기본값을 쓴다"
+    },
+    {
+      "check": "디스크 여유",
+      "ok": true,
+      "fatal": false,
+      "detail": "834GiB (체크포인트 1개 ≈10.7GiB → 영구 아카이브 77개분)"
+    },
+    {
+      "check": "학습 범위 추천",
+      "ok": false,
+      "fatal": false,
+      "detail": "VRAM 8.0GiB(가용 7.2) → 추천 scope=**None**   [full=31.2GB / action_temporal=21.26GB / action_only=15.16GB]"
+    }
+  ]
+}

@@ -32,6 +32,7 @@ from omegaconf import OmegaConf
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cfg_paths import repo_root  # noqa: E402
+from weight_loader import zero_init_action_branch  # noqa: E402
 
 ROOT = repo_root()
 CK = ROOT / "open/baseline/challenge_kit"
@@ -43,10 +44,12 @@ for p in [CK / "libs" / "dynamicrafter", CK / "src", CK, CK.parent / "shared_lib
     sys.path.insert(0, str(p))
 from lvdm.modules.networks.openaimodel3d import UNetModel  # noqa: E402
 
+# (name -> (unet param override, zero-init 적용 여부))
 VARIANTS = {
-    "REF_no_action": {"action_conditioned": False},
-    "CONCAT_ours": {},
-    "ADD_act_time_emb": {"add_act_time_emb": True},
+    "REF_no_action": ({"action_conditioned": False, "add_act_time_emb": False}, False),
+    "CONCAT": ({"add_act_time_emb": False}, False),
+    "ADD": ({"add_act_time_emb": True}, False),
+    "ADD_zeroinit": ({"add_act_time_emb": True}, True),   # ← 실제 학습에 쓸 구성
 }
 
 
@@ -62,7 +65,7 @@ def make_inputs(params: dict, seed: int = 0):
     }
 
 
-def build_and_load(params: dict) -> tuple[UNetModel, dict]:
+def build_and_load(params: dict, zero_init: bool = False) -> tuple[UNetModel, dict]:
     unet = UNetModel(**params)
     unet.eval()
     own = unet.state_dict()
@@ -75,6 +78,8 @@ def build_and_load(params: dict) -> tuple[UNetModel, dict]:
     info = {"loaded_keys": len(filt), "dropped_mismatch": mism,
             "missing": sorted(missing), "unexpected": sorted(unexpected),
             "loaded_params_m": round(sum(v.numel() for v in filt.values()) / 1e6, 3)}
+    if zero_init:
+        info["zero_init"] = zero_init_action_branch(unet)
     del obj, sd, dc, filt, own
     gc.collect()
     return unet, info
@@ -86,10 +91,10 @@ def main() -> None:
     report: dict = {"variants": {}}
     outs: dict[str, torch.Tensor] = {}
 
-    for name, ov in VARIANTS.items():
+    for name, (ov, zinit) in VARIANTS.items():
         params = {**base, **ov}
         t0 = time.time()
-        unet, info = build_and_load(params)
+        unet, info = build_and_load(params, zero_init=zinit)
         print(f"[{name}] 로드: {info['loaded_keys']}키 {info['loaded_params_m']}M, "
               f"missing {len(info['missing'])}, mismatch버림 {len(info['dropped_mismatch'])} "
               f"({time.time()-t0:.0f}s)")
@@ -118,7 +123,7 @@ def main() -> None:
         print(f"  vs REF | {k:<28} cos {cos:+.5f}  rel-L2 {rel:.5f}")
     report["compare_vs_ref"] = comp
 
-    out = ROOT / "results/branchB/warmstart_init_probe.json"
+    out = OUT
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(f"\n[probe] 리포트: {out}")
 

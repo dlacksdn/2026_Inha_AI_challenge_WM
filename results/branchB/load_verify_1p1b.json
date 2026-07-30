@@ -4,6 +4,7 @@
   "unet_params": {
     "action_conditioned": true,
     "action_dims": 6,
+    "add_act_time_emb": true,
     "action_dropout_prob": 0.1,
     "use_scale_shift_norm": false,
     "in_channels": 8,
@@ -38,61 +39,48 @@
     "default_fs": 10,
     "fs_condition": true
   },
+  "expected_scratch": [
+    "action_embed.0.bias",
+    "action_embed.0.weight",
+    "action_embed.2.bias",
+    "action_embed.2.weight",
+    "null_action_emb"
+  ],
   "build": {
-    "seconds": 8.5,
+    "seconds": 7.4,
     "keys": 1521,
-    "params_m": 1438.865,
-    "fp32_gb": 5.36
+    "params_m": 1440.505,
+    "fp32_gb": 5.37
   },
   "ckpt": {
     "unet_keys": 1516,
     "unet_params_m": 1438.855
   },
   "naive_load": {
-    "raised": true,
-    "error_type": "RuntimeError",
-    "error_head": "Error(s) in loading state_dict for UNetModel:",
-    "n_size_mismatch_lines": 2
+    "expected_to_raise": false,
+    "n_shape_mismatch": 0,
+    "raised": false,
+    "error_type": null,
+    "error_head": null,
+    "as_expected": true
   },
   "filtered_load": {
-    "dropped_shape_mismatch": [
-      {
-        "key": "time_embed.2.weight",
-        "ours": [
-          640,
-          1280
-        ],
-        "dc": [
-          1280,
-          1280
-        ]
-      },
-      {
-        "key": "time_embed.2.bias",
-        "ours": [
-          640
-        ],
-        "dc": [
-          1280
-        ]
-      }
-    ],
-    "loaded_keys": 1514,
-    "loaded_params_m": 1437.215,
+    "dropped_shape_mismatch": [],
+    "loaded_keys": 1516,
+    "loaded_params_m": 1438.855,
     "missing": [
       "action_embed.0.bias",
       "action_embed.0.weight",
       "action_embed.2.bias",
       "action_embed.2.weight",
-      "null_action_emb",
-      "time_embed.2.bias",
-      "time_embed.2.weight"
+      "null_action_emb"
     ],
     "unexpected": [],
-    "missing_params_m": 1.6493,
-    "missing_matches_expected_7": true,
-    "loaded_ratio_of_ours": 0.998854,
-    "loaded_ratio_of_dc": 0.99886
+    "missing_params_m": 1.6499,
+    "missing_matches_expected": true,
+    "n_expected_scratch": 5,
+    "loaded_ratio_of_ours": 0.998855,
+    "loaded_ratio_of_dc": 1.0
   },
   "value_check": {
     "checked": [
@@ -173,28 +161,28 @@
   },
   "scratch_state": {
     "action_embed.0.bias": {
-      "abs_mean": 0.2050197571516037,
+      "abs_mean": 0.20658890902996063,
       "shape": [
         1280
       ]
     },
     "action_embed.0.weight": {
-      "abs_mean": 0.2014205902814865,
+      "abs_mean": 0.20668195188045502,
       "shape": [
         1280,
         6
       ]
     },
     "action_embed.2.bias": {
-      "abs_mean": 0.014143556356430054,
+      "abs_mean": 0.01386667974293232,
       "shape": [
-        640
+        1280
       ]
     },
     "action_embed.2.weight": {
-      "abs_mean": 0.013971319422125816,
+      "abs_mean": 0.01397735346108675,
       "shape": [
-        640,
+        1280,
         1280
       ]
     },
@@ -202,36 +190,21 @@
       "abs_mean": 0.0,
       "shape": [
         1,
-        640
-      ]
-    },
-    "time_embed.2.bias": {
-      "abs_mean": 0.014026287011802197,
-      "shape": [
-        640
-      ]
-    },
-    "time_embed.2.weight": {
-      "abs_mean": 0.013970908708870411,
-      "shape": [
-        640,
         1280
       ]
     }
   },
   "full_model_keyspace": {
-    "filtered_keys": 1514,
+    "filtered_keys": 1516,
     "all_filtered_keys_exist_in_model": true,
     "unet_missing_would_be": [
       "model.diffusion_model.action_embed.0.bias",
       "model.diffusion_model.action_embed.0.weight",
       "model.diffusion_model.action_embed.2.bias",
       "model.diffusion_model.action_embed.2.weight",
-      "model.diffusion_model.null_action_emb",
-      "model.diffusion_model.time_embed.2.bias",
-      "model.diffusion_model.time_embed.2.weight"
+      "model.diffusion_model.null_action_emb"
     ],
-    "unet_missing_count": 7
+    "unet_missing_count": 5
   },
   "forward_smoke": {
     "fs=6": {
@@ -242,9 +215,9 @@
         40,
         64
       ],
-      "seconds": 43.0,
+      "seconds": 41.1,
       "finite": true,
-      "std": 0.4262867271900177
+      "std": 0.3312557637691498
     },
     "fs=None(default_fs)": {
       "out_shape": [
@@ -256,7 +229,7 @@
       ],
       "seconds": 39.2,
       "finite": true,
-      "std": 0.4278015196323395
+      "std": 0.33104223012924194
     }
   }
 }

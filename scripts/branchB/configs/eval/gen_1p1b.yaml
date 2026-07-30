@@ -1,0 +1,45 @@
+# branch B 생성(추론) config — 학습한 1.1B UNet 으로 영상을 만든다.
+#
+# 구조는 주최 baseline 의 configs/eval/inha_submission_eval_11M.yaml 과 동일하며 두 곳만 다르다.
+#   ① model_config_file : 우리 1.1B 학습 config 의 **런타임 사본**(경로 치환 완료본)을 가리킨다.
+#      → 학습과 추론이 같은 아키텍처 정의를 쓰므로 불일치가 원천적으로 생기지 않는다.
+#   ② act_cond_unet_checkpoint : 우리가 학습한 ckpt (실행 시 --checkpoint 로 덮어쓴다)
+#
+# 함정 메모(007 §9-7): ddim_eta 는 DDIMSampler 가 무시한다(항상 결정론적 eta=0).
+#                      unconditional_guidance_scale / guidance_rescale 은 정상 적용된다.
+name: branchB_gen_1p1b
+group: branchB_gen_1p1b
+
+num_batches: 64
+
+model_config_file: __REPO__/artifacts/branchB/_runtime_cfg/inha_action_diffusion_1p1b.yaml
+act_cond_unet_checkpoint: __REPO__/artifacts/branchB/train_out/inha_action_diffusion_1p1b/checkpoints/last.ckpt
+
+ddim_kwargs:
+  ddim_steps: 50
+  unconditional_guidance_scale: 1.0    # 1.0 = CFG 끔. S6 에서 25스텝+CFG 와 비교 결정
+  timestep_spacing: uniform_trailing
+  guidance_rescale: 0.7
+  ddim_eta: 0.0
+  verbose: False
+
+data:
+  target: ldwma.lightning.data_modules.lerobot_so100.SO100DataModule
+  params:
+    root: __REPO__/open/data/eval        # 실행 시 --challenge-root 로 홀드아웃/eval 을 지정한다
+    remote: False
+    dataset_paths: auto
+    action_stats_path: __REPO__/open/data/train/so100_action_statistics.json
+    normalize_actions: True
+    eval_all_episodes: True
+    batch_size: 1
+    num_workers: 4
+    pin_memory: True
+    target_height: 320
+    target_width: 512
+    pad: True
+    camera_key: observation.images.top
+    traj_len: 16
+    val_fraction: 0.05
+    downsample: 1
+    use_language: False

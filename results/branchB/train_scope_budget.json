@@ -1,0 +1,65 @@
+{
+  "unet_total_params_m": 1440.505,
+  "temporal_module_types": [
+    "TemporalConvBlock",
+    "TemporalTransformer"
+  ],
+  "n_temporal_modules": 39,
+  "by_group": {
+    "action": {
+      "keys": 5,
+      "params_m": 1.65,
+      "share_pct": 0.11
+    },
+    "cond_emb": {
+      "keys": 8,
+      "params_m": 4.101,
+      "share_pct": 0.28
+    },
+    "spatial": {
+      "keys": 714,
+      "params_m": 889.431,
+      "share_pct": 61.74
+    },
+    "temporal": {
+      "keys": 794,
+      "params_m": 545.323,
+      "share_pct": 37.86
+    }
+  },
+  "scopes": {
+    "full": {
+      "trainable_params_m": 1440.505,
+      "trainable_share_pct": 100.0,
+      "gb_params_fp32": 5.37,
+      "gb_grads": 5.37,
+      "gb_adamw_state": 10.73,
+      "gb_unet_subtotal": 21.47,
+      "gb_frozen_modules": 4.36,
+      "gb_ema_copy": 5.37,
+      "gb_total_estimate": 31.2
+    },
+    "action_temporal": {
+      "trainable_params_m": 551.074,
+      "trainable_share_pct": 38.26,
+      "gb_params_fp32": 5.37,
+      "gb_grads": 2.05,
+      "gb_adamw_state": 4.11,
+      "gb_unet_subtotal": 11.53,
+      "gb_frozen_modules": 4.36,
+      "gb_ema_copy": 5.37,
+      "gb_total_estimate": 21.26
+    },
+    "action_only": {
+      "trainable_params_m": 5.751,
+      "trainable_share_pct": 0.4,
+      "gb_params_fp32": 5.37,
+      "gb_grads": 0.02,
+      "gb_adamw_state": 0.04,
+      "gb_unet_subtotal": 5.43,
+      "gb_frozen_modules": 4.36,
+      "gb_ema_copy": 5.37,
+      "gb_total_estimate": 15.16
+    }
+  }
+}

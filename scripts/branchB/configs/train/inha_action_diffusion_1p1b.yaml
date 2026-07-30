@@ -1,8 +1,9 @@
 # branch B — DynamiCrafter 1.1B 폭 액션조건 3D UNet 학습 config
 #
 # 출처: open/baseline/challenge_kit/configs/train/inha_action_diffusion_11M.yaml 를 복사한 뒤
-#       _thinking/model_select/009-branchB_execution_spec.md §2 표의 **7키만** 변경했다.
-#       (표 외 변경은 아래 "표 외 변경" 주석 3건뿐이며 모두 이유를 명시했다.)
+#       _thinking/model_select/009-branchB_execution_spec.md §2 표의 **7키** + `add_act_time_emb` 1키를 변경했다.
+#       8번째 키는 009 §2.2 가 "미결정 옵션"으로 남긴 것으로, 010 §5 의 실측(concat 은 사전학습
+#       함수를 파괴, 가산은 완전 보존)에 근거해 채택했다. 그 외 변경은 "표 외 변경" 주석 2건뿐이다.
 #
 # 경로 규칙(008 §8.6 함정 9): 절대경로를 박지 않는다. `__REPO__` 는 실행 시 저장소 루트로 치환된다.
 #       치환 주체: scripts/branchB/cfg_paths.py (런처·검증 스크립트가 공용으로 사용)
@@ -77,6 +78,11 @@ model:
       params:
         action_conditioned: True
         action_dims: 6
+        add_act_time_emb: True       # <<< [8번째 키·010 §5 근거] 액션을 concat 대신 **가산**.
+        #   concat(baseline 기본)이면 time_embed.2 가 스크래치가 되어 사전학습 함수가 파괴된다
+        #   (DC 원본 대비 cos 0.666 / rel-L2 0.936). 가산이면 cos 1.00000 / rel-L2 0.000 이고
+        #   DC UNet 1516키를 **100%** 받는다. baseline 코드에 이미 구현된 플래그다(코드 수정 없음).
+        #   런처가 action_embed 마지막 층을 0초기화하므로 학습 시작점 = DC 그 자체.
         action_dropout_prob: 0.1     # <<< [7키-7] baseline 0.0 → 0.1. 액션 CFG 유효화(008 §8.4)
         use_scale_shift_norm: False   # <<< [7키-5] baseline True → False. 핵심: emb 출력 2배 문제 해소(96.36%→99.89%)
         in_channels: 8

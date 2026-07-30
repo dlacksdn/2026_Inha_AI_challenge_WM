@@ -818,36 +818,15 @@
   "OURS_yaml": {
     "ours_keys": 1521,
     "src_keys": 1516,
-    "exact_match_keys": 1514,
-    "shape_mismatch_keys": 2,
+    "exact_match_keys": 1516,
+    "shape_mismatch_keys": 0,
     "only_in_ours_keys": 5,
     "only_in_src_keys": 0,
-    "loadable_param_ratio": 0.9988537628746132,
-    "ours_params_m": 1438.86458,
-    "loadable_params_m": 1437.2153,
-    "scratch_params_m": 1.64928,
-    "shape_mismatch": [
-      {
-        "key": "time_embed.2.weight",
-        "ours": [
-          640,
-          1280
-        ],
-        "src": [
-          1280,
-          1280
-        ]
-      },
-      {
-        "key": "time_embed.2.bias",
-        "ours": [
-          640
-        ],
-        "src": [
-          1280
-        ]
-      }
-    ],
+    "loadable_param_ratio": 0.9988546238197454,
+    "ours_params_m": 1440.5049,
+    "loadable_params_m": 1438.85498,
+    "scratch_params_m": 1.64992,
+    "shape_mismatch": [],
     "only_in_ours": [
       "null_action_emb",
       "action_embed.0.weight",
@@ -861,6 +840,7 @@
     "unet_params_resolved": {
       "action_conditioned": true,
       "action_dims": 6,
+      "add_act_time_emb": true,
       "action_dropout_prob": 0.1,
       "use_scale_shift_norm": false,
       "in_channels": 8,

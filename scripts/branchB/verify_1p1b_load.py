@@ -31,12 +31,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cfg_paths import repo_root  # noqa: E402
 
 UNET_PREFIX = "model.diffusion_model."
-EXPECTED_SCRATCH = {
+ACTION_KEYS = {
     "action_embed.0.weight", "action_embed.0.bias",
     "action_embed.2.weight", "action_embed.2.bias",
     "null_action_emb",
-    "time_embed.2.weight", "time_embed.2.bias",
 }
+TIME_EMBED2_KEYS = {"time_embed.2.weight", "time_embed.2.bias"}
+
+
+def expected_scratch(params: dict) -> set:
+    """스크래치로 남아야 하는 키 집합 (구성에 따라 달라진다 — 010 §5).
+
+    액션 concat(baseline 기본): time_embed.2 가 1280→640 이 되어 DC 것과 shape 이 달라 7키.
+    액션 가산(add_act_time_emb=True): time_embed.2 가 1280→1280 그대로라 액션 5키만.
+    """
+    return set(ACTION_KEYS) if params.get("add_act_time_emb") else (ACTION_KEYS | TIME_EMBED2_KEYS)
 
 
 def add_paths(ck: Path) -> None:
@@ -69,6 +78,8 @@ def main() -> None:
     cfg = OmegaConf.load(args.config)
     params = OmegaConf.to_container(cfg.model.params.unet_config.params, resolve=True)
     rep["unet_params"] = params
+    exp_scratch = expected_scratch(params)
+    rep["expected_scratch"] = sorted(exp_scratch)
     t0 = time.time()
     unet = UNetModel(**params)
     unet.eval()
@@ -90,17 +101,23 @@ def main() -> None:
     rep["ckpt"] = {"unet_keys": len(dc_sd), "unet_params_m": round(n_params(dc_sd), 3)}
     print(f"[2] backbone.ckpt UNet: 키 {len(dc_sd)} / {n_params(dc_sd):.2f}M")
 
-    # ── 3. 순진한 로드 시도 (실패해야 정상) ────────────────────────────────────────
-    naive = {"raised": False, "error_type": None, "error_head": None}
+    # ── 3. 순진한(필터 없는) 로드 시도 ─────────────────────────────────────────────
+    #   shape 불일치가 있으면 strict=False 여도 RuntimeError 가 난다(함정 A).
+    #   액션 가산 구성에서는 불일치가 0이라 그냥 통과하는 것이 정상이다.
+    n_mismatch = sum(1 for k, v in dc_sd.items() if k in own and tuple(v.shape) != tuple(own[k].shape))
+    naive = {"expected_to_raise": n_mismatch > 0, "n_shape_mismatch": n_mismatch,
+             "raised": False, "error_type": None, "error_head": None}
     try:
         unet.load_state_dict(dc_sd, strict=False)
-        print("[3] 필터 없는 strict=False 로드가 통과했다 (예상과 다름 — 원인 규명 필요)")
+        print(f"[3] 필터 없는 로드 통과 (shape 불일치 {n_mismatch}키) — "
+              f"{'예상대로' if n_mismatch == 0 else '예상과 다름! 원인 규명 필요'}")
     except Exception as e:  # noqa: BLE001
         naive.update(raised=True, error_type=type(e).__name__,
                      error_head=str(e).strip().splitlines()[0][:300],
                      n_size_mismatch_lines=sum(1 for ln in str(e).splitlines() if "size mismatch" in ln))
         print(f"[3] 필터 없는 로드 → {naive['error_type']}: size mismatch "
-              f"{naive.get('n_size_mismatch_lines')}줄 (예상된 실패)")
+              f"{naive.get('n_size_mismatch_lines')}줄 ({'예상된 실패' if n_mismatch else '예상과 다름'})")
+    naive["as_expected"] = (naive["raised"] == naive["expected_to_raise"])
     rep["naive_load"] = naive
 
     # ── 4. shape 불일치 키를 제거한 실제 로드 ──────────────────────────────────────
@@ -116,14 +133,15 @@ def main() -> None:
         "missing": sorted(missing),
         "unexpected": sorted(unexpected),
         "missing_params_m": round(sum(own[k].numel() for k in missing) / 1e6, 4),
-        "missing_matches_expected_7": sorted(missing) == sorted(EXPECTED_SCRATCH),
+        "missing_matches_expected": sorted(missing) == sorted(exp_scratch),
+        "n_expected_scratch": len(exp_scratch),
         "loaded_ratio_of_ours": round(n_params(filtered) / n_params(own), 6),
         "loaded_ratio_of_dc": round(n_params(filtered) / n_params(dc_sd), 6),
     }
     fl = rep["filtered_load"]
     print(f"[4] 필터 로드: {len(filtered)}키 {fl['loaded_params_m']:.2f}M 적재 / "
           f"missing {len(missing)}키 {fl['missing_params_m']:.3f}M / unexpected {len(unexpected)}키")
-    print(f"    missing == 예상 7키? {fl['missing_matches_expected_7']}  → {sorted(missing)}")
+    print(f"    missing == 예상 {len(exp_scratch)}키? {fl['missing_matches_expected']}  → {sorted(missing)}")
     print(f"    우리 UNet 대비 {fl['loaded_ratio_of_ours']*100:.3f}% / "
           f"DC UNet 대비 {fl['loaded_ratio_of_dc']*100:.3f}% 흡수")
 
@@ -146,14 +164,14 @@ def main() -> None:
     scratch_stat = {k: {"abs_mean": float(now[k].float().abs().mean()), "shape": list(now[k].shape)}
                     for k in sorted(missing)}
     rep["scratch_state"] = scratch_stat
-    print("[5b] 스크래치 7키 초기 상태:")
+    print(f"[5b] 스크래치 {len(scratch_stat)}키 초기 상태:")
     for k, v in scratch_stat.items():
         print(f"     {k:<26} shape {str(v['shape']):<14} |mean| {v['abs_mean']:.5f}")
 
     # ── 6. full-model 키 경로(런처가 실제로 쓰는 형태)에서도 동일한가 ───────────────
     #     런처는 LatentVisualDiffusion 전체에 대해 load_state_dict 를 부른다 →
     #     UNet 키는 "model.diffusion_model.*" 이므로, 그 prefix 로 같은 필터를 만들어 키셋을 대조한다.
-    full_expect_missing = {UNET_PREFIX + k for k in EXPECTED_SCRATCH}
+    full_expect_missing = {UNET_PREFIX + k for k in exp_scratch}
     full_filtered = {UNET_PREFIX + k: v for k, v in filtered.items()}
     full_ours = {UNET_PREFIX + k for k in own}
     rep["full_model_keyspace"] = {
@@ -193,7 +211,7 @@ def main() -> None:
     Path(args.out).write_text(json.dumps(rep, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(f"\n[verify] 리포트: {args.out}")
 
-    ok = (fl["missing_matches_expected_7"] and not unexpected and rep["value_check"]["all_equal"]
+    ok = (fl["missing_matches_expected"] and naive["as_expected"] and not unexpected and rep["value_check"]["all_equal"]
           and rep["full_model_keyspace"]["all_filtered_keys_exist_in_model"])
     print(f"[verify] S3 판정: {'PASS' if ok else 'FAIL'}")
     sys.exit(0 if ok else 1)

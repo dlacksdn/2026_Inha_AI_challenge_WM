@@ -39,6 +39,8 @@ CK = ROOT / "open/baseline/challenge_kit"
 CFG = ROOT / "scripts/branchB/configs/train/inha_action_diffusion_1p1b.yaml"
 BACKBONE = ROOT / "open/baseline/checkpoints/backbone.ckpt"
 UNET_PREFIX = "model.diffusion_model."
+# 기존 리포트(-1 성격의 원본)를 덮어쓰지 않는다
+OUT = ROOT / "results/branchB/warmstart_init_probe-2.json"
 
 for p in [CK / "libs" / "dynamicrafter", CK / "src", CK, CK.parent / "shared_libs" / "video_utils"]:
     sys.path.insert(0, str(p))

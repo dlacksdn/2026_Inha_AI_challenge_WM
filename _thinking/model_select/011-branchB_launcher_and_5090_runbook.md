@@ -170,6 +170,8 @@ unet_config.params:
 | `preflight.py` | 새 머신 5분 점검 + scope 추천 |
 | `analyze_train_scope.py` | 범위별 파라미터·VRAM 산술 |
 | `verify_1p1b_load.py` / `probe_warmstart_init.py` | S3 로드 검증 / 함수 보존 측정 |
+| `probe_action_sensitivity.py` | 액션 민감도 검사(§3.3 안전장치). 0초기화 직후 기준값 = **0.000000** 실측 |
+| `make_smoke_holdout.py` | 스모크용 4표본 홀드아웃 서브셋 생성(새 머신용) |
 
 환경변수: `BRANCHB_TRAIN_SCOPE`(full·action_temporal·action_only), `BRANCHB_BUILD_ONLY`,
 `BRANCHB_WARMSTART_CKPT`, `BRANCHB_ZERO_INIT`, `BRANCHB_CONFIG`.

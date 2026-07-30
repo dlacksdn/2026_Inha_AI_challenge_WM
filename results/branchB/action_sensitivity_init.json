@@ -1,0 +1,42 @@
+{
+  "tag": "init",
+  "load": {
+    "from": "backbone+zero_init",
+    "loaded_keys": 1516,
+    "missing": 5,
+    "zero_init": true
+  },
+  "device": "cpu",
+  "pairs_action_vs_action": [
+    {
+      "pair": "act0 vs act1",
+      "S_AB_rel": 0.0,
+      "cos_AB": 1.000002
+    },
+    {
+      "pair": "act1 vs act2",
+      "S_AB_rel": 0.0,
+      "cos_AB": 1.000002
+    }
+  ],
+  "action_vs_null": [
+    {
+      "case": "act0 vs null",
+      "S_A0_rel": 0.0,
+      "cos_A0": 1.000002
+    },
+    {
+      "case": "act1 vs null",
+      "S_A0_rel": 0.0,
+      "cos_A0": 1.000002
+    },
+    {
+      "case": "act2 vs null",
+      "S_A0_rel": 0.0,
+      "cos_A0": 1.000002
+    }
+  ],
+  "mean_S_AB_rel": 0.0,
+  "mean_S_A0_rel": 0.0,
+  "verdict": "액션 무시(또는 0초기화 직후)"
+}

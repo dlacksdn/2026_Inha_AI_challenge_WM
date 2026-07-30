@@ -1,0 +1,101 @@
+{
+  "variants": {
+    "REF_no_action": {
+      "load": {
+        "loaded_keys": 1516,
+        "dropped_mismatch": [],
+        "missing": [],
+        "unexpected": [],
+        "loaded_params_m": 1438.855
+      },
+      "forward": {
+        "act_null": {
+          "std": 0.33153,
+          "abs_mean": 0.25919,
+          "seconds": 40.2
+        }
+      }
+    },
+    "CONCAT_ours": {
+      "load": {
+        "loaded_keys": 1514,
+        "dropped_mismatch": [
+          "time_embed.2.weight",
+          "time_embed.2.bias"
+        ],
+        "missing": [
+          "action_embed.0.bias",
+          "action_embed.0.weight",
+          "action_embed.2.bias",
+          "action_embed.2.weight",
+          "null_action_emb",
+          "time_embed.2.bias",
+          "time_embed.2.weight"
+        ],
+        "unexpected": [],
+        "loaded_params_m": 1437.215
+      },
+      "forward": {
+        "act_null": {
+          "std": 0.40815,
+          "abs_mean": 0.30711,
+          "seconds": 38.8
+        },
+        "act_random": {
+          "std": 0.40666,
+          "abs_mean": 0.30613,
+          "seconds": 39.1
+        }
+      }
+    },
+    "ADD_act_time_emb": {
+      "load": {
+        "loaded_keys": 1516,
+        "dropped_mismatch": [],
+        "missing": [
+          "action_embed.0.bias",
+          "action_embed.0.weight",
+          "action_embed.2.bias",
+          "action_embed.2.weight",
+          "null_action_emb"
+        ],
+        "unexpected": [],
+        "loaded_params_m": 1438.855
+      },
+      "forward": {
+        "act_null": {
+          "std": 0.33153,
+          "abs_mean": 0.25919,
+          "seconds": 38.4
+        },
+        "act_random": {
+          "std": 0.33162,
+          "abs_mean": 0.25899,
+          "seconds": 38.1
+        }
+      }
+    }
+  },
+  "compare_vs_ref": {
+    "REF_no_action|act_null": {
+      "cos_vs_ref": 1.0,
+      "rel_l2_vs_ref": 0.0
+    },
+    "CONCAT_ours|act_null": {
+      "cos_vs_ref": 0.66612,
+      "rel_l2_vs_ref": 0.93572
+    },
+    "CONCAT_ours|act_random": {
+      "cos_vs_ref": 0.65954,
+      "rel_l2_vs_ref": 0.94163
+    },
+    "ADD_act_time_emb|act_null": {
+      "cos_vs_ref": 1.0,
+      "rel_l2_vs_ref": 0.0
+    },
+    "ADD_act_time_emb|act_random": {
+      "cos_vs_ref": 0.99846,
+      "rel_l2_vs_ref": 0.05547
+    }
+  }
+}

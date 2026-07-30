@@ -35,6 +35,23 @@ DC_1P1B_OVERRIDE = {
     "num_head_channels": 64,
 }
 
+# --variants 모드(008 §3.3 의 A/B/C 를 재현 + D 추가). 11M yaml 기준의 누적 override.
+#   A = 폭만 1.1B (008 표의 96.36%)
+#   B = A + use_scale_shift_norm False (008 표의 99.89%)
+#   C = B + fs_condition True (DC의 fps_embedding 4키까지 흡수 → only_in_src 0)
+#   D = C + add_act_time_emb True (액션을 concat 대신 **가산** → time_embed.2 도 일치. 009 §2.2 의 "선택 옵션")
+VARIANTS = {
+    "A_width_only": dict(DC_1P1B_OVERRIDE),
+    "B_no_scale_shift": {**DC_1P1B_OVERRIDE, "use_scale_shift_norm": False},
+    "C_B_plus_fs_cond": {**DC_1P1B_OVERRIDE, "use_scale_shift_norm": False, "fs_condition": True},
+    "D_C_plus_act_add": {
+        **DC_1P1B_OVERRIDE,
+        "use_scale_shift_norm": False,
+        "fs_condition": True,
+        "add_act_time_emb": True,
+    },
+}
+
 
 def build_unet_meta(challenge_kit: Path, train_config: Path, override: dict | None) -> dict:
     """UNet을 meta device로 빌드해 {키: shape} 만 반환 (메모리 미할당)."""
@@ -90,6 +107,85 @@ def classify(key: str) -> str:
     return "conv/기타"
 
 
+def compare(ours: dict, src: dict) -> dict:
+    """우리 UNet 키셋 vs 소스 ckpt 키셋 대조 → 정합 지표. (키 목록을 전부 남긴다)"""
+    exact, shape_mismatch, only_ours, only_src = [], [], [], []
+    for k, s in ours.items():
+        if k in src:
+            (exact if src[k] == s else shape_mismatch).append(k)
+        else:
+            only_ours.append(k)
+    for k in src:
+        if k not in ours:
+            only_src.append(k)
+    p_exact = sum(numel(ours[k]) for k in exact)
+    p_total = sum(numel(s) for s in ours.values())
+    p_scratch = p_total - p_exact
+    return {
+        "ours_keys": len(ours), "src_keys": len(src),
+        "exact_match_keys": len(exact),
+        "shape_mismatch_keys": len(shape_mismatch),
+        "only_in_ours_keys": len(only_ours),
+        "only_in_src_keys": len(only_src),
+        "loadable_param_ratio": p_exact / p_total if p_total else 0.0,
+        "ours_params_m": p_total / 1e6,
+        "loadable_params_m": p_exact / 1e6,
+        "scratch_params_m": p_scratch / 1e6,
+        "shape_mismatch": [{"key": k, "ours": ours[k], "src": src[k]} for k in shape_mismatch],
+        "only_in_ours": only_ours,
+        "only_in_src": only_src,
+    }
+
+
+def run_variants(ck: Path, base_cfg: Path, backbone: Path, our_cfg: Path | None, out: Path) -> None:
+    """008 §3.3 의 A/B/C(+D, +우리 config)를 한 번에 대조해 로드율 표를 만든다."""
+    print("[probe] backbone.ckpt(DC 사전학습) UNet 키 로드 ...")
+    dc = load_ckpt_unet_shapes(backbone)
+    print(f"  키 {len(dc)}개, 파라미터 {sum(numel(s) for s in dc.values())/1e6:.2f}M")
+
+    cases = [(name, base_cfg, ov) for name, ov in VARIANTS.items()]
+    if our_cfg is not None:
+        cases.append(("OURS_yaml", our_cfg, None))
+
+    report = {}
+    for name, cfg_path, ov in cases:
+        ours, params = build_unet_meta(ck, cfg_path, ov)
+        r = compare(ours, dc)
+        r["config_source"] = str(cfg_path)
+        r["override"] = ov
+        r["unet_params_resolved"] = params
+        report[name] = r
+        print(f"  [{name}] 키 {r['ours_keys']} / 정확일치 {r['exact_match_keys']} / "
+              f"shape불일치 {r['shape_mismatch_keys']} / 우리만 {r['only_in_ours_keys']} / "
+              f"DC만 {r['only_in_src_keys']} → 로드율 {r['loadable_param_ratio']*100:.2f}%")
+
+    rep_path = out / "weight_fit_variants_report.json"
+    rep_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+
+    print("\n" + "=" * 104)
+    print("1.1B 가중치 정합 — 설정별 로드율 (소스: backbone.ckpt = DynamiCrafter_512 사전학습)")
+    print("=" * 104)
+    hdr = f"{'변형':<20}{'우리키':>7}{'정확일치':>9}{'shape불일치':>12}{'우리만':>7}{'DC만':>6}{'로드가능M':>11}{'로드율':>9}"
+    print(hdr)
+    print("-" * 104)
+    for name, r in report.items():
+        print(f"{name:<20}{r['ours_keys']:>7}{r['exact_match_keys']:>9}{r['shape_mismatch_keys']:>12}"
+              f"{r['only_in_ours_keys']:>7}{r['only_in_src_keys']:>6}"
+              f"{r['loadable_params_m']:>10.1f}M{r['loadable_param_ratio']*100:>8.2f}%")
+    print("-" * 104)
+    for name, r in report.items():
+        print(f"\n[{name}] 스크래치로 남는 것 ({r['scratch_params_m']:.2f}M)")
+        for k in r["only_in_ours"]:
+            print(f"    only-ours       {k}")
+        for m in r["shape_mismatch"][:8]:
+            print(f"    shape-mismatch  {m['key']}  ours{list(m['ours'])} vs dc{list(m['src'])}")
+        if len(r["shape_mismatch"]) > 8:
+            print(f"    ... shape-mismatch {len(r['shape_mismatch'])}키 중 8개만 표시")
+        for k in r["only_in_src"]:
+            print(f"    (DC에만 있어 버려짐) {k}")
+    print(f"\n[probe] 리포트: {rep_path}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--challenge-kit", default="open/baseline/challenge_kit")
@@ -97,7 +193,18 @@ def main() -> None:
     ap.add_argument("--backbone", default="open/baseline/checkpoints/backbone.ckpt")
     ap.add_argument("--baseline-ckpt", default="open/baseline/checkpoints/baseline_diffusion.ckpt")
     ap.add_argument("--out", default="results/branchB")
+    ap.add_argument("--variants", action="store_true",
+                    help="008 §3.3 의 A/B/C(+D, +우리 yaml) 설정별 로드율 표를 만든다(기존 리포트 미덮어씀)")
+    ap.add_argument("--our-config", default=None,
+                    help="--variants 와 함께: 우리 1.1B 학습 yaml 경로(override 없이 그대로 빌드해 검증)")
     args = ap.parse_args()
+
+    if args.variants:
+        out = Path(args.out)
+        out.mkdir(parents=True, exist_ok=True)
+        run_variants(Path(args.challenge_kit), Path(args.train_config), Path(args.backbone),
+                     Path(args.our_config) if args.our_config else None, out)
+        return
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)

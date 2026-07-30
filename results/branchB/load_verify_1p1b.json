@@ -1,0 +1,262 @@
+{
+  "config": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/scripts/branchB/configs/train/inha_action_diffusion_1p1b.yaml",
+  "backbone": "/home/dlacksdn/2026_Inha_AI_Challenge_WM/open/baseline/checkpoints/backbone.ckpt",
+  "unet_params": {
+    "action_conditioned": true,
+    "action_dims": 6,
+    "action_dropout_prob": 0.1,
+    "use_scale_shift_norm": false,
+    "in_channels": 8,
+    "out_channels": 4,
+    "model_channels": 320,
+    "attention_resolutions": [
+      4,
+      2,
+      1
+    ],
+    "num_res_blocks": 2,
+    "channel_mult": [
+      1,
+      2,
+      4,
+      4
+    ],
+    "dropout": 0.1,
+    "num_head_channels": 64,
+    "transformer_depth": 1,
+    "context_dim": 1024,
+    "use_linear": true,
+    "use_checkpoint": true,
+    "temporal_conv": true,
+    "temporal_attention": true,
+    "temporal_selfatt_only": true,
+    "use_relative_position": false,
+    "use_causal_attention": false,
+    "temporal_length": 16,
+    "addition_attention": true,
+    "image_cross_attention": true,
+    "default_fs": 10,
+    "fs_condition": true
+  },
+  "build": {
+    "seconds": 8.5,
+    "keys": 1521,
+    "params_m": 1438.865,
+    "fp32_gb": 5.36
+  },
+  "ckpt": {
+    "unet_keys": 1516,
+    "unet_params_m": 1438.855
+  },
+  "naive_load": {
+    "raised": true,
+    "error_type": "RuntimeError",
+    "error_head": "Error(s) in loading state_dict for UNetModel:",
+    "n_size_mismatch_lines": 2
+  },
+  "filtered_load": {
+    "dropped_shape_mismatch": [
+      {
+        "key": "time_embed.2.weight",
+        "ours": [
+          640,
+          1280
+        ],
+        "dc": [
+          1280,
+          1280
+        ]
+      },
+      {
+        "key": "time_embed.2.bias",
+        "ours": [
+          640
+        ],
+        "dc": [
+          1280
+        ]
+      }
+    ],
+    "loaded_keys": 1514,
+    "loaded_params_m": 1437.215,
+    "missing": [
+      "action_embed.0.bias",
+      "action_embed.0.weight",
+      "action_embed.2.bias",
+      "action_embed.2.weight",
+      "null_action_emb",
+      "time_embed.2.bias",
+      "time_embed.2.weight"
+    ],
+    "unexpected": [],
+    "missing_params_m": 1.6493,
+    "missing_matches_expected_7": true,
+    "loaded_ratio_of_ours": 0.998854,
+    "loaded_ratio_of_dc": 0.99886
+  },
+  "value_check": {
+    "checked": [
+      {
+        "key": "output_blocks.0.0.in_layers.2.weight",
+        "numel": 29491200,
+        "bitwise_equal": true,
+        "abs_mean": 0.007402600720524788
+      },
+      {
+        "key": "output_blocks.1.0.in_layers.2.weight",
+        "numel": 29491200,
+        "bitwise_equal": true,
+        "abs_mean": 0.010687320493161678
+      },
+      {
+        "key": "output_blocks.2.0.in_layers.2.weight",
+        "numel": 29491200,
+        "bitwise_equal": true,
+        "abs_mean": 0.012127459049224854
+      },
+      {
+        "key": "output_blocks.3.0.in_layers.2.weight",
+        "numel": 29491200,
+        "bitwise_equal": true,
+        "abs_mean": 0.018293652683496475
+      },
+      {
+        "key": "output_blocks.4.0.in_layers.2.weight",
+        "numel": 29491200,
+        "bitwise_equal": true,
+        "abs_mean": 0.027850456535816193
+      },
+      {
+        "key": "output_blocks.5.0.in_layers.2.weight",
+        "numel": 22118400,
+        "bitwise_equal": true,
+        "abs_mean": 0.03057142160832882
+      },
+      {
+        "key": "input_blocks.7.0.out_layers.3.weight",
+        "numel": 14745600,
+        "bitwise_equal": true,
+        "abs_mean": 0.03172963857650757
+      },
+      {
+        "key": "input_blocks.8.0.in_layers.2.weight",
+        "numel": 14745600,
+        "bitwise_equal": true,
+        "abs_mean": 0.03133273124694824
+      },
+      {
+        "key": "input_blocks.0.0.weight",
+        "numel": 23040,
+        "bitwise_equal": true,
+        "abs_mean": 0.022949332371354103
+      },
+      {
+        "key": "out.2.weight",
+        "numel": 11520,
+        "bitwise_equal": true,
+        "abs_mean": 0.026377664878964424
+      },
+      {
+        "key": "time_embed.0.weight",
+        "numel": 409600,
+        "bitwise_equal": true,
+        "abs_mean": 0.00629867147654295
+      },
+      {
+        "key": "fps_embedding.2.weight",
+        "numel": 1638400,
+        "bitwise_equal": true,
+        "abs_mean": 0.0015174292493611574
+      }
+    ],
+    "all_equal": true
+  },
+  "scratch_state": {
+    "action_embed.0.bias": {
+      "abs_mean": 0.2050197571516037,
+      "shape": [
+        1280
+      ]
+    },
+    "action_embed.0.weight": {
+      "abs_mean": 0.2014205902814865,
+      "shape": [
+        1280,
+        6
+      ]
+    },
+    "action_embed.2.bias": {
+      "abs_mean": 0.014143556356430054,
+      "shape": [
+        640
+      ]
+    },
+    "action_embed.2.weight": {
+      "abs_mean": 0.013971319422125816,
+      "shape": [
+        640,
+        1280
+      ]
+    },
+    "null_action_emb": {
+      "abs_mean": 0.0,
+      "shape": [
+        1,
+        640
+      ]
+    },
+    "time_embed.2.bias": {
+      "abs_mean": 0.014026287011802197,
+      "shape": [
+        640
+      ]
+    },
+    "time_embed.2.weight": {
+      "abs_mean": 0.013970908708870411,
+      "shape": [
+        640,
+        1280
+      ]
+    }
+  },
+  "full_model_keyspace": {
+    "filtered_keys": 1514,
+    "all_filtered_keys_exist_in_model": true,
+    "unet_missing_would_be": [
+      "model.diffusion_model.action_embed.0.bias",
+      "model.diffusion_model.action_embed.0.weight",
+      "model.diffusion_model.action_embed.2.bias",
+      "model.diffusion_model.action_embed.2.weight",
+      "model.diffusion_model.null_action_emb",
+      "model.diffusion_model.time_embed.2.bias",
+      "model.diffusion_model.time_embed.2.weight"
+    ],
+    "unet_missing_count": 7
+  },
+  "forward_smoke": {
+    "fs=6": {
+      "out_shape": [
+        1,
+        4,
+        16,
+        40,
+        64
+      ],
+      "seconds": 43.0,
+      "finite": true,
+      "std": 0.4262867271900177
+    },
+    "fs=None(default_fs)": {
+      "out_shape": [
+        1,
+        4,
+        16,
+        40,
+        64
+      ],
+      "seconds": 39.2,
+      "finite": true,
+      "std": 0.4278015196323395
+    }
+  }
+}

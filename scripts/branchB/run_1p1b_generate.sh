@@ -30,8 +30,18 @@ BATCH="${6:-1}"
 
 [ -f "$CKPT" ] || { echo "ERROR: ckpt 없음: $CKPT"; exit 1; }
 
-CONDA="${CONDA_BIN:-$HOME/miniconda3/bin/conda}"
+# conda 위치는 기계마다 다르다 — 집 4060Ti 는 ~/miniconda3, 연구실 5090 은
+# /home/rils/dlacksdn/miniconda3 에 있다(공유 계정이라 홈이 아니라 프로젝트 옆에 깔았다).
+# 이 스크립트는 원래 집 기준으로 작성돼 5090 에서 rc=127 로 조용히 죽었다(2026-08-01).
+# 그래서 후보를 순서대로 찾는다. CONDA_BIN 이 주어지면 그것이 최우선이다.
+if [ -z "${CONDA_BIN:-}" ]; then
+  for c in /home/rils/dlacksdn/miniconda3/bin/conda "$HOME/miniconda3/bin/conda" "$(command -v conda 2>/dev/null || true)"; do
+    [ -n "$c" ] && [ -x "$c" ] && { CONDA_BIN="$c"; break; }
+  done
+fi
+CONDA="${CONDA_BIN:?conda 를 찾지 못했다. CONDA_BIN 환경변수로 경로를 지정하라}"
 PYBIN="$($CONDA run -n wm which python)"
+[ -x "$PYBIN" ] || { echo "ERROR: wm 환경의 python 을 못 찾았다 ($CONDA)"; exit 1; }
 
 # 학습 config + 생성 config 둘 다 __REPO__ 치환본을 만든다(생성 config 가 학습 config 를 참조하므로 순서 무관).
 "$PYBIN" "$REPO/scripts/branchB/cfg_paths.py" \

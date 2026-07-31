@@ -26,9 +26,17 @@ echo "[submit] 예측 영상 $n개  ($PRED)"
 [ "$n" -eq 216 ] || { echo "ERROR: eval은 216개여야 합니다 (현재 $n)"; exit 1; }
 
 # conda wm 활성화 (대화형 셸에 conda init이 없어도 동작)
+#   conda 위치가 기계마다 다르다 — 집 4060Ti 는 ~/miniconda3, 연구실 5090 은
+#   /home/rils/dlacksdn/miniconda3 (공유 계정이라 홈이 아니라 프로젝트 옆에 설치).
+#   원래 집 기준 경로만 있어 5090 에서 죽었다(2026-08-01). 후보를 순서대로 찾는다.
 if [ "${CONDA_DEFAULT_ENV:-}" != "wm" ]; then
-  # shellcheck disable=SC1091
-  source "$HOME/miniconda3/etc/profile.d/conda.sh"
+  CONDA_SH=""
+  for r in "${CONDA_ROOT:-}" /home/rils/dlacksdn/miniconda3 "$HOME/miniconda3" "$HOME/anaconda3"; do
+    [ -n "$r" ] && [ -f "$r/etc/profile.d/conda.sh" ] && { CONDA_SH="$r/etc/profile.d/conda.sh"; break; }
+  done
+  [ -n "$CONDA_SH" ] || { echo "ERROR: conda.sh 를 찾지 못했다. CONDA_ROOT 를 지정하라"; exit 1; }
+  # shellcheck disable=SC1090
+  source "$CONDA_SH"
   conda activate wm
 fi
 export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" TORCH_HOME="${TORCH_HOME:-$HOME/.cache/torch}"

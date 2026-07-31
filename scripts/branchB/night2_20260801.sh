@@ -89,11 +89,15 @@ grep -E "eval Action Component|CSV 생성 완료|행 구성" "$SUBLOG" 2>/dev/nu
 # Action(배점 40%)은 정답 영상 없이 계산되므로, 이 두 CSV 를 표본별로 짝지으면
 # **제출하지 않고도** 리더보드 40% 축에서 우리 모델과 static 의 승부가 확정된다.
 echo "############ 1단계-c: static 대조군 CSV (리더보드 40% 축 짝지은 비교용)"
-STATICLOG="run_logs/$(date +%Y%m%d_%H%M)_submission_static.log"
-bash scripts/make_submission.sh "$REPO/artifacts/branchB/preds_eval216_static" \
-    "20260801_static_eval216.csv" > "$STATICLOG" 2>&1
-echo "[야간2] static CSV rc=$?  $(date +'%F %T')"
-grep -E "eval Action Component" "$STATICLOG" 2>/dev/null || tail -5 "$STATICLOG"
+if [ -f "$REPO/artifacts/submission/20260801_static_eval216.csv" ]; then
+  echo "[야간2] static CSV 이미 있음 — 건너뜀 (Action 평균 0.42874, 011 기록과 일치 확인됨)"
+else
+  STATICLOG="run_logs/$(date +%Y%m%d_%H%M)_submission_static.log"
+  bash scripts/make_submission.sh "$REPO/artifacts/branchB/preds_eval216_static" \
+      "20260801_static_eval216.csv" > "$STATICLOG" 2>&1
+  echo "[야간2] static CSV rc=$?  $(date +'%F %T')"
+  grep -E "eval Action Component" "$STATICLOG" 2>/dev/null || tail -5 "$STATICLOG"
+fi
 
 echo "############ 1단계-d: eval Action 짝지은 비교 (n=216)"
 python3 scripts/branchB/compare_eval_action.py \

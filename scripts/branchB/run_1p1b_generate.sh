@@ -32,11 +32,28 @@ PYBIN="$($CONDA run -n wm which python)"
     scripts/branchB/configs/eval/gen_1p1b.yaml
 BASE_GEN_CFG="$REPO/artifacts/branchB/_runtime_cfg/gen_1p1b.yaml"
 if grep -q "__REPO__" "$BASE_GEN_CFG"; then echo "ERROR: __REPO__ 잔존"; exit 1; fi
+
+# ── [중요] 생성 전용 모델 config: use_ema=False ───────────────────────────────
+# 왜: LitEma 는 requires_grad 인 파라미터만 shadow 로 등록한다(ema.py L17-18).
+#   - 학습 시엔 scope 로 551M 만 학습 → EMA 도 551M 만 저장된다(ckpt 의 model_ema.* 809키).
+#   - 생성 시엔 scope 를 적용하지 않아 **전 파라미터가 requires_grad=True** →
+#     LitEma 가 1521키를 '모델 생성 시점의 랜덤 가중치'로 초기화한다.
+#   - strict=False 로드로는 809키만 채워지고 나머지 712키는 **랜덤인 채로 남는다**.
+#   - 그 상태에서 ema_scope() 가 copy_to() 로 전 파라미터를 덮어쓰면(L51-52)
+#     UNet 의 절반 이상이 랜덤값이 되어 **출력이 순수 노이즈**가 된다.
+# 대응: 생성에서는 EMA 를 끈다. 학습된 가중치는 ckpt 의 model.diffusion_model.*(1521키)에
+#   온전히 들어 있으므로 EMA 없이 그대로 쓰는 것이 정확하다(ema_scope 는 no-op 이 된다).
+BASE_MODEL_CFG="$REPO/artifacts/branchB/_runtime_cfg/inha_action_diffusion_1p1b.yaml"
+GEN_MODEL_CFG="$REPO/artifacts/branchB/_runtime_cfg/inha_action_diffusion_1p1b_geneval.yaml"
+sed -e "s/^\( *use_ema:\).*/\1 False/" "$BASE_MODEL_CFG" > "$GEN_MODEL_CFG"
+grep -qE "^ *use_ema: *False" "$GEN_MODEL_CFG" || { echo "ERROR: use_ema=False 주입 실패"; exit 1; }
+
 # generate_baseline_videos.py 는 CFG 스케일 CLI 인자가 없다 → 실행별 config 사본에 값을 심는다.
 GEN_CFG="$REPO/artifacts/branchB/_runtime_cfg/gen_1p1b_steps${STEPS}_cfg${CFGSCALE}.yaml"
 sed -e "s/^\( *unconditional_guidance_scale:\).*/\1 ${CFGSCALE}/" \
-    -e "s/^\( *ddim_steps:\).*/\1 ${STEPS}/" "$BASE_GEN_CFG" > "$GEN_CFG"
-grep -E "ddim_steps|unconditional_guidance_scale" "$GEN_CFG"
+    -e "s/^\( *ddim_steps:\).*/\1 ${STEPS}/" \
+    -e "s#^\(model_config_file:\).*#\1 ${GEN_MODEL_CFG}#" "$BASE_GEN_CFG" > "$GEN_CFG"
+grep -E "ddim_steps|unconditional_guidance_scale|model_config_file" "$GEN_CFG"
 
 export USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0 HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
 export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" TORCH_HOME="${TORCH_HOME:-$HOME/.cache/torch}"

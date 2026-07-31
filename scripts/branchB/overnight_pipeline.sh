@@ -9,14 +9,14 @@
 #   - 어떤 경우든 마지막에 존재하는 체크포인트로 생성·채점을 시도한다.
 #   - 모든 로그는 run_logs/ 에 남긴다. 체크포인트는 지우지 않는다(스모크 것도 백업 보존).
 #
-# 사용: setsid nohup bash scripts/branchB/overnight_pipeline.sh [PILOT_MAXTIME] > run_logs/overnight_<ts>.log 2>&1 &
+# 사용: setsid nohup bash scripts/branchB/overnight_pipeline.sh [PILOT_MAXTIME] > run_logs/<ts>_overnight.log 2>&1 &
 set -uo pipefail
 
 REPO=/home/rils/dlacksdn/2026_Inha_AI_challenge_WM
 cd "$REPO" || exit 1
 
 PILOT_MAXTIME="${1:-00:05:00:00}"          # DD:HH:MM:SS (기본 5시간)
-TS=$(date +%m%d_%H%M)
+TS=$(date +%Y%m%d_%H%M)
 CONDA=/home/rils/dlacksdn/miniconda3/bin/conda
 
 export PATH=/home/rils/dlacksdn/miniconda3/bin:$PATH
@@ -43,15 +43,15 @@ echo "GPU: $(gpu)"; df -h . | tail -1
 say "STAGE 2  스모크 학습 20스텝 (SingleDevice + expandable_segments)"
 BRANCHB_TRAIN_SCOPE=action_temporal \
   bash scripts/branchB/run_1p1b_train.sh 20 "00:00:40:00" "${SD_OVR[@]}" \
-  > "run_logs/ov_${TS}_s2_smoke.log" 2>&1
+  > "run_logs/${TS}_ov_s2_smoke.log" 2>&1
 echo "exit=$?  peakGPU=$(gpu)"
-grep -oE "[0-9.]+s/it" "run_logs/ov_${TS}_s2_smoke.log" | tail -3
-if grep -q "OutOfMemory" "run_logs/ov_${TS}_s2_smoke.log"; then
+grep -oE "[0-9.]+s/it" "run_logs/${TS}_ov_s2_smoke.log" | tail -3
+if grep -q "OutOfMemory" "run_logs/${TS}_ov_s2_smoke.log"; then
   echo "!! 스모크 OOM → scope 를 action_only 로 낮춰 재시도"
   SCOPE=action_only
   BRANCHB_TRAIN_SCOPE=action_only \
     bash scripts/branchB/run_1p1b_train.sh 20 "00:00:40:00" "${SD_OVR[@]}" \
-    > "run_logs/ov_${TS}_s2_smoke_ao.log" 2>&1
+    > "run_logs/${TS}_ov_s2_smoke_ao.log" 2>&1
   echo "재시도 exit=$?"
 else
   SCOPE=action_temporal
@@ -65,8 +65,8 @@ say "STAGE 3  액션 민감도 (학습 직후 — 0에서 벗어나기 시작했
 if [ -f "$SMOKE_CKPT" ]; then
   $CONDA run -n wm python scripts/branchB/probe_action_sensitivity.py \
       --device cuda --n-pairs 3 --ckpt "$SMOKE_CKPT" --tag smoke20 \
-      > "run_logs/ov_${TS}_s3_sens.log" 2>&1
-  echo "exit=$?"; grep -E "S_AB|S_A0|상대차|mean" "run_logs/ov_${TS}_s3_sens.log" | tail -6
+      > "run_logs/${TS}_ov_s3_sens.log" 2>&1
+  echo "exit=$?"; grep -E "S_AB|S_A0|상대차|mean" "run_logs/${TS}_ov_s3_sens.log" | tail -6
 else
   echo "체크포인트 없음 → 건너뜀"
 fi
@@ -77,15 +77,15 @@ if [ -f "$SMOKE_CKPT" ]; then
   t0=$(date +%s)
   bash scripts/branchB/run_1p1b_generate.sh "$SMOKE_CKPT" \
        artifacts/holdout_smoke4 artifacts/branchB/preds_smoke4 50 1.0 \
-       > "run_logs/ov_${TS}_s4_gen.log" 2>&1
+       > "run_logs/${TS}_ov_s4_gen.log" 2>&1
   t1=$(date +%s); n=$(ls artifacts/branchB/preds_smoke4/*.mp4 2>/dev/null | wc -l)
   echo "생성 exit=$? / mp4=$n / $((t1-t0))초"
   [ "$n" -gt 0 ] && echo "sec/샘플 ≈ $(( (t1-t0) / n )) (모델로드 포함)"
   $CONDA run -n wm python scripts/run_m0.py \
       --holdout artifacts/holdout_smoke4 --out artifacts/branchB/m0_smoke4 \
       --pred-dir artifacts/branchB/preds_smoke4 --pred-name b1p1b_smoke --skip-gt \
-      > "run_logs/ov_${TS}_s4_score.log" 2>&1
-  echo "채점 exit=$?"; grep -E "^(static|b1p1b|gt)" "run_logs/ov_${TS}_s4_score.log" | tail -4
+      > "run_logs/${TS}_ov_s4_score.log" 2>&1
+  echo "채점 exit=$?"; grep -E "^(static|b1p1b|gt)" "run_logs/${TS}_ov_s4_score.log" | tail -4
 else
   echo "체크포인트 없음 → 건너뜀"
 fi
@@ -100,10 +100,10 @@ fi
 say "STAGE 5  파일럿 학습 scope=$SCOPE maxtime=$PILOT_MAXTIME"
 BRANCHB_TRAIN_SCOPE=$SCOPE \
   bash scripts/branchB/run_1p1b_train.sh "" "$PILOT_MAXTIME" "${SD_OVR[@]}" \
-  > "run_logs/ov_${TS}_s5_pilot.log" 2>&1
+  > "run_logs/${TS}_ov_s5_pilot.log" 2>&1
 echo "학습 exit=$?  GPU=$(gpu)"
-grep -oE "[0-9.]+s/it" "run_logs/ov_${TS}_s5_pilot.log" | tail -3
-grep -E "reached|stopped|OutOfMemory|Traceback" "run_logs/ov_${TS}_s5_pilot.log" | tail -3
+grep -oE "[0-9.]+s/it" "run_logs/${TS}_ov_s5_pilot.log" | tail -3
+grep -E "reached|stopped|OutOfMemory|Traceback" "run_logs/${TS}_ov_s5_pilot.log" | tail -3
 echo "--- 체크포인트 목록 ---"; ls -lh "$CKDIR"/*.ckpt 2>/dev/null; ls -lh "$CKDIR"/trainstep_checkpoints/*.ckpt 2>/dev/null | tail -3
 
 # ─────────────── 최종 평가: 홀드아웃 96 생성 + 채점 + 판정 ───────────────
@@ -113,21 +113,21 @@ if [ -f "$PILOT_CKPT" ]; then
   t0=$(date +%s)
   bash scripts/branchB/run_1p1b_generate.sh "$PILOT_CKPT" \
        artifacts/holdout artifacts/branchB/preds_pilot 50 1.0 \
-       > "run_logs/ov_${TS}_final_gen.log" 2>&1
+       > "run_logs/${TS}_ov_final_gen.log" 2>&1
   t1=$(date +%s); n=$(ls artifacts/branchB/preds_pilot/*.mp4 2>/dev/null | wc -l)
   echo "생성 exit=$? / mp4=$n / $(( (t1-t0)/60 ))분"
   $CONDA run -n wm python scripts/run_m0.py \
       --holdout artifacts/holdout --out artifacts/branchB/m0_pilot \
       --pred-dir artifacts/branchB/preds_pilot --pred-name b1p1b_pilot \
-      > "run_logs/ov_${TS}_final_score.log" 2>&1
+      > "run_logs/${TS}_ov_final_score.log" 2>&1
   echo "채점 exit=$?"
-  cat "run_logs/ov_${TS}_final_score.log" | grep -A8 "M0 바닥값"
+  cat "run_logs/${TS}_ov_final_score.log" | grep -A8 "M0 바닥값"
 
   say "액션 민감도 (파일럿)"
   $CONDA run -n wm python scripts/branchB/probe_action_sensitivity.py \
       --device cuda --n-pairs 3 --ckpt "$PILOT_CKPT" --tag pilot \
-      > "run_logs/ov_${TS}_final_sens.log" 2>&1
-  grep -E "S_AB|S_A0|상대차|mean" "run_logs/ov_${TS}_final_sens.log" | tail -6
+      > "run_logs/${TS}_ov_final_sens.log" 2>&1
+  grep -E "S_AB|S_A0|상대차|mean" "run_logs/${TS}_ov_final_sens.log" | tail -6
 
   say "판정 (012 §4: DINO 로만)"
   $CONDA run -n wm python - <<'PY'
@@ -151,8 +151,8 @@ if pil:
     print(f">>> 판정: {v}")
 PY
 else
-  echo "!! 파일럿 체크포인트 없음 — 학습이 실패했다. 로그 확인: run_logs/ov_${TS}_s5_pilot.log"
+  echo "!! 파일럿 체크포인트 없음 — 학습이 실패했다. 로그 확인: run_logs/${TS}_ov_s5_pilot.log"
 fi
 
 say "PIPELINE END"
-echo "로그 접두사: run_logs/ov_${TS}_*"
+echo "로그 접두사: run_logs/${TS}_ov_*"

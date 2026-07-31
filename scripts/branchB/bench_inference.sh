@@ -38,7 +38,7 @@ for c in $COMBOS; do
   B="${c%%:*}"; S="${c##*:}"
   OUT="artifacts/branchB/bench_b${B}_s${S}"
   rm -rf "$OUT"; mkdir -p "$OUT"
-  LOG="run_logs/bench_b${B}_s${S}_$(date +%m%d_%H%M%S).log"
+  LOG="run_logs/$(date +%Y%m%d_%H%M%S)_bench_b${B}_s${S}.log"
 
   ( bash scripts/branchB/run_1p1b_generate.sh "$CKPT" "$IN" "$OUT" "$S" 1.0 "$B" 2>&1 \
       | while IFS= read -r l; do echo "$(date +%s) $l"; done ) > "$LOG" 2>&1

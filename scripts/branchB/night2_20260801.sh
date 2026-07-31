@@ -80,11 +80,25 @@ bash scripts/branchB/run_1p1b_generate.sh \
 echo "[야간2] 생성 rc=$?  mp4 $(ls "$EVAL_PRED"/*.mp4 2>/dev/null | wc -l)개  $(date +'%F %T')"
 
 echo "############ 1단계-b: 제출 CSV 생성 (공식 make_submission_csv.py 무수정 호출)"
-bash scripts/make_submission.sh "$EVAL_PRED" "$CSV_NAME" \
-    > "run_logs/$(date +%Y%m%d_%H%M)_submission_cum1000.log" 2>&1
+SUBLOG="run_logs/$(date +%Y%m%d_%H%M)_submission_cum1000.log"
+bash scripts/make_submission.sh "$EVAL_PRED" "$CSV_NAME" > "$SUBLOG" 2>&1
 echo "[야간2] CSV rc=$?  $(date +'%F %T')"
-grep -E "eval Action Component|CSV 생성 완료|행 구성" "run_logs/$(date +%Y%m%d_%H%M)_submission_cum1000.log" 2>/dev/null \
-  || tail -5 run_logs/*_submission_cum1000.log
+grep -E "eval Action Component|CSV 생성 완료|행 구성" "$SUBLOG" 2>/dev/null || tail -5 "$SUBLOG"
+
+# 대조군: 같은 방식으로 static 의 eval CSV 도 만든다.
+# Action(배점 40%)은 정답 영상 없이 계산되므로, 이 두 CSV 를 표본별로 짝지으면
+# **제출하지 않고도** 리더보드 40% 축에서 우리 모델과 static 의 승부가 확정된다.
+echo "############ 1단계-c: static 대조군 CSV (리더보드 40% 축 짝지은 비교용)"
+STATICLOG="run_logs/$(date +%Y%m%d_%H%M)_submission_static.log"
+bash scripts/make_submission.sh "$REPO/artifacts/branchB/preds_eval216_static" \
+    "20260801_static_eval216.csv" > "$STATICLOG" 2>&1
+echo "[야간2] static CSV rc=$?  $(date +'%F %T')"
+grep -E "eval Action Component" "$STATICLOG" 2>/dev/null || tail -5 "$STATICLOG"
+
+echo "############ 1단계-d: eval Action 짝지은 비교 (n=216)"
+python3 scripts/branchB/compare_eval_action.py \
+    "artifacts/submission/$CSV_NAME" "artifacts/submission/20260801_static_eval216.csv" \
+    2>&1 | tee "run_logs/$(date +%Y%m%d_%H%M)_eval_action_paired.log"
 
 # ── 2단계: seed 반증 실험 ────────────────────────────────────────────────────
 echo ""

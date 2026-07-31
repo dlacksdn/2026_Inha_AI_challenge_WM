@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # 학습된 1.1B 체크포인트를 홀드아웃 96 으로 생성·채점하고 DINO 판정을 낸다.
-# 사용: bash scripts/branchB/eval_ckpt.sh <ckpt> <태그> [ddim_steps] [cfg_scale]
+# 사용: bash scripts/branchB/eval_ckpt.sh <ckpt> <태그> [ddim_steps] [cfg_scale] [batch]
 set -uo pipefail
 REPO=/home/rils/dlacksdn/2026_Inha_AI_challenge_WM
 cd "$REPO" || exit 1
-CKPT="$1"; TAG="$2"; STEPS="${3:-50}"; CFGS="${4:-1.0}"
+CKPT="$1"; TAG="$2"; STEPS="${3:-50}"; CFGS="${4:-1.0}"; BATCH="${5:-1}"
 CONDA=/home/rils/dlacksdn/miniconda3/bin/conda
 export PATH=/home/rils/dlacksdn/miniconda3/bin:$PATH CONDA_BIN=$CONDA
 export HF_HOME=/home/rils/dlacksdn/.cache/hf TORCH_HOME=/home/rils/dlacksdn/.cache/torch
@@ -12,9 +12,9 @@ export HF_HUB_DISABLE_TELEMETRY=1 USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0 TOKEN
 export PYTHONUNBUFFERED=1 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 PRED="artifacts/branchB/preds_$TAG"; OUT="artifacts/branchB/m0_$TAG"
-echo "===== EVAL $TAG  ckpt=$(basename $CKPT)  steps=$STEPS cfg=$CFGS  $(date +'%F %T') ====="
+echo "===== EVAL $TAG  ckpt=$(basename $CKPT)  steps=$STEPS cfg=$CFGS batch=$BATCH  $(date +'%F %T') ====="
 t0=$(date +%s)
-bash scripts/branchB/run_1p1b_generate.sh "$CKPT" artifacts/holdout "$PRED" "$STEPS" "$CFGS"
+bash scripts/branchB/run_1p1b_generate.sh "$CKPT" artifacts/holdout "$PRED" "$STEPS" "$CFGS" "$BATCH"
 t1=$(date +%s); n=$(ls "$PRED"/*.mp4 2>/dev/null | wc -l)
 echo "[gen] mp4=$n / $(( (t1-t0)/60 ))분 $(( (t1-t0)%60 ))초  (sec/샘플 $(( n>0 ? (t1-t0)/n : 0 )))"
 [ "$n" -eq 0 ] && { echo "!! 생성 실패 — 중단"; exit 1; }

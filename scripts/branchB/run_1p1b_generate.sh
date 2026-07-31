@@ -3,7 +3,13 @@
 # baseline 의 generate_baseline_videos.py 를 **수정 없이** 부른다(PYTHONPATH·CWD 만 맞춤).
 #
 # 사용:
-#   bash scripts/branchB/run_1p1b_generate.sh <ckpt> <입력루트> <출력루트> [ddim_steps] [cfg_scale]
+#   bash scripts/branchB/run_1p1b_generate.sh <ckpt> <입력루트> <출력루트> [ddim_steps] [cfg_scale] [batch]
+#
+# batch(6번째 인자, 기본 1)
+#   한 번에 처리할 표본 수. 1.44B UNet 은 배치 1이면 GPU 를 다 못 채운다(26초/샘플).
+#   배치를 키우면 표본당 시간이 줄지만 VRAM 을 더 쓴다.
+#   ⚠️ 배치를 바꾸면 초기 노이즈 텐서의 모양이 바뀌어 **같은 시드라도 결과가 달라진다.**
+#      배치가 다른 결과끼리 소수점 단위로 비교하지 말 것(표본 평균으로는 동등하다).
 # 예:
 #   # S4 스모크: 홀드아웃 앞 4개만
 #   bash scripts/branchB/run_1p1b_generate.sh \
@@ -20,6 +26,7 @@ IN="$(cd "$2" && pwd)"
 OUT="$3"; mkdir -p "$OUT"; OUT="$(cd "$OUT" && pwd)"
 STEPS="${4:-50}"
 CFGSCALE="${5:-1.0}"
+BATCH="${6:-1}"
 
 [ -f "$CKPT" ] || { echo "ERROR: ckpt 없음: $CKPT"; exit 1; }
 
@@ -61,7 +68,7 @@ export PYTHONPATH="$CK/libs/dynamicrafter:$CK/src:$CK:$REPO/open/baseline/shared
 
 cd "$CK"
 echo "[branchB-gen] ckpt=$CKPT"
-echo "[branchB-gen] in=$IN out=$OUT steps=$STEPS cfg=$CFGSCALE"
+echo "[branchB-gen] in=$IN out=$OUT steps=$STEPS cfg=$CFGSCALE batch=$BATCH"
 "$PYBIN" -u scripts/inference/generate_baseline_videos.py \
   --config "$GEN_CFG" \
   --checkpoint "$CKPT" \
@@ -69,5 +76,6 @@ echo "[branchB-gen] in=$IN out=$OUT steps=$STEPS cfg=$CFGSCALE"
   --prediction-root "$OUT" \
   --action-stats-path "$REPO/open/data/train/so100_action_statistics.json" \
   --ddim-steps "$STEPS" \
+  --batch-size "$BATCH" \
   --overwrite
 echo "[branchB-gen] 완료 → $OUT  (mp4 $(ls "$OUT"/*.mp4 2>/dev/null | wc -l)개)"

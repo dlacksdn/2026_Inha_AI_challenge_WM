@@ -50,3 +50,9 @@ Thumbs.db
 
 # 로컬 캐시(잘못 생성 방지)
 .cache/
+
+# === git push 절차 메모 (로컬 전용) ===
+# 이 문서에는 개인 PAT 을 붙여넣게 되는 자리가 있다. 한 번이라도 커밋되면 파일에서 지워도
+# git 히스토리에 영구히 남고, GitHub 의 secret scanning 이 push 자체를 거부한다(2026-07-31 실제 발생).
+# 그래서 저장소에 올리지 않고 각자 로컬에만 둔다.
+_thinking/rule/003-git_push.md

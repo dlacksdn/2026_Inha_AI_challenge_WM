@@ -1,0 +1,14 @@
+{
+  "n_samples": 32,
+  "scale_factor": 0.18215,
+  "results": {
+    "sample": {
+      "gt_roundtrip_dino": 0.04518312990652071,
+      "static_roundtrip_dino": 0.042987503132360744
+    },
+    "mode": {
+      "gt_roundtrip_dino": 0.04517438326270919,
+      "static_roundtrip_dino": 0.04299253996447462
+    }
+  }
+}

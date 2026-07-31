@@ -109,6 +109,11 @@ def main() -> None:
             "frame15": float(pf[:, -1].mean()),
             "drift": float(pf[:, -1].mean() - pf[:, 0].mean()),
             "pixel_delta_mean": float(np.mean(pix)),
+            # 표본별 값을 남긴다. 두 예측기가 **같은 96 표본**을 쓰므로, 표본을 짝지어 차이를 보면
+            # 표본 자체의 난이도 편차가 상쇄되어 훨씬 작은 개선도 유의하게 가려낼 수 있다.
+            "per_sample_mean": [float(x) for x in pf.mean(axis=1)],
+            "per_sample_frame0": [float(x) for x in pf[:, 0]],
+            "sids": sids,
         }
 
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
@@ -131,6 +136,27 @@ def main() -> None:
     print(hdr)
     for name, r in out["predictors"].items():
         print(f"  {name:<7}" + "".join(f"{v:>7.3f}" for v in r["per_frame_mean"]))
+
+    # ── 짝지은 비교 ────────────────────────────────────────────────────────────
+    # 두 예측기가 같은 표본을 쓰므로 표본별 차이를 직접 본다. 평균끼리 빼는 것보다
+    # 훨씬 민감하다(표본 난이도 편차가 상쇄된다). |t| ≥ 2 면 우연으로 보기 어렵다.
+    names = list(out["predictors"])
+    if len(names) >= 2:
+        print("\n[짝지은 비교]  A − B < 0 이면 A 가 더 좋다.  |t| ≥ 2 면 유의")
+        for i in range(len(names)):
+            for j in range(i + 1, len(names)):
+                a, b = names[i], names[j]
+                da = np.array(out["predictors"][a]["per_sample_mean"])
+                db = np.array(out["predictors"][b]["per_sample_mean"])
+                d = da - db
+                se = d.std(ddof=1) / np.sqrt(len(d))
+                t = d.mean() / se if se > 0 else float("nan")
+                out["predictors"][a].setdefault("paired_vs", {})[b] = {
+                    "mean_diff": float(d.mean()), "se": float(se), "t": float(t),
+                    "wins": int((d < 0).sum()), "n": int(len(d))}
+                print(f"  {a} − {b}: {d.mean():+.5f} ± {se:.5f}  t={t:+.2f}  "
+                      f"({int((d<0).sum())}/{len(d)} 표본에서 {a} 승)")
+        Path(args.out).write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"\n[diag] 저장 → {args.out}")
 

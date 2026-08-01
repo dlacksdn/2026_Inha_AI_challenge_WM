@@ -153,7 +153,8 @@ def main() -> None:
     dev = torch.device(args.device if torch.cuda.is_available() else "cpu")
 
     VARIANTS = ["static"]
-    VARIANTS += [f"mix{a:g}@{k}" for a in ALPHAS for k in KS]      # A
+    VARIANTS += [f"mix{a:g}@{k}" for a in ALPHAS for k in KS]      # A-1 방향이 섞임
+    VARIANTS += [f"scale{a:g}@{k}" for a in ALPHAS[:-1] for k in KS]  # A-2 방향은 맞고 소심함
     VARIANTS += ["warpnbr_c4:1", "addnbrwarp4:1"]                  # B
     VARIANTS += ["warp:1", "warp_nearest:1"]                       # D
     VARIANTS += ["warpc2:1", "warpc2+res2:1"]                      # E
@@ -200,10 +201,13 @@ def main() -> None:
         for key in VARIANTS:
             if key == "static":
                 v = sv
-            elif key.startswith("mix"):                                    # A
+            elif key.startswith("mix"):                                    # A-1
                 a, k = key[3:].split("@")
                 mixed = float(a) * own + (1.0 - float(a)) * oth
                 v = sv + blur_residual(mixed, int(k))
+            elif key.startswith("scale"):                                  # A-2
+                a, k = key[5:].split("@")
+                v = sv + blur_residual(float(a) * own, int(k))
             elif key == "warpnbr_c4:1":                                    # B
                 v = as_video(warp(first, coarsen_flow(fl_nbr, 4), 1.0)).float()
             elif key == "addnbrwarp4:1":                                   # B
@@ -257,10 +261,40 @@ def main() -> None:
          "static_total": bt, "static_dv": bd, "rows": rows},
         ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # ---- A: 격자 출력 ----
+    # ---- A-2: 소심한 모델 격자 ----
     W = 92
     print("\n" + "=" * W)
-    print(f"A. α × k 격자 — static 대비 ΔTOTAL (음수여야 이득, n={len(sids)})")
+    print(f"A-2. **방향은 맞고 세기만 약할 때** — static 대비 ΔDV (n={len(sids)})")
+    print("     결정론 회귀의 가장 그럴듯한 실패 모드다. L1/L2 로 학습하면 여러 그럴듯한")
+    print("     미래의 평균을 찍게 되고, 그 평균은 실제 움직임보다 **작다**(017 §3).")
+    print("=" * W)
+    HDR2 = "α \\ k"
+    print(f"{HDR2:<10}" + "".join(f"{k:>12}" for k in KS))
+    for a in sorted(ALPHAS[:-1], reverse=True):
+        print(f"{a:<10.2f}" + "".join(
+            f"{means[f'scale{a:g}@{k}']['dv'] - bd:>+12.5f}" for k in KS))
+    print(f"{1.0:<10.2f}" + "".join(f"{means[f'mix1@{k}']['dv'] - bd:>+12.5f}" for k in KS)
+          + "   ← α=1 은 mix 와 같다")
+
+    # α_min(k=2): scale 이 static 을 유의하게 이기는 최소 α (사전 등록한 판정선)
+    amin = None
+    for a in sorted(ALPHAS[:-1] + [1.0]):
+        key = f"scale{a:g}@2" if a < 1.0 else "mix1@2"
+        g = paired_t(D(key), D("static"))
+        if g["delta"] <= 0 and g["t"] <= -2:
+            amin = a
+            break
+    print(f"\n[판정] scale@k=2 가 static 을 유의하게 이기는 최소 α = "
+          f"{amin if amin is not None else '없음'}")
+    if amin is not None and amin <= 0.5:
+        print("  → **노선이 '소심함'에 강건하다.** 세기를 절반만 맞혀도 이득이 남는다")
+    elif amin is None or amin > 0.75:
+        print("  → ⚠ **방향과 세기를 매우 정확히 맞혀야 한다.** 결정론 회귀의 평균 회귀 성향과 충돌한다")
+    else:
+        print("  → 중간. 설계서에 '최소 세기' 를 수치로 명시하라")
+
+    print("\n" + "=" * W)
+    print(f"A-1. α × k 격자 — static 대비 ΔTOTAL (음수여야 이득, n={len(sids)})")
     print("   α=1 방향 완벽 / α=0 통째로 남의 것 / **α≈0.35 가 우리 모델의 좌표**")
     print("=" * W)
     HDR = "α \\ k"          # f-string 안에 역슬래시를 못 넣는다(py3.10)

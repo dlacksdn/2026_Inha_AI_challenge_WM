@@ -51,13 +51,26 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("csv_a", help="우리 모델의 제출 CSV")
     ap.add_argument("csv_b", help="대조군(static)의 제출 CSV")
+    ap.add_argument("--expect", type=int, default=216,
+                    help="있어야 할 표본 수. 덜 써진 CSV 를 읽는 사고를 막는다 (eval=216)")
     args = ap.parse_args()
 
     a = read_action(args.csv_a)
     b = read_action(args.csv_b)
+
+    # CSV 가 **다 써지기 전에** 읽으면 표본이 일부만 잡혀 엉뚱한 결론이 나온다.
+    # (2026-08-01 실제로 216개 중 24개만 읽고 "static 이 유의하게 좋다"는 가짜 판정이 나왔다.)
+    # make_submission_csv.py 는 표본을 하나씩 append 하므로 파일 존재 ≠ 완성이다.
+    for path, got in ((args.csv_a, len(a)), (args.csv_b, len(b))):
+        if got != args.expect:
+            raise SystemExit(
+                f"ERROR: {Path(path).name} 의 Action 행이 {got}개다 (기대 {args.expect}개).\n"
+                f"       CSV 가 아직 쓰이는 중이거나 생성이 덜 끝났다. 완성된 뒤 다시 실행하라."
+            )
+
     sids = sorted(set(a) & set(b))
-    if not sids:
-        raise SystemExit("공통 표본이 없다 — CSV 형식을 확인하라")
+    if len(sids) != args.expect:
+        raise SystemExit(f"ERROR: 공통 표본이 {len(sids)}개다 (기대 {args.expect}개) — sample_id 가 어긋난다")
 
     d = [a[s] - b[s] for s in sids]
     n = len(d)

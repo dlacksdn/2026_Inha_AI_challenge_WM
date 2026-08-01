@@ -94,6 +94,31 @@ python scripts/branchB/make_static_eval_preds.py \
 
 ---
 
+## ✅ 이식 검증 결과 (2026-08-02, 실제로 빈 폴더에 clone 해서 확인했다)
+
+주장만 하지 않고 **`git clone` 을 실제로 돌려 확인했다.**
+
+```
+  clone 크기 18MB
+  문서 31개 · 그림/영상 5개 · 결과 JSON 46개 · 스크립트 69개
+  파이썬·쉘 문법 오류 0건 (compileall / bash -n)
+  문서가 참조하는 스크립트 14개 전부 존재
+  판정 근거 JSON 8개 전부 존재 (표본별 rows 포함)
+```
+
+### 남아 있는 깨진 상대링크 10개 — 전부 설계상 예상된 것
+
+| 개수 | 무엇 | 왜 괜찮나 |
+|---:|---|---|
+| 6 | `../../open/baseline/...` | **대회 배포물.** 애초에 저장소에 안 올린다. 다시 받으면 풀린다 |
+| 1 | `../../artifacts/branchB/overnight_chain_20260731.sh` | **같은 파일이 `scripts/branchB/` 에 있다.** 015 의 경로 표기가 잘못됐을 뿐, 내용 손실 없음 |
+| 3 | `./dataset_analysis.md` (`rule/001`) | **원래부터 깨진 오타.** 이 기계에서도 깨져 있다. 실제 파일은 `model_select/001-dataset_analysis.md` |
+
+⚠ 위 셋을 고치려면 기존 `_thinking` 문서를 수정해야 하는데,
+**`_thinking/` 는 append-only 규칙**이라 손대지 않고 여기에 분류만 남긴다.
+
+---
+
 ## 읽는 순서 (처음 보는 사람)
 
 1. `_thinking/model_select/019-handoff.md` — **지금 어디에 서 있나**

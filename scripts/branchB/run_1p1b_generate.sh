@@ -27,6 +27,11 @@ OUT="$3"; mkdir -p "$OUT"; OUT="$(cd "$OUT" && pwd)"
 STEPS="${4:-50}"
 CFGSCALE="${5:-1.0}"
 BATCH="${6:-1}"
+# 7번째 인자 seed (기본 0 = 지금까지의 동작 그대로. 기존 결과의 재현성은 유지된다).
+#   ddim_eta=0 이라 샘플링은 결정론적이고, 샘플이 달라지는 유일한 원천이 **초기 노이즈**다.
+#   같은 입력을 seed 만 바꿔 여러 번 생성하면 "이 모델이 얼마나 흔들리는가"를 잴 수 있고,
+#   그 여러 장을 평균내면 조건부 평균의 근사가 된다(017 §4, 1X WMC 우승 경로).
+SEED="${7:-0}"
 
 [ -f "$CKPT" ] || { echo "ERROR: ckpt 없음: $CKPT"; exit 1; }
 
@@ -86,7 +91,7 @@ export PYTHONPATH="$CK/libs/dynamicrafter:$CK/src:$CK:$REPO/open/baseline/shared
 
 cd "$CK"
 echo "[branchB-gen] ckpt=$CKPT"
-echo "[branchB-gen] in=$IN out=$OUT steps=$STEPS cfg=$CFGSCALE batch=$BATCH"
+echo "[branchB-gen] in=$IN out=$OUT steps=$STEPS cfg=$CFGSCALE batch=$BATCH seed=$SEED"
 "$PYBIN" -u scripts/inference/generate_baseline_videos.py \
   --config "$GEN_CFG" \
   --checkpoint "$CKPT" \
@@ -95,5 +100,6 @@ echo "[branchB-gen] in=$IN out=$OUT steps=$STEPS cfg=$CFGSCALE batch=$BATCH"
   --action-stats-path "$REPO/open/data/train/so100_action_statistics.json" \
   --ddim-steps "$STEPS" \
   --batch-size "$BATCH" \
+  --seed "$SEED" \
   --overwrite
 echo "[branchB-gen] 완료 → $OUT  (mp4 $(ls "$OUT"/*.mp4 2>/dev/null | wc -l)개)"

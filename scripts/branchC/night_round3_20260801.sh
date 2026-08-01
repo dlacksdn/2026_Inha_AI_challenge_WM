@@ -27,13 +27,33 @@ echo "############ 3라운드 체인 시작 $(date +'%F %T')"
 
 # 한 단계가 죽어도 나머지는 돌린다. 둘은 서로 독립이고, 밤 시간을 통째로 잃으면 손해가 크다.
 # (018 §9-c 의 A·B·D·E·F 와 C 는 각각 다른 질문에 답한다.)
+# 전체 실행 전에 2분짜리 스모크로 배선을 확인한다. 밤에 33분을 태우고 나서
+# 오타 하나로 죽는 것을 막는다(오늘만 두 번 겪었다: ls/set-e, f-string 역슬래시).
+# ⚠ n=4 결과는 **결론에 쓰지 않는다.** 배선 확인용이다(016 §9.2 의 n=8 함정).
+echo "---- 스모크(n=4, 배선 확인용) $(date +'%F %T')"
+if ! python scripts/branchC/probe_round3.py --limit 4 \
+        --out "$REPO/results/branchC/_round3_smoke.json" \
+        > "run_logs/${STAMP}_round3_smoke.log" 2>&1; then
+  echo "!! 스모크 실패 — 전체 실행을 건너뛴다. 로그: run_logs/${STAMP}_round3_smoke.log"
+  tail -25 "run_logs/${STAMP}_round3_smoke.log"
+  SKIP_R3=1
+else
+  echo "---- 스모크 통과 $(date +'%F %T')"
+  rm -f "$REPO/results/branchC/_round3_smoke.json"
+  SKIP_R3=0
+fi
+
 RC_R3=0
+if [ "$SKIP_R3" = "1" ]; then
+  RC_R3=99
+else
 echo "---- A·B·D·E·F: probe_round3 $(date +'%F %T')"
 python scripts/branchC/probe_round3.py \
     --out "$REPO/results/branchC/round3.json" \
     > "run_logs/${STAMP}_round3.log" 2>&1 || RC_R3=$?
 echo "---- probe_round3 종료 rc=$RC_R3 $(date +'%F %T')"
-tail -40 "run_logs/${STAMP}_round3.log"
+tail -60 "run_logs/${STAMP}_round3.log"
+fi
 
 echo
 RC_FB=0

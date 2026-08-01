@@ -37,7 +37,11 @@ echo "출력=$OUTBASE"
 ROOTS=()
 for S in $SEEDS; do
   OUT="$OUTBASE/seed$S"
-  N=$(ls "$OUT"/*.mp4 2>/dev/null | wc -l)
+  # ⚠ set -euo pipefail 아래에서 없는 디렉터리에 `ls` 를 걸면 파이프라인이 실패해
+  #   스크립트가 조용히 죽는다(2026-08-01 18:12 에 이것 때문에 체인이 즉사했다).
+  #   mkdir 로 먼저 만들고 find 를 쓴다.
+  mkdir -p "$OUT"
+  N=$(find "$OUT" -maxdepth 1 -name '*.mp4' | wc -l)
   if [ "$N" -ge 96 ]; then
     echo "---- seed=$S 이미 96개 있음. 건너뛴다 ($OUT)"
   else
@@ -45,7 +49,7 @@ for S in $SEEDS; do
     bash scripts/branchB/run_1p1b_generate.sh \
         "$CKPT" artifacts/holdout "$OUT" "$STEPS" 1.0 "$BATCH" "$S" \
         > "run_logs/${STAMP}_gen_holdout_seed${S}.log" 2>&1
-    echo "---- seed=$S 완료 $(date +'%F %T')  mp4 $(ls "$OUT"/*.mp4 | wc -l)개"
+    echo "---- seed=$S 완료 $(date +'%F %T')  mp4 $(find "$OUT" -maxdepth 1 -name '*.mp4' | wc -l)개"
   fi
   ROOTS+=("$OUT")
 done

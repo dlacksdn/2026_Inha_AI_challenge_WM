@@ -28,6 +28,7 @@ import argparse
 import glob
 import json
 import os
+import time
 from pathlib import Path
 
 import matplotlib
@@ -95,8 +96,12 @@ def read_report(dirname: str) -> dict | None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=str(REPO / "artifacts/branchB/branches_curve.png"))
+    # 이미지도 로그와 같은 규칙 — 이름 맨 앞에 날짜_시간(YYYYMMDD_HHMM)을 둔다.
+    # 그림은 데이터가 늘면 내용이 달라지므로 덮어쓰지 않고 새로 쌓는 편이 안전하다
+    # (어느 시점의 판단이었는지 나중에 되짚을 수 있다).
+    ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    out_path = args.out or str(REPO / f"artifacts/branchB/{time.strftime('%Y%m%d_%H%M')}_branches_curve.png")
 
     print("[font]", setup_korean_font())
     cache: dict[str, dict] = {}
@@ -193,8 +198,8 @@ def main() -> None:
              "네 갈래는 모두 누적 1,000 스텝의 같은 체크포인트에서 출발했고, 바뀐 것은 학습률과 seed 뿐이다.",
              fontsize=8.8, color=C_MUTED)
     fig.subplots_adjust(left=0.058, right=0.988, top=0.878, bottom=0.082, hspace=0.28, wspace=0.15)
-    fig.savefig(args.out, facecolor=C_BG)
-    print(f"[saved] {args.out}")
+    fig.savefig(out_path, facecolor=C_BG)
+    print(f"[saved] {out_path}")
 
 
 if __name__ == "__main__":

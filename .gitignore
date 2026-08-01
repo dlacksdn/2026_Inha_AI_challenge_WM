@@ -26,6 +26,14 @@ wandb/
 # === 재현 가능한 산출물(홀드아웃 영상/이미지/생성물). 결과 요약은 results/에 별도 추적 ===
 artifacts/
 
+# === [예외] _thinking/figure/ 는 의도적으로 추적한다 ===
+# artifacts/ 와 run_logs/ 는 이 컴퓨터에만 있다. 그런데 **방향을 결정한 근거**(그림·판정 출력)가
+# 거기에만 있으면 다른 기계에서 작업을 이어받을 수 없다.
+# 그래서 "그 결정을 다시 설명할 수 있는 최소한"만 골라 _thinking/figure/ 에 복사해 추적한다.
+# 재현 가능한 것(체크포인트·생성 영상 전체·원본 로그)은 여기 넣지 않는다.
+!_thinking/figure/
+!_thinking/figure/**
+
 # === 제출물 ===
 submission_features.csv
 submission_kit/input_videos/

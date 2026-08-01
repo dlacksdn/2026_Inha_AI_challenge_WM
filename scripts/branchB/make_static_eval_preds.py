@@ -47,6 +47,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--eval-root", default=str(REPO / "open/data/eval"))
     ap.add_argument("--out", default=str(REPO / "artifacts/branchB/preds_eval216_static"))
+    # 홀드아웃에도 쓸 수 있게 개수를 인자로 뺀다(기본 216 = eval, 기존 동작 그대로).
+    # 개수 검사를 없애지 않는 이유: 016 함정 — 216개 중 24개만 읽고 가짜 판정이 난 적이 있다.
+    ap.add_argument("--expect", type=int, default=216, help="완성 개수 검사값")
     args = ap.parse_args()
 
     img_dir = Path(args.eval_root) / "images"
@@ -67,8 +70,8 @@ def main() -> None:
 
     n = len(list(out_dir.glob("*.mp4")))
     print(f"[static-eval] 완료 — mp4 {n}개")
-    if n != 216:
-        raise SystemExit(f"ERROR: eval 은 216개여야 한다 (현재 {n})")
+    if n != args.expect:
+        raise SystemExit(f"ERROR: {args.expect}개여야 한다 (현재 {n})")
 
 
 if __name__ == "__main__":

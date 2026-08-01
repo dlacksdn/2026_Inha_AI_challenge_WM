@@ -171,7 +171,8 @@ def _base_grid(h: int, w: int, device: torch.device) -> torch.Tensor:
     return torch.stack([xs, ys], dim=0)                # (2,H,W) 픽셀 좌표
 
 
-def warp(first_u8: torch.Tensor, flow: torch.Tensor, alpha: float) -> torch.Tensor:
+def warp(first_u8: torch.Tensor, flow: torch.Tensor, alpha: float,
+         mode: str = "bilinear") -> torch.Tensor:
     """첫 프레임을 흐름의 α 배만큼 밀어 옮긴 영상을 만든다.
 
     first_u8 : (3,H,W) float  — static 의 프레임 0 (모델이 입력으로 받는 그림)
@@ -188,7 +189,10 @@ def warp(first_u8: torch.Tensor, flow: torch.Tensor, alpha: float) -> torch.Tens
     # padding_mode='border': 화면 밖을 참조하면 가장자리를 복제한다.
     # 채점 영상은 이미 좌우(또는 상하)에 검은 띠가 있어 가장자리가 검정이므로
     # 'zeros' 와 사실상 같지만, 띠가 없는 축에서 검정이 새어드는 것을 막는다.
-    return F.grid_sample(src_img, grid, mode="bilinear",
+    # ⚠ mode="bilinear" 은 변위가 정수가 아닌 **모든 화소**에 저역통과를 건다.
+    #   즉 "워핑은 원본 픽셀을 그대로 옮기므로 디테일이 안 뭉개진다"는 이 구현에서 거짓이다.
+    #   mode="nearest" 로 바꿔 재면 그 보간 흐림분을 분리할 수 있다(018 §9-c D).
+    return F.grid_sample(src_img, grid, mode=mode,
                          padding_mode="border", align_corners=True)
 
 

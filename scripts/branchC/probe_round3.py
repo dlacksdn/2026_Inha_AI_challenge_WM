@@ -160,6 +160,10 @@ def main() -> None:
     VARIANTS += ["indep_blur2", "indep_blur4"]                     # F
 
     print(f"[r3] 표본 {len(sids)}개 · 변형 {len(VARIANTS)}개", flush=True)
+    if len(sids) < 2:
+        # nearest_by_action 은 자기 자신을 빼고 이웃을 찾으므로 표본이 1개면 None 을 준다.
+        raise SystemExit("ERROR: '남의 잔차'가 필요하므로 표본이 2개 이상이어야 한다 "
+                         "(--limit 1 로는 못 돌린다).")
     nbr = nearest_by_action(holdout, sids)
     scorer = S.LocalScorer(Path(args.submission_kit), Path(args.action_stats), device=str(dev))
     gt_dir, static_dir = holdout / "gt_videos", Path(args.static)

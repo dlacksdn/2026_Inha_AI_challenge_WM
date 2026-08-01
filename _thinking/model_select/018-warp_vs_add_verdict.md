@@ -1206,6 +1206,19 @@ branch B 는 DynamiCrafter 잠재확산 스택을 config 로 돌린 것이라
 **A~F 는 전부 위 판정선에 따라 기계적으로 읽는다.** 결과를 본 뒤에 기준을 바꾸지 않는다.
 판정선이 답을 못 주는 경우(예: 무승부)는 **"모른다"로 남긴다.** 그것도 정보다.
 
+스크립트가 판정선을 **코드로 박아** 스스로 적용하고 출력한다
+(`probe_round3.py` 의 마지막 `[판정]` 블록). 사람이 눈으로 읽고 해석하는 여지를 줄이기 위해서다.
+
+### 실행
+
+```
+  scripts/branchC/probe_round3.py              A·B·D·E·F   (~35분)
+  scripts/branchC/probe_warp_round2.py --flow farneback   C  (~25분, CPU 광류라 더 느리다)
+  scripts/branchC/night_round3_20260801.sh     둘을 잇는 체인. 한쪽이 죽어도 다른 쪽은 돈다
+```
+
+K샘플 체인이 GPU 32GB 를 거의 다 쓰므로 **그것이 끝난 뒤**에 돌린다.
+
 ---
 
 ## 10. 방법론 기록 — 오늘 배운 것

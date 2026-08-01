@@ -72,6 +72,14 @@ sed -e "s/^\( *unconditional_guidance_scale:\).*/\1 ${CFGSCALE}/" \
     -e "s#^\(model_config_file:\).*#\1 ${GEN_MODEL_CFG}#" "$BASE_GEN_CFG" > "$GEN_CFG"
 grep -E "ddim_steps|unconditional_guidance_scale|model_config_file" "$GEN_CFG"
 
+# 메모리 단편화 방지 — 없으면 배치 4 에서 OOM 이 난다(2026-08-01 eval 216 생성이 이걸로 죽었다).
+# 왜: 확산 샘플링은 스텝마다 큰 어텐션 텐서를 잡았다 놓기를 반복해 할당기 안에 구멍이 생긴다.
+#   그러면 여유 메모리 총량은 남아도 **연속된 큰 덩어리**를 못 잡아 실패한다.
+#   (실측 로그: "7.67 GiB is free ... 8.10 GiB is reserved but unallocated" — 전형적인 단편화)
+#   expandable_segments 는 할당 구간을 늘려 쓰게 해 이 구멍을 없앤다.
+# 그동안 이 스크립트를 늘 eval_ckpt.sh 가 감싸서 불렀고 거기서 이 값을 export 했기 때문에
+# 문제가 안 보였다. 직접 호출하면 터진다 → 감싸는 쪽이 아니라 여기에 둬야 한다.
+export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 export USE_TF=0 TRANSFORMERS_NO_TF=1 USE_FLAX=0 HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
 export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" TORCH_HOME="${TORCH_HOME:-$HOME/.cache/torch}"
 export PYTHONPATH="$CK/libs/dynamicrafter:$CK/src:$CK:$REPO/open/baseline/shared_libs/video_utils"

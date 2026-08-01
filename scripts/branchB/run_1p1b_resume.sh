@@ -73,8 +73,22 @@ echo "==========================================================================
 mkdir -p "$OUTDIR/checkpoints" "$SNAPDIR"
 bash "$REPO/scripts/branchB/ckpt_snapshot_daemon.sh" "$OUTDIR/checkpoints" "$SNAPDIR" 60 &
 SNAP_PID=$!
-trap 'kill $SNAP_PID 2>/dev/null; echo "[resume] 스냅샷 데몬 종료(pid $SNAP_PID)"' EXIT
-echo "[resume] 스냅샷 데몬 pid=$SNAP_PID"
+
+# ── 더티 페이지 흘려보내기 (2026-08-01 사망 대응) ────────────────────────────
+# 250스텝마다 5.76GB 짜리 체크포인트를 쓴다. 그 데이터는 일단 메모리(페이지 캐시)에
+# 쌓였다가 디스크로 내려가는데, 프로젝트가 HDD 라 내려가는 속도가 느리다. 그래서
+# **쓰는 동안 메모리 압박이 치솟는다.** 이 기계는 user@1000.service 에 압박 50% 초과 시
+# 프로세스를 죽이는 정책(ManagedOOMMemoryPressure=kill)이 걸려 있다.
+#   실측 2026-08-01: 15:13 에 체크포인트를 쓰고 15:15:53 에 압박 74.11% → oomd 가 킬.
+#   (그때 브라우저가 같이 떠 있었다. 브라우저 없이 돈 밤샘 3.5시간은 무사했다.)
+# sync 를 주기적으로 불러 쌓인 더티 페이지를 조금씩 내려보내면 한 번에 치솟는 봉우리가
+# 낮아진다. sync 는 읽기/쓰기를 파괴하지 않으며 비용도 거의 없다.
+( while true; do sync; sleep 20; done ) &
+SYNC_PID=$!
+
+trap 'kill $SNAP_PID $SYNC_PID 2>/dev/null; echo "[resume] 데몬 종료(snap $SNAP_PID / sync $SYNC_PID)"' EXIT
+echo "[resume] 스냅샷 데몬 pid=$SNAP_PID / sync 데몬 pid=$SYNC_PID"
+echo "[resume] ※ 학습 중에는 브라우저를 띄우지 마십시오 — 2026-08-01 사망의 확인된 공범입니다."
 
 cd "$REPO"
 bash scripts/branchB/run_1p1b_train.sh "" "$MAX_TIME" \

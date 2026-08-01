@@ -36,7 +36,28 @@ START_CUM="${2:?시작 누적 스텝(그림 x축에 쓸 값)}"
 TOTAL_HOURS="${3:-9.5}"
 PREFIX="${4:-r3}"
 shift 4 2>/dev/null || true
-EXTRA_OVERRIDES=("$@")   # 예: model.base_learning_rate=3e-5
+EXTRA_OVERRIDES=("$@")   # 예: model.base_learning_rate=3e-5 --seed 999
+
+# ── 세그먼트마다 seed 를 달리한다 (2026-08-01 확정된 붕괴 원인 대응) ──────────
+# 학습 진입점은 seed_everything(seed) 로 시작하고, 그 seed 가 데이터 방문 순서·확산
+# 타임스텝 t·노이즈 ε 를 전부 결정한다. 그런데 어떤 런도 epoch 을 못 끝내므로
+# **매번 같은 앞부분 45% 를 같은 노이즈로 다시 본다.** 그러면 모델은 일반화 대신
+# 특정 노이즈 실현을 외우고, 미는 만큼 망가진다.
+#   실측(같은 출발점·같은 lr·같은 스텝수, seed 만 다름):
+#     고정 seed 20230211 → DINO 0.26430 / seed 777 → 0.22726  (차이 t=-5.80)
+# 재개(resume)는 이 함정을 되살리기 딱 좋다 — 같은 seed 로 다시 시작하면 방금 본
+# 데이터를 처음부터 또 본다. 그래서 세그먼트 번호를 seed 에 더한다.
+# 사용자가 --seed 를 주면 그 값을 기준으로 삼고, 안 주면 여기서 정한다.
+BASE_SEED=""
+for ((i = 0; i < ${#EXTRA_OVERRIDES[@]}; i++)); do
+  if [ "${EXTRA_OVERRIDES[$i]}" = "--seed" ] && [ $((i + 1)) -lt ${#EXTRA_OVERRIDES[@]} ]; then
+    BASE_SEED="${EXTRA_OVERRIDES[$((i + 1))]}"
+    unset 'EXTRA_OVERRIDES[i]' 'EXTRA_OVERRIDES[i+1]'
+    EXTRA_OVERRIDES=("${EXTRA_OVERRIDES[@]}")   # 인덱스 재정렬
+    break
+  fi
+done
+[ -n "$BASE_SEED" ] || BASE_SEED=$(( 1000 + RANDOM % 9000 ))
 
 START_CKPT="$(cd "$(dirname "$START_CKPT_IN")" && pwd)/$(basename "$START_CKPT_IN")"
 [ -f "$START_CKPT" ] || { echo "ERROR: 시작 ckpt 없음: $START_CKPT"; exit 1; }
@@ -95,8 +116,11 @@ while :; do
   echo "[야간]   로그      : $LOG"
   echo "--------------------------------------------------------------------------"
 
+  SEG_SEED=$(( BASE_SEED + seg - 1 ))    # 세그먼트마다 다른 데이터 스트림
+  echo "[야간]   seed      : $SEG_SEED  (기준 $BASE_SEED + 세그먼트 $seg)"
   bash scripts/branchB/run_1p1b_resume.sh "$cur_ckpt" "$RUN" "$MT" \
-      "${LOWMEM_OVERRIDES[@]}" ${EXTRA_OVERRIDES[@]+"${EXTRA_OVERRIDES[@]}"} > "$LOG" 2>&1
+      "${LOWMEM_OVERRIDES[@]}" ${EXTRA_OVERRIDES[@]+"${EXTRA_OVERRIDES[@]}"} \
+      --seed "$SEG_SEED" > "$LOG" 2>&1
   rc=$?
   SEG_LOG+=("$RUN rc=$rc $LOG")
   echo "[야간] 세그먼트 $seg 종료 rc=$rc  $(date +'%F %T')"

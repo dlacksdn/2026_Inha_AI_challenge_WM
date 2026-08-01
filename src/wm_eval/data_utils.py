@@ -183,11 +183,24 @@ def iter_holdout_samples(
     seed: int,
     traj_len: int = 16,
     per_dataset_cap: int | None = None,
+    episode_filter=None,
 ) -> Iterator[dict]:
     """데이터셋을 가로질러 결정론적으로 홀드아웃 표본을 고른다.
 
     각 표본: {sid, dataset, episode_index, start_idx, frame_indices, ref}.
     라운드로빈으로 데이터셋 다양성을 확보하고, seed로 완전 재현 가능.
+
+    episode_filter:
+        `EpisodeRef -> bool`. True 인 에피소드만 후보로 쓴다. 기본값 None 이면 전부 쓴다
+        (= 지금까지의 동작. `artifacts/holdout` 의 96표본이 이 경로로 만들어졌다).
+
+        **왜 필요한가**: 기본 동작은 **학습 split 을 배제하지 않는다.** 학습 데이터모듈은
+        전체 에피소드를 셔플해 앞 5%를 val 로 떼는데, 여기서는 그 구분 없이 전부에서 뽑는다.
+        그래서 기존 홀드아웃 96개 중 약 95%가 학습에 쓰인 에피소드다(018 §6.3).
+
+        지금까지는 결론이 전부 "학습 데이터에서조차 진다"는 보수적 방향이라 무해했다.
+        그러나 **이기기 시작하면 암기와 일반화를 구분할 수 없다.** 그때는 이 인자로
+        val split 에피소드만 남겨야 한다(018 §8.3).
     """
     rng = random.Random(seed)
     datasets = discover_datasets(train_root)
@@ -197,6 +210,8 @@ def iter_holdout_samples(
     pools: dict[str, list[EpisodeRef]] = {}
     for ds in datasets:
         eps = list_episodes(train_root, ds, min_length=traj_len)
+        if episode_filter is not None:
+            eps = [e for e in eps if episode_filter(e)]
         if eps:
             rng.shuffle(eps)
             pools[ds] = eps

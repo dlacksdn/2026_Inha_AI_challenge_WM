@@ -32,9 +32,18 @@
 두 머신의 OS python이 다르다(WSL 20.04=3.8, Ubuntu 24.04=3.12). 버전 불일치와
 pytorch-lightning 1.9.3의 구버전 호환성 문제를 피하려고 **conda로 python 3.10 고정**한다.
 
-- 설치 위치: `~/miniconda3` (2026-07-24 Claude가 신규 설치. 기존에 없었음).
-- 환경 이름: **`wm`** (`~/miniconda3/envs/wm`, python 3.10.20). 활성화: `conda activate wm`.
-- 핵심 패키지: torch 2.7.1+cu126, timm, pytorch-lightning 1.9.3(+setuptools<70), omegaconf,
+> 📌 **환경 경로·버전의 진실의 출처는 [env_file/001-environment_setup.md §0 두 기계 대조표](../env_file/001-environment_setup.md) 다.**
+> 여기 적힌 값은 요약이므로, 어긋나면 **001 쪽이 맞다.** (2026-08-06 에 이 문서의 경로·torch 버전이
+> 집 기준이라 틀렸던 것을 고치면서, 같은 사실이 두 문서에 중복되는 것 자체가 위험하다고 판단해
+> 001 로 일원화했다.)
+>
+> 요약만: **[집]** `~/miniconda3/envs/wm` · torch 2.7.1+cu126 /
+> **[연구실 5090]** `/home/rils/dlacksdn/miniconda3/envs/wm` · torch 2.7.1+cu128
+> 🚨 5090 홈의 `~/anaconda3/envs/inha` 는 **남의 환경이다**(공유 계정). 이름이 비슷해 오인하기 쉽다.
+
+- 설치 위치: 위 대조표 참조 (기계마다 다르다).
+- 환경 이름: **`wm`** (python 3.10.20, 두 기계 공통). 활성화: `conda activate wm`.
+- 핵심 패키지: torch 2.7.1(+cu 빌드는 기계별로 다름 — 001 §1-1), timm, pytorch-lightning 1.9.3(+setuptools<70), omegaconf,
   imageio-ffmpeg 등. 전체 목록은 저장소 루트 `requirements-scoring.txt` / `requirements-lock.txt`.
 - 5090(Ubuntu 24.04)에서도 동일하게 `conda create -n wm python=3.10` 후 같은 패키지 설치하면 재현됨.
   CUDA 휠(cu126)은 Ada(4060 Ti)·Blackwell(5090/6000) 모두 호환.

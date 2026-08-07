@@ -1,0 +1,353 @@
+{
+  "device": "NVIDIA GeForce RTX 5090",
+  "vram_total_gib": 31.35,
+  "vram_free_at_start_gib": 29.97,
+  "torch": "2.7.1+cu128",
+  "scoring_space": {
+    "T": 16,
+    "H": 320,
+    "W": 512,
+    "range": "[-1,1]"
+  },
+  "note": "재현 검증 기준 장비는 RTX PRO 6000 96GB(rule/001 §3.3). 5090 32GB 를 통과하면 재현 검증은 자동 통과이므로 이 표는 보수적이다.",
+  "scorers": {
+    "weights_gib": {
+      "dino": 0.082,
+      "r3d": 0.127,
+      "action": 0.017,
+      "total": 0.226
+    },
+    "per_scorer": {
+      "b1": {
+        "dino_full16": {
+          "peak_gib": 4.524,
+          "activation_gib": 4.135,
+          "ms_per_step": 181.0,
+          "grad_ok": true
+        },
+        "dino_sub4": {
+          "peak_gib": 1.422,
+          "activation_gib": 1.034,
+          "ms_per_step": 64.5,
+          "grad_ok": true
+        },
+        "r3d": {
+          "peak_gib": 0.605,
+          "activation_gib": 0.217,
+          "ms_per_step": 25.8,
+          "grad_ok": true
+        },
+        "action": {
+          "peak_gib": 3.572,
+          "activation_gib": 3.184,
+          "ms_per_step": 121.3,
+          "grad_ok": true
+        },
+        "all_three_full16": {
+          "peak_gib": 7.614,
+          "activation_gib": 7.225,
+          "ms_per_step": 320.2,
+          "grad_ok": true
+        },
+        "all_three_dinosub4": {
+          "peak_gib": 4.708,
+          "activation_gib": 4.319,
+          "ms_per_step": 197.4,
+          "grad_ok": true
+        }
+      },
+      "b2": {
+        "dino_full16": {
+          "peak_gib": 8.688,
+          "activation_gib": 8.27,
+          "ms_per_step": 363.6,
+          "grad_ok": true
+        },
+        "dino_sub4": {
+          "peak_gib": 2.485,
+          "activation_gib": 2.067,
+          "ms_per_step": 94.5,
+          "grad_ok": true
+        },
+        "r3d": {
+          "peak_gib": 0.831,
+          "activation_gib": 0.413,
+          "ms_per_step": 25.9,
+          "grad_ok": true
+        },
+        "action": {
+          "peak_gib": 4.734,
+          "activation_gib": 4.316,
+          "ms_per_step": 199.0,
+          "grad_ok": true
+        },
+        "all_three_full16": {
+          "peak_gib": 12.82,
+          "activation_gib": 12.402,
+          "ms_per_step": 574.4,
+          "grad_ok": true
+        },
+        "all_three_dinosub4": {
+          "peak_gib": 6.996,
+          "activation_gib": 6.578,
+          "ms_per_step": 298.3,
+          "grad_ok": true
+        }
+      },
+      "b4": {
+        "dino_full16": {
+          "peak_gib": 17.021,
+          "activation_gib": 16.544,
+          "ms_per_step": 685.0,
+          "grad_ok": true
+        },
+        "dino_sub4": {
+          "peak_gib": 4.611,
+          "activation_gib": 4.134,
+          "ms_per_step": 182.9,
+          "grad_ok": true
+        },
+        "r3d": {
+          "peak_gib": 1.253,
+          "activation_gib": 0.776,
+          "ms_per_step": 26.8,
+          "grad_ok": true
+        },
+        "action": {
+          "peak_gib": 8.582,
+          "activation_gib": 8.105,
+          "ms_per_step": 369.6,
+          "grad_ok": true
+        },
+        "all_three_full16": {
+          "peak_gib": 24.752,
+          "activation_gib": 24.276,
+          "ms_per_step": 1040.0,
+          "grad_ok": true
+        },
+        "all_three_dinosub4": {
+          "peak_gib": 13.098,
+          "activation_gib": 12.621,
+          "ms_per_step": 573.6,
+          "grad_ok": true
+        }
+      },
+      "b8": {
+        "dino_full16": {
+          "oom": true
+        },
+        "dino_sub4": {
+          "peak_gib": 8.863,
+          "activation_gib": 8.27,
+          "ms_per_step": 365.5,
+          "grad_ok": true
+        },
+        "r3d": {
+          "peak_gib": 2.119,
+          "activation_gib": 1.526,
+          "ms_per_step": 35.5,
+          "grad_ok": true
+        },
+        "action": {
+          "peak_gib": 16.585,
+          "activation_gib": 15.991,
+          "ms_per_step": 725.9,
+          "grad_ok": true
+        },
+        "all_three_full16": {
+          "oom": true
+        },
+        "all_three_dinosub4": {
+          "peak_gib": 25.614,
+          "activation_gib": 25.02,
+          "ms_per_step": 1135.3,
+          "grad_ok": true
+        }
+      }
+    },
+    "combined": {},
+    "dino_image_size": 518,
+    "sanity": {
+      "dino": {
+        "out_shape": [
+          1,
+          16,
+          384
+        ],
+        "grad_finite": true,
+        "grad_nonzero_frac": 1.0
+      },
+      "r3d": {
+        "out_shape": [
+          1,
+          512
+        ],
+        "grad_finite": true,
+        "grad_nonzero_frac": 0.3063
+      },
+      "action": {
+        "out_shape": [
+          1,
+          16,
+          6
+        ],
+        "grad_finite": true,
+        "grad_nonzero_frac": 1.0
+      }
+    },
+    "cudnn_equivalence": {
+      "max_abs_diff": 8.32490622997284e-05,
+      "max_rel_diff": 2.7532209060154855e-05,
+      "out_shape": [
+        1,
+        16,
+        6
+      ],
+      "verdict_note": "출력이 같아야 §4.1-4 위반이 아니다"
+    }
+  },
+  "backbone": {
+    "conv3d": {
+      "1over1_c64": {
+        "hw": [
+          320,
+          512
+        ],
+        "peak_gib": 6.922,
+        "activation_gib": 6.876,
+        "ms_per_step": 103.0,
+        "grad_ok": true
+      },
+      "1over1_c128": {
+        "hw": [
+          320,
+          512
+        ],
+        "peak_gib": 12.555,
+        "activation_gib": 12.506,
+        "ms_per_step": 227.2,
+        "grad_ok": true
+      },
+      "1over1_c256": {
+        "hw": [
+          320,
+          512
+        ],
+        "peak_gib": 22.58,
+        "activation_gib": 22.521,
+        "ms_per_step": 1577.4,
+        "grad_ok": true
+      },
+      "1over2_c64": {
+        "hw": [
+          160,
+          256
+        ],
+        "peak_gib": 1.744,
+        "activation_gib": 1.72,
+        "ms_per_step": 25.6,
+        "grad_ok": true
+      },
+      "1over2_c128": {
+        "hw": [
+          160,
+          256
+        ],
+        "peak_gib": 3.158,
+        "activation_gib": 3.131,
+        "ms_per_step": 57.5,
+        "grad_ok": true
+      },
+      "1over2_c256": {
+        "hw": [
+          160,
+          256
+        ],
+        "peak_gib": 6.307,
+        "activation_gib": 6.27,
+        "ms_per_step": 185.0,
+        "grad_ok": true
+      },
+      "1over4_c64": {
+        "hw": [
+          80,
+          128
+        ],
+        "peak_gib": 0.45,
+        "activation_gib": 0.431,
+        "ms_per_step": 8.4,
+        "grad_ok": true
+      },
+      "1over4_c128": {
+        "hw": [
+          80,
+          128
+        ],
+        "peak_gib": 0.808,
+        "activation_gib": 0.787,
+        "ms_per_step": 13.5,
+        "grad_ok": true
+      },
+      "1over4_c256": {
+        "hw": [
+          80,
+          128
+        ],
+        "peak_gib": 1.614,
+        "activation_gib": 1.582,
+        "ms_per_step": 46.8,
+        "grad_ok": true
+      }
+    },
+    "attention": {
+      "1over4": {
+        "hw": [
+          80,
+          128
+        ],
+        "tokens": 163840,
+        "n_squared": 26843545600,
+        "peak_gib": 1.198,
+        "activation_gib": 0.948,
+        "ms_per_step": 6238.5,
+        "grad_ok": true
+      },
+      "1over8": {
+        "hw": [
+          40,
+          64
+        ],
+        "tokens": 40960,
+        "n_squared": 1677721600,
+        "peak_gib": 0.312,
+        "activation_gib": 0.238,
+        "ms_per_step": 388.9,
+        "grad_ok": true
+      },
+      "1over16": {
+        "hw": [
+          20,
+          32
+        ],
+        "tokens": 10240,
+        "n_squared": 104857600,
+        "peak_gib": 0.09,
+        "activation_gib": 0.059,
+        "ms_per_step": 25.6,
+        "grad_ok": true
+      },
+      "1over32": {
+        "hw": [
+          10,
+          16
+        ],
+        "tokens": 2560,
+        "n_squared": 6553600,
+        "peak_gib": 0.035,
+        "activation_gib": 0.015,
+        "ms_per_step": 3.4,
+        "grad_ok": true
+      }
+    }
+  }
+}

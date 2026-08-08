@@ -10,7 +10,7 @@
 """
 import sys, json, numpy as np, torch
 from pathlib import Path
-R = Path('/home/rils/dlacksdn/2026_Inha_AI_challenge_WM')
+R = Path(__file__).resolve().parents[2]   # 상대경로 (대회 §3.3 요건)
 sys.path.insert(0, str(R/'src')); sys.path.insert(0, str(R/'open/submission_kit'))
 from wm_eval import scoring as S
 import feature_csv_utils as F

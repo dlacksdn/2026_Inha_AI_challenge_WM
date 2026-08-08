@@ -18,12 +18,13 @@
 """
 import argparse, json, os, sys, time, traceback
 from datetime import datetime
+from pathlib import Path
 
 import torch
 import torch.nn as nn
 from torch.utils.checkpoint import checkpoint
 
-REPO = "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM"
+REPO = str(Path(__file__).resolve().parents[2])   # 상대경로 (대회 §3.3 요건)
 OPENSTL = os.path.join(REPO, "third_party", "OpenSTL")
 sys.path.insert(0, OPENSTL)
 

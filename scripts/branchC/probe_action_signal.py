@@ -33,14 +33,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-REPO = Path("/home/rils/dlacksdn/2026_Inha_AI_challenge_WM")
+REPO = Path(__file__).resolve().parents[2]   # 상대경로 (대회 §3.3 요건)
 sys.path.insert(0, str(REPO / "scripts" / "branchC"))
 sys.path.insert(0, str(REPO / "third_party" / "OpenSTL"))
 from loader_c import (EpisodeWindowStream, holdout_episode_refs, list_train_episodes,
                       load_holdout_val96, preprocess_batch, WINDOW)  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location(
-    "_simvp", str(REPO / "third_party/OpenSTL/openstl/models/simvp_model.py"))
+    "_simvp", str(REPO / "third_party" / "OpenSTL" / "openstl" / "models" / "simvp_model.py"))
 _m = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_m)
 SimVP_Model = _m.SimVP_Model
 

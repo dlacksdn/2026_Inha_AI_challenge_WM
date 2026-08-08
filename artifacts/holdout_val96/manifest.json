@@ -1,0 +1,1362 @@
+{
+  "n_samples": 96,
+  "seed": 0,
+  "traj_len": 16,
+  "per_dataset_cap": 2,
+  "train_root": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train",
+  "leak_free": true,
+  "split": {
+    "val_fraction": 0.05,
+    "split_seed": 0,
+    "downsample": 1,
+    "camera_key": "auto",
+    "n_val_episodes": 554
+  },
+  "note": "학습 split 을 배제한 홀드아웃. 학습 config 의 val_fraction/seed/traj_len/downsample/camera_key 가 바뀌면 이것도 다시 만들어야 한다.",
+  "samples": [
+    {
+      "sid": "sample_000000",
+      "dataset": "ganker5/so100_dataline_20250331",
+      "episode_index": 34,
+      "start_idx": 49,
+      "length": 116,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/ganker5/so100_dataline_20250331/videos/chunk-000/observation.images.image/episode_000034.mp4"
+    },
+    {
+      "sid": "sample_000001",
+      "dataset": "dragon-95/so100_sorting_3",
+      "episode_index": 183,
+      "start_idx": 75,
+      "length": 151,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/dragon-95/so100_sorting_3/videos/chunk-000/observation.images.image/episode_000183.mp4"
+    },
+    {
+      "sid": "sample_000002",
+      "dataset": "samsam0510/tooth_extraction_4",
+      "episode_index": 73,
+      "start_idx": 15,
+      "length": 79,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/samsam0510/tooth_extraction_4/videos/chunk-000/observation.images.image/episode_000073.mp4"
+    },
+    {
+      "sid": "sample_000003",
+      "dataset": "mikechambers/block_cup_14",
+      "episode_index": 43,
+      "start_idx": 66,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        720,
+        1280
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/mikechambers/block_cup_14/videos/chunk-000/observation.images.image/episode_000043.mp4"
+    },
+    {
+      "sid": "sample_000004",
+      "dataset": "Odog16/so100_cube_drop_pick_v1",
+      "episode_index": 1,
+      "start_idx": 6,
+      "length": 38,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Odog16/so100_cube_drop_pick_v1/videos/chunk-000/observation.images.image/episode_000001.mp4"
+    },
+    {
+      "sid": "sample_000005",
+      "dataset": "DorayakiLin/so100_pick_charger_on_tissue",
+      "episode_index": 9,
+      "start_idx": 4,
+      "length": 132,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/DorayakiLin/so100_pick_charger_on_tissue/videos/chunk-000/observation.images.image/episode_000009.mp4"
+    },
+    {
+      "sid": "sample_000006",
+      "dataset": "jpata/so100_pick_place_tangerine",
+      "episode_index": 7,
+      "start_idx": 25,
+      "length": 54,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/jpata/so100_pick_place_tangerine/videos/chunk-000/observation.images.image/episode_000007.mp4"
+    },
+    {
+      "sid": "sample_000007",
+      "dataset": "Jiangeng/so100_413",
+      "episode_index": 1,
+      "start_idx": 56,
+      "length": 84,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Jiangeng/so100_413/videos/chunk-000/observation.images.image/episode_000001.mp4"
+    },
+    {
+      "sid": "sample_000008",
+      "dataset": "triton7777/so100_dataset_mix",
+      "episode_index": 60,
+      "start_idx": 47,
+      "length": 119,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.s_left",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/triton7777/so100_dataset_mix/videos/chunk-000/observation.images.s_left/episode_000060.mp4"
+    },
+    {
+      "sid": "sample_000009",
+      "dataset": "roboticshack/left-arm-grasp-lego-brick",
+      "episode_index": 1,
+      "start_idx": 96,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/roboticshack/left-arm-grasp-lego-brick/videos/chunk-000/observation.images.image/episode_000001.mp4"
+    },
+    {
+      "sid": "sample_000010",
+      "dataset": "Chojins/chess_game_000_white_red",
+      "episode_index": 70,
+      "start_idx": 24,
+      "length": 122,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Chojins/chess_game_000_white_red/videos/chunk-000/observation.images.image/episode_000070.mp4"
+    },
+    {
+      "sid": "sample_000011",
+      "dataset": "frk2/so100large",
+      "episode_index": 44,
+      "start_idx": 29,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/frk2/so100large/videos/chunk-000/observation.images.image/episode_000044.mp4"
+    },
+    {
+      "sid": "sample_000012",
+      "dataset": "356c/so100_nut_sort_1",
+      "episode_index": 51,
+      "start_idx": 91,
+      "length": 169,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/356c/so100_nut_sort_1/videos/chunk-000/observation.images.image/episode_000051.mp4"
+    },
+    {
+      "sid": "sample_000013",
+      "dataset": "ganker5/so100_push_20250328",
+      "episode_index": 28,
+      "start_idx": 4,
+      "length": 55,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/ganker5/so100_push_20250328/videos/chunk-000/observation.images.image/episode_000028.mp4"
+    },
+    {
+      "sid": "sample_000014",
+      "dataset": "pierfabre/pig2",
+      "episode_index": 0,
+      "start_idx": 5,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pierfabre/pig2/videos/chunk-000/observation.images.image/episode_000000.mp4"
+    },
+    {
+      "sid": "sample_000015",
+      "dataset": "sihyun77/mond_1",
+      "episode_index": 7,
+      "start_idx": 5,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sihyun77/mond_1/videos/chunk-000/observation.images.image/episode_000007.mp4"
+    },
+    {
+      "sid": "sample_000016",
+      "dataset": "roboticshack/team-7-left-arm-grasp-motor",
+      "episode_index": 1,
+      "start_idx": 62,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/roboticshack/team-7-left-arm-grasp-motor/videos/chunk-000/observation.images.image/episode_000001.mp4"
+    },
+    {
+      "sid": "sample_000017",
+      "dataset": "samsam0510/tooth_extraction_3",
+      "episode_index": 78,
+      "start_idx": 16,
+      "length": 58,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/samsam0510/tooth_extraction_3/videos/chunk-000/observation.images.image/episode_000078.mp4"
+    },
+    {
+      "sid": "sample_000018",
+      "dataset": "roboticshack/team9-pick_chicken_place_plate",
+      "episode_index": 21,
+      "start_idx": 1,
+      "length": 53,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/roboticshack/team9-pick_chicken_place_plate/videos/chunk-000/observation.images.image/episode_000021.mp4"
+    },
+    {
+      "sid": "sample_000019",
+      "dataset": "shreyasgite/so100_legocube_50",
+      "episode_index": 31,
+      "start_idx": 66,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/shreyasgite/so100_legocube_50/videos/chunk-000/observation.images.image/episode_000031.mp4"
+    },
+    {
+      "sid": "sample_000020",
+      "dataset": "Jiafei1224/so100_pa222per",
+      "episode_index": 28,
+      "start_idx": 72,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Jiafei1224/so100_pa222per/videos/chunk-000/observation.images.image/episode_000028.mp4"
+    },
+    {
+      "sid": "sample_000021",
+      "dataset": "AndrejOrsula/lerobot_double_ball_stacking_random",
+      "episode_index": 6,
+      "start_idx": 27,
+      "length": 85,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/AndrejOrsula/lerobot_double_ball_stacking_random/videos/chunk-000/observation.images.image/episode_000006.mp4"
+    },
+    {
+      "sid": "sample_000022",
+      "dataset": "vladfatu/so100_office",
+      "episode_index": 8,
+      "start_idx": 29,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/vladfatu/so100_office/videos/chunk-000/observation.images.image/episode_000008.mp4"
+    },
+    {
+      "sid": "sample_000023",
+      "dataset": "Loki0929/so100_duck",
+      "episode_index": 211,
+      "start_idx": 11,
+      "length": 101,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Loki0929/so100_duck/videos/chunk-000/observation.images.image/episode_000211.mp4"
+    },
+    {
+      "sid": "sample_000024",
+      "dataset": "356c/so100_duck_reposition_1",
+      "episode_index": 24,
+      "start_idx": 99,
+      "length": 139,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/356c/so100_duck_reposition_1/videos/chunk-000/observation.images.image/episode_000024.mp4"
+    },
+    {
+      "sid": "sample_000025",
+      "dataset": "paszea/so100_lego_2cam",
+      "episode_index": 32,
+      "start_idx": 321,
+      "length": 415,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/paszea/so100_lego_2cam/videos/chunk-000/observation.images.image/episode_000032.mp4"
+    },
+    {
+      "sid": "sample_000026",
+      "dataset": "ganker5/so100_color_0328",
+      "episode_index": 46,
+      "start_idx": 99,
+      "length": 118,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/ganker5/so100_color_0328/videos/chunk-000/observation.images.image/episode_000046.mp4"
+    },
+    {
+      "sid": "sample_000027",
+      "dataset": "isadev/bougies3",
+      "episode_index": 145,
+      "start_idx": 32,
+      "length": 61,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/isadev/bougies3/videos/chunk-000/observation.images.image/episode_000145.mp4"
+    },
+    {
+      "sid": "sample_000028",
+      "dataset": "paszea/so100_lego",
+      "episode_index": 5,
+      "start_idx": 134,
+      "length": 161,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/paszea/so100_lego/videos/chunk-000/observation.images.image/episode_000005.mp4"
+    },
+    {
+      "sid": "sample_000029",
+      "dataset": "pierfabre/rabbit",
+      "episode_index": 16,
+      "start_idx": 53,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pierfabre/rabbit/videos/chunk-000/observation.images.image/episode_000016.mp4"
+    },
+    {
+      "sid": "sample_000030",
+      "dataset": "pranavsaroha/so100_carrot_2",
+      "episode_index": 44,
+      "start_idx": 32,
+      "length": 68,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pranavsaroha/so100_carrot_2/videos/chunk-000/observation.images.image/episode_000044.mp4"
+    },
+    {
+      "sid": "sample_000031",
+      "dataset": "sihyun77/sihyun_3_17_2",
+      "episode_index": 18,
+      "start_idx": 78,
+      "length": 175,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sihyun77/sihyun_3_17_2/videos/chunk-000/observation.images.image/episode_000018.mp4"
+    },
+    {
+      "sid": "sample_000032",
+      "dataset": "pierfabre/sheep",
+      "episode_index": 59,
+      "start_idx": 14,
+      "length": 107,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pierfabre/sheep/videos/chunk-000/observation.images.image/episode_000059.mp4"
+    },
+    {
+      "sid": "sample_000033",
+      "dataset": "FeiYjf/new_GtoR",
+      "episode_index": 48,
+      "start_idx": 18,
+      "length": 124,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/FeiYjf/new_GtoR/videos/chunk-000/observation.images.image/episode_000048.mp4"
+    },
+    {
+      "sid": "sample_000034",
+      "dataset": "lirislab/close_top_drawer_teabox",
+      "episode_index": 13,
+      "start_idx": 13,
+      "length": 40,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/close_top_drawer_teabox/videos/chunk-000/observation.images.image/episode_000013.mp4"
+    },
+    {
+      "sid": "sample_000035",
+      "dataset": "samsam0510/cube_reorientation_2",
+      "episode_index": 132,
+      "start_idx": 72,
+      "length": 89,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/samsam0510/cube_reorientation_2/videos/chunk-000/observation.images.image/episode_000132.mp4"
+    },
+    {
+      "sid": "sample_000036",
+      "dataset": "lirislab/fold_bottom_right",
+      "episode_index": 15,
+      "start_idx": 54,
+      "length": 86,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/fold_bottom_right/videos/chunk-000/observation.images.image/episode_000015.mp4"
+    },
+    {
+      "sid": "sample_000037",
+      "dataset": "pranavsaroha/so100_legos4",
+      "episode_index": 17,
+      "start_idx": 43,
+      "length": 329,
+      "fps": 6,
+      "native_hw": [
+        1080,
+        1920
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pranavsaroha/so100_legos4/videos/chunk-000/observation.images.image/episode_000017.mp4"
+    },
+    {
+      "sid": "sample_000038",
+      "dataset": "ganker5/so100_push_20250331",
+      "episode_index": 33,
+      "start_idx": 119,
+      "length": 141,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/ganker5/so100_push_20250331/videos/chunk-000/observation.images.image/episode_000033.mp4"
+    },
+    {
+      "sid": "sample_000039",
+      "dataset": "bensprenger/chess_game_001_blue_stereo",
+      "episode_index": 7,
+      "start_idx": 6,
+      "length": 61,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/bensprenger/chess_game_001_blue_stereo/videos/chunk-000/observation.images.image/episode_000007.mp4"
+    },
+    {
+      "sid": "sample_000040",
+      "dataset": "ganker5/so100_dataline_0328",
+      "episode_index": 36,
+      "start_idx": 53,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/ganker5/so100_dataline_0328/videos/chunk-000/observation.images.image/episode_000036.mp4"
+    },
+    {
+      "sid": "sample_000041",
+      "dataset": "sihyun77/sihyun_main_3",
+      "episode_index": 1,
+      "start_idx": 8,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sihyun77/sihyun_main_3/videos/chunk-000/observation.images.image/episode_000001.mp4"
+    },
+    {
+      "sid": "sample_000042",
+      "dataset": "Chojins/chess_game_009_white",
+      "episode_index": 108,
+      "start_idx": 12,
+      "length": 97,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Chojins/chess_game_009_white/videos/chunk-000/observation.images.image/episode_000108.mp4"
+    },
+    {
+      "sid": "sample_000043",
+      "dataset": "Ityl/so100_recording2",
+      "episode_index": 37,
+      "start_idx": 26,
+      "length": 49,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Ityl/so100_recording2/videos/chunk-000/observation.images.image/episode_000037.mp4"
+    },
+    {
+      "sid": "sample_000044",
+      "dataset": "sixpigs1/so100_stack_cube_error",
+      "episode_index": 17,
+      "start_idx": 9,
+      "length": 58,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sixpigs1/so100_stack_cube_error/videos/chunk-000/observation.images.image/episode_000017.mp4"
+    },
+    {
+      "sid": "sample_000045",
+      "dataset": "roboticshack/team16-can-stacking",
+      "episode_index": 37,
+      "start_idx": 93,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/roboticshack/team16-can-stacking/videos/chunk-000/observation.images.image/episode_000037.mp4"
+    },
+    {
+      "sid": "sample_000046",
+      "dataset": "pietroom/holdthis",
+      "episode_index": 87,
+      "start_idx": 3,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pietroom/holdthis/videos/chunk-000/observation.images.image/episode_000087.mp4"
+    },
+    {
+      "sid": "sample_000047",
+      "dataset": "sihyun77/suho_main_2",
+      "episode_index": 2,
+      "start_idx": 101,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sihyun77/suho_main_2/videos/chunk-000/observation.images.image/episode_000002.mp4"
+    },
+    {
+      "sid": "sample_000048",
+      "dataset": "aimihat/so100_tape",
+      "episode_index": 11,
+      "start_idx": 57,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/aimihat/so100_tape/videos/chunk-000/observation.images.image/episode_000011.mp4"
+    },
+    {
+      "sid": "sample_000049",
+      "dataset": "HITHY/so100_peach4",
+      "episode_index": 194,
+      "start_idx": 27,
+      "length": 54,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/HITHY/so100_peach4/videos/chunk-000/observation.images.image/episode_000194.mp4"
+    },
+    {
+      "sid": "sample_000050",
+      "dataset": "Beegbrain/pick_lemon_and_drop_in_bowl",
+      "episode_index": 9,
+      "start_idx": 43,
+      "length": 73,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Beegbrain/pick_lemon_and_drop_in_bowl/videos/chunk-000/observation.images.image/episode_000009.mp4"
+    },
+    {
+      "sid": "sample_000051",
+      "dataset": "lirislab/sweep_tissue_cube",
+      "episode_index": 0,
+      "start_idx": 53,
+      "length": 98,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/sweep_tissue_cube/videos/chunk-000/observation.images.image/episode_000000.mp4"
+    },
+    {
+      "sid": "sample_000052",
+      "dataset": "samanthalhy/so100_herding_1",
+      "episode_index": 39,
+      "start_idx": 30,
+      "length": 598,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/samanthalhy/so100_herding_1/videos/chunk-000/observation.images.image/episode_000039.mp4"
+    },
+    {
+      "sid": "sample_000053",
+      "dataset": "pierfabre/chicken",
+      "episode_index": 17,
+      "start_idx": 63,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pierfabre/chicken/videos/chunk-000/observation.images.image/episode_000017.mp4"
+    },
+    {
+      "sid": "sample_000054",
+      "dataset": "HITHY/so100_strawberry",
+      "episode_index": 11,
+      "start_idx": 20,
+      "length": 57,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/HITHY/so100_strawberry/videos/chunk-000/observation.images.image/episode_000011.mp4"
+    },
+    {
+      "sid": "sample_000055",
+      "dataset": "lirislab/guess_who_so100",
+      "episode_index": 32,
+      "start_idx": 16,
+      "length": 50,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/guess_who_so100/videos/chunk-000/observation.images.image/episode_000032.mp4"
+    },
+    {
+      "sid": "sample_000056",
+      "dataset": "tkc79/so100_lego_box_2",
+      "episode_index": 48,
+      "start_idx": 10,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/tkc79/so100_lego_box_2/videos/chunk-000/observation.images.image/episode_000048.mp4"
+    },
+    {
+      "sid": "sample_000057",
+      "dataset": "therarelab/so100_pick_place_2",
+      "episode_index": 27,
+      "start_idx": 22,
+      "length": 64,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/therarelab/so100_pick_place_2/videos/chunk-000/observation.images.image/episode_000027.mp4"
+    },
+    {
+      "sid": "sample_000058",
+      "dataset": "ad330/cubePlace",
+      "episode_index": 49,
+      "start_idx": 4,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/ad330/cubePlace/videos/chunk-000/observation.images.image/episode_000049.mp4"
+    },
+    {
+      "sid": "sample_000059",
+      "dataset": "nbaron99/so100_pick_and_place4",
+      "episode_index": 71,
+      "start_idx": 7,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/nbaron99/so100_pick_and_place4/videos/chunk-000/observation.images.image/episode_000071.mp4"
+    },
+    {
+      "sid": "sample_000060",
+      "dataset": "weiye11/so100_410_zwy",
+      "episode_index": 88,
+      "start_idx": 22,
+      "length": 64,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/weiye11/so100_410_zwy/videos/chunk-000/observation.images.image/episode_000088.mp4"
+    },
+    {
+      "sid": "sample_000061",
+      "dataset": "Odog16/so100_cube_stacking_v1",
+      "episode_index": 0,
+      "start_idx": 7,
+      "length": 167,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Odog16/so100_cube_stacking_v1/videos/chunk-000/observation.images.image/episode_000000.mp4"
+    },
+    {
+      "sid": "sample_000062",
+      "dataset": "NONHUMAN-RESEARCH/SOARM100_TASK_VENDA",
+      "episode_index": 24,
+      "start_idx": 44,
+      "length": 102,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/NONHUMAN-RESEARCH/SOARM100_TASK_VENDA/videos/chunk-000/observation.images.image/episode_000024.mp4"
+    },
+    {
+      "sid": "sample_000063",
+      "dataset": "LemonadeDai/so100_coca",
+      "episode_index": 44,
+      "start_idx": 22,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/LemonadeDai/so100_coca/videos/chunk-000/observation.images.image/episode_000044.mp4"
+    },
+    {
+      "sid": "sample_000064",
+      "dataset": "dragon-95/so100_sorting",
+      "episode_index": 46,
+      "start_idx": 91,
+      "length": 375,
+      "fps": 10,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/dragon-95/so100_sorting/videos/chunk-000/observation.images.image/episode_000046.mp4"
+    },
+    {
+      "sid": "sample_000065",
+      "dataset": "RasmusP/so100_Orange2Green",
+      "episode_index": 28,
+      "start_idx": 1,
+      "length": 119,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/RasmusP/so100_Orange2Green/videos/chunk-000/observation.images.image/episode_000028.mp4"
+    },
+    {
+      "sid": "sample_000066",
+      "dataset": "pranavsaroha/so100_onelego2",
+      "episode_index": 2,
+      "start_idx": 53,
+      "length": 72,
+      "fps": 6,
+      "native_hw": [
+        1080,
+        1920
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pranavsaroha/so100_onelego2/videos/chunk-000/observation.images.image/episode_000002.mp4"
+    },
+    {
+      "sid": "sample_000067",
+      "dataset": "lirislab/put_banana_bowl",
+      "episode_index": 15,
+      "start_idx": 14,
+      "length": 63,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/put_banana_bowl/videos/chunk-000/observation.images.image/episode_000015.mp4"
+    },
+    {
+      "sid": "sample_000068",
+      "dataset": "00ri/so100_battery",
+      "episode_index": 47,
+      "start_idx": 46,
+      "length": 86,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/00ri/so100_battery/videos/chunk-000/observation.images.image/episode_000047.mp4"
+    },
+    {
+      "sid": "sample_000069",
+      "dataset": "sixpigs1/so100_pick_cube_in_box",
+      "episode_index": 16,
+      "start_idx": 4,
+      "length": 62,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sixpigs1/so100_pick_cube_in_box/videos/chunk-000/observation.images.image/episode_000016.mp4"
+    },
+    {
+      "sid": "sample_000070",
+      "dataset": "Chojins/chess_game_001_blue_stereo",
+      "episode_index": 174,
+      "start_idx": 76,
+      "length": 100,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Chojins/chess_game_001_blue_stereo/videos/chunk-000/observation.images.image/episode_000174.mp4"
+    },
+    {
+      "sid": "sample_000071",
+      "dataset": "00ri/so100_battery_bin_center",
+      "episode_index": 1,
+      "start_idx": 57,
+      "length": 77,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/00ri/so100_battery_bin_center/videos/chunk-000/observation.images.image/episode_000001.mp4"
+    },
+    {
+      "sid": "sample_000072",
+      "dataset": "pierfabre/horse",
+      "episode_index": 15,
+      "start_idx": 18,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pierfabre/horse/videos/chunk-000/observation.images.image/episode_000015.mp4"
+    },
+    {
+      "sid": "sample_000073",
+      "dataset": "Beegbrain/pick_place_green_block",
+      "episode_index": 0,
+      "start_idx": 26,
+      "length": 81,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Beegbrain/pick_place_green_block/videos/chunk-000/observation.images.image/episode_000000.mp4"
+    },
+    {
+      "sid": "sample_000074",
+      "dataset": "tkc79/so100_lego_box_1",
+      "episode_index": 76,
+      "start_idx": 0,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/tkc79/so100_lego_box_1/videos/chunk-000/observation.images.image/episode_000076.mp4"
+    },
+    {
+      "sid": "sample_000075",
+      "dataset": "lirislab/red_cube_into_blue_cube",
+      "episode_index": 33,
+      "start_idx": 13,
+      "length": 58,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/red_cube_into_blue_cube/videos/chunk-000/observation.images.image/episode_000033.mp4"
+    },
+    {
+      "sid": "sample_000076",
+      "dataset": "koenvanwijk/orange50-variation-2",
+      "episode_index": 4,
+      "start_idx": 10,
+      "length": 27,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/koenvanwijk/orange50-variation-2/videos/chunk-000/observation.images.image/episode_000004.mp4"
+    },
+    {
+      "sid": "sample_000077",
+      "dataset": "sihyun77/sihyun_main_2",
+      "episode_index": 39,
+      "start_idx": 86,
+      "length": 117,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sihyun77/sihyun_main_2/videos/chunk-000/observation.images.image/episode_000039.mp4"
+    },
+    {
+      "sid": "sample_000078",
+      "dataset": "lirislab/unfold_bottom_right",
+      "episode_index": 12,
+      "start_idx": 46,
+      "length": 74,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/unfold_bottom_right/videos/chunk-000/observation.images.image/episode_000012.mp4"
+    },
+    {
+      "sid": "sample_000079",
+      "dataset": "Mohamedal/put_banana",
+      "episode_index": 3,
+      "start_idx": 115,
+      "length": 132,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/Mohamedal/put_banana/videos/chunk-000/observation.images.image/episode_000003.mp4"
+    },
+    {
+      "sid": "sample_000080",
+      "dataset": "pierfabre/cow2",
+      "episode_index": 14,
+      "start_idx": 15,
+      "length": 108,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pierfabre/cow2/videos/chunk-000/observation.images.image/episode_000014.mp4"
+    },
+    {
+      "sid": "sample_000081",
+      "dataset": "paszea/so100_whale_3",
+      "episode_index": 23,
+      "start_idx": 0,
+      "length": 104,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/paszea/so100_whale_3/videos/chunk-000/observation.images.image/episode_000023.mp4"
+    },
+    {
+      "sid": "sample_000082",
+      "dataset": "bensprenger/right_arm_p_brick_in_box_with_y_noise_v0",
+      "episode_index": 40,
+      "start_idx": 37,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/bensprenger/right_arm_p_brick_in_box_with_y_noise_v0/videos/chunk-000/observation.images.image/episode_000040.mp4"
+    },
+    {
+      "sid": "sample_000083",
+      "dataset": "koenvanwijk/orange50-1",
+      "episode_index": 31,
+      "start_idx": 11,
+      "length": 33,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/koenvanwijk/orange50-1/videos/chunk-000/observation.images.image/episode_000031.mp4"
+    },
+    {
+      "sid": "sample_000084",
+      "dataset": "vladfatu/so100_above",
+      "episode_index": 28,
+      "start_idx": 88,
+      "length": 120,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/vladfatu/so100_above/videos/chunk-000/observation.images.image/episode_000028.mp4"
+    },
+    {
+      "sid": "sample_000085",
+      "dataset": "sihyun77/suho_3_17_1",
+      "episode_index": 13,
+      "start_idx": 6,
+      "length": 175,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/sihyun77/suho_3_17_1/videos/chunk-000/observation.images.image/episode_000013.mp4"
+    },
+    {
+      "sid": "sample_000086",
+      "dataset": "liuhuanjim013/so100_th",
+      "episode_index": 0,
+      "start_idx": 38,
+      "length": 68,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/liuhuanjim013/so100_th/videos/chunk-000/observation.images.image/episode_000000.mp4"
+    },
+    {
+      "sid": "sample_000087",
+      "dataset": "lirislab/lemon_into_bowl",
+      "episode_index": 32,
+      "start_idx": 29,
+      "length": 90,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/lemon_into_bowl/videos/chunk-000/observation.images.image/episode_000032.mp4"
+    },
+    {
+      "sid": "sample_000088",
+      "dataset": "dragon-95/so100_sorting_2",
+      "episode_index": 56,
+      "start_idx": 9,
+      "length": 59,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/dragon-95/so100_sorting_2/videos/chunk-000/observation.images.image/episode_000056.mp4"
+    },
+    {
+      "sid": "sample_000089",
+      "dataset": "pietroom/actualeasytask",
+      "episode_index": 26,
+      "start_idx": 11,
+      "length": 60,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pietroom/actualeasytask/videos/chunk-000/observation.images.image/episode_000026.mp4"
+    },
+    {
+      "sid": "sample_000090",
+      "dataset": "CSCSXX/pick_place_cube_1.18",
+      "episode_index": 6,
+      "start_idx": 29,
+      "length": 59,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/CSCSXX/pick_place_cube_1.18/videos/chunk-000/observation.images.image/episode_000006.mp4"
+    },
+    {
+      "sid": "sample_000091",
+      "dataset": "samsam0510/cube_reorientation_4",
+      "episode_index": 83,
+      "start_idx": 14,
+      "length": 125,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/samsam0510/cube_reorientation_4/videos/chunk-000/observation.images.image/episode_000083.mp4"
+    },
+    {
+      "sid": "sample_000092",
+      "dataset": "HITHY/so100_peach3",
+      "episode_index": 79,
+      "start_idx": 15,
+      "length": 41,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/HITHY/so100_peach3/videos/chunk-000/observation.images.image/episode_000079.mp4"
+    },
+    {
+      "sid": "sample_000093",
+      "dataset": "paszea/so100_whale_2",
+      "episode_index": 42,
+      "start_idx": 44,
+      "length": 104,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/paszea/so100_whale_2/videos/chunk-000/observation.images.image/episode_000042.mp4"
+    },
+    {
+      "sid": "sample_000094",
+      "dataset": "pranavsaroha/so100_carrot_5",
+      "episode_index": 23,
+      "start_idx": 45,
+      "length": 70,
+      "fps": 6,
+      "native_hw": [
+        720,
+        1280
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/pranavsaroha/so100_carrot_5/videos/chunk-000/observation.images.image/episode_000023.mp4"
+    },
+    {
+      "sid": "sample_000095",
+      "dataset": "lirislab/so100_demo",
+      "episode_index": 11,
+      "start_idx": 33,
+      "length": 115,
+      "fps": 6,
+      "native_hw": [
+        480,
+        640
+      ],
+      "camera_key": "observation.images.image",
+      "video_ref": "/home/rils/dlacksdn/2026_Inha_AI_challenge_WM/open/data/train/lirislab/so100_demo/videos/chunk-000/observation.images.image/episode_000011.mp4"
+    }
+  ]
+}

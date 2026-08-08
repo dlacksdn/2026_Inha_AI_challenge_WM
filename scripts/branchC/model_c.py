@@ -30,7 +30,7 @@ import torch
 import torch.nn as nn
 from torch.utils.checkpoint import checkpoint
 
-REPO = Path("/home/rils/dlacksdn/2026_Inha_AI_challenge_WM")
+REPO = Path(__file__).resolve().parents[2]   # 상대경로 (대회 §3.3 요건)
 OPENSTL = REPO / "third_party" / "OpenSTL"
 sys.path.insert(0, str(OPENSTL))
 _spec = importlib.util.spec_from_file_location(

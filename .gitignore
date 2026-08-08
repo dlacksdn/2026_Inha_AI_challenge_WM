@@ -34,6 +34,13 @@ artifacts/
 !_thinking/figure/
 !_thinking/figure/**
 
+# === [예외] holdout_val96 의 manifest 만 추적한다 ===
+# 홀드아웃 실물은 34MB 라 안 올린다. 그런데 manifest(43KB)에 video_ref·start_idx 가 다 있어
+# train 데이터만 있으면 scripts/branchC/rebuild_holdout.py 로 **정확히** 복원된다(불일치 0 검증).
+# 이게 없으면 clone 후 학습이 시작조차 안 된다 — 누수 차단과 감시가 이걸 읽는다.
+!artifacts/holdout_val96/
+!artifacts/holdout_val96/manifest.json
+
 # === 제출물 ===
 submission_features.csv
 submission_kit/input_videos/

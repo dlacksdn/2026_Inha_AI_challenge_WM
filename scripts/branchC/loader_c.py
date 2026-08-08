@@ -37,7 +37,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import IterableDataset, get_worker_info
 
-REPO = Path("/home/rils/dlacksdn/2026_Inha_AI_challenge_WM")
+REPO = Path(__file__).resolve().parents[2]   # 상대경로 (대회 §3.3 요건)
 TRAIN_ROOT = REPO / "open" / "data" / "train"
 HOLDOUT = REPO / "artifacts" / "holdout_val96"
 ACTION_STATS = REPO / "results" / "branchC" / "action_stats.json"

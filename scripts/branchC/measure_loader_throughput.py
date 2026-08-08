@@ -23,7 +23,7 @@ from pathlib import Path
 
 import numpy as np
 
-REPO = Path("/home/rils/dlacksdn/2026_Inha_AI_challenge_WM")
+REPO = Path(__file__).resolve().parents[2]   # 상대경로 (대회 §3.3 요건)
 sys.path.insert(0, str(REPO / "src"))
 from wm_eval.data_utils import list_episodes, decode_frames, read_actions, discover_datasets  # noqa: E402
 

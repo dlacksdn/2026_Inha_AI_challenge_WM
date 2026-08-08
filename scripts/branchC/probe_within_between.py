@@ -40,7 +40,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-REPO = Path("/home/rils/dlacksdn/2026_Inha_AI_challenge_WM")
+REPO = Path(__file__).resolve().parents[2]   # 상대경로 (대회 §3.3 요건)
 sys.path.insert(0, str(REPO / "scripts" / "branchC"))
 from loader_c import (EpisodeWindowStream, holdout_episode_refs, list_train_episodes,
                       preprocess_batch, WINDOW)  # noqa: E402

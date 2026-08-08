@@ -156,9 +156,16 @@ def monitor(model, val, dev, n_rho=None, seed=0):
     # (a) FiLM 시간 붕괴 — 프레임 간 변조값 코사인
     from model_c import act_delta
     gb = model.film_in.mlp(act_delta(acts[:8]))              # (B,T,2*ch)
-    gn = F.normalize(gb, dim=-1)
-    cs = (gn[:, :-1] * gn[:, 1:]).sum(-1)
-    out["film_temporal_cos"] = cs.mean().item()
+    # ⚠ 프레임 공통(DC) 성분을 빼고 잰다. 안 빼면 DC 가 지배해 코사인이 구조적으로 1 에 붙는다
+    #   [측정] 2026-08-08 step2000: 원본 0.990 vs DC제거 0.688, DC 가 변동분의 9.3배.
+    #   004 §4.2(a)의 의도는 "프레임 **사이**의 차이"이고 DC 는 그 차이와 무관하다
+    ac = gb - gb.mean(1, keepdim=True)
+    gn = F.normalize(ac, dim=-1)
+    out["film_temporal_cos"] = (gn[:, :-1] * gn[:, 1:]).sum(-1).mean().item()
+    gn0 = F.normalize(gb, dim=-1)
+    out["film_temporal_cos_raw"] = (gn0[:, :-1] * gn0[:, 1:]).sum(-1).mean().item()
+    out["film_dc_ratio"] = (gb.mean(1).norm(dim=-1).mean()
+                            / (ac.norm(dim=-1).mean() + 1e-8)).item()
 
     model.train()
     return out

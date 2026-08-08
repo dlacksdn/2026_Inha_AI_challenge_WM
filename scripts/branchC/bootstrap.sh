@@ -20,8 +20,33 @@ echo
 
 # 1. 파이썬 / torch
 if [ -x "$PY" ]; then
-  V=$("$PY" -c "import torch,sys;print(f'py {sys.version.split()[0]} · torch {torch.__version__} · cuda {torch.cuda.is_available()}')" 2>/dev/null)
-  [ -n "$V" ] && say "① python/torch" "OK  $V" || { say "① python/torch" "torch 없음 → 환경 확인"; FAIL=1; }
+  # ⚠ "torch 가 import 되나" 로는 부족하다. requirements-lock.txt 는 torch==2.7.1 만 적고
+  #   있어 PyPI 기본(cu126)이 깔린다. cu126 에는 **sm_120 이 없다** — Blackwell(RTX 5090 /
+  #   RTX PRO 6000)에서 커널이 없어 죽는다. 이 기계가 도는 건 +cu128 이기 때문이다.
+  #   실패가 "no kernel image is available" 로만 나와 진단이 어렵다. 여기서 잡는다.
+  V=$("$PY" - <<'EOF' 2>/dev/null
+import sys, torch
+ok = f"py {sys.version.split()[0]} · torch {torch.__version__} · cuda {torch.cuda.is_available()}"
+if torch.cuda.is_available():
+    cap = torch.cuda.get_device_capability()
+    sm = f"sm_{cap[0]}{cap[1]}"
+    if sm not in torch.cuda.get_arch_list():
+        print(f"BAD\t{torch.cuda.get_device_name()} 은 {sm} 인데 이 torch 빌드가 지원하는 건 "
+              f"{' '.join(torch.cuda.get_arch_list())} 다")
+        raise SystemExit
+    ok += f" · {sm} OK"
+print(f"OK\t{ok}")
+EOF
+)
+  case "$V" in
+    OK*)  say "① python/torch" "OK  ${V#OK	}" ;;
+    BAD*) say "① python/torch" "⚠ ${V#BAD	}"
+          echo "     → GPU 아키텍처가 안 맞는다. cu128 빌드로 다시 깔아라:"
+          echo "        $PY -m pip install --force-reinstall torch==2.7.1 torchvision==0.22.1 \\"
+          echo "            --index-url https://download.pytorch.org/whl/cu128"
+          FAIL=1 ;;
+    *)    say "① python/torch" "torch 없음 → 환경 확인"; FAIL=1 ;;
+  esac
 else
   say "① python" "없다: $PY  (인자로 경로를 넘겨라)"; FAIL=1
 fi
@@ -54,6 +79,9 @@ else
 fi
 
 # 4. 데이터 링크
+# open/ 은 통째로 gitignore 라 clone 에 **디렉터리조차 안 온다**. 그래서 아래 ln -s 안내가
+# 그대로는 실패했다("그런 파일이나 디렉터리가 없습니다"). 먼저 만들어 둔다. [측정 2026-08-08]
+mkdir -p "$REPO/open/data"
 for d in train eval; do
   if [ -e "$REPO/open/data/$d" ]; then
     say "④ open/data/$d" "OK → $(readlink -f "$REPO/open/data/$d")"

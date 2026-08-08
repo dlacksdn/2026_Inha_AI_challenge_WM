@@ -1,3 +1,9 @@
+# ⚠ torch 는 이 파일만으로 설치하면 안 된다.
+#   아래 torch==2.7.1 은 PyPI 기본(cu126)을 끌어온다. cu126 에는 **sm_120 이 없다** —
+#   Blackwell(RTX 5090 · RTX PRO 6000)에서 "no kernel image is available" 로 죽는다.
+#   이 잠금이 실제로 검증된 환경은 torch 2.7.1+**cu128** 이다. 먼저 이렇게 깔아라:
+#     pip install torch==2.7.1 torchvision==0.22.1 --index-url https://download.pytorch.org/whl/cu128
+#   그 다음 이 파일을 설치한다. scripts/branchC/bootstrap.sh ① 이 이 불일치를 잡는다.
 aiohappyeyeballs==2.7.1
 aiohttp==3.14.3
 aiosignal==1.4.0

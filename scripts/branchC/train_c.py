@@ -32,6 +32,59 @@ from model_c import ResidualSimVPC, C, H, W, T                           # noqa:
 import gates as G                                                        # noqa: E402
 
 
+# ═══════════════════════ 손실 ═══════════════════════
+
+def residual_cos_loss(out, gt, first):
+    """1 − 코사인(예측 잔차, 정답 잔차). 프레임 1~15 (0번은 구조적으로 0).
+
+    008 §8-② 1순위. 근거: 008 §5 + 007 후속 눈금 보정 —
+      정답 잔차를 k배 뭉갠 것의 코사인 ↔ 018 DV 감축이
+      0.971→48.3% · 0.930→16.1% · 0.865→−1.8%(static 보다 나쁨).
+      목표 40.4% 에 필요한 코사인 ≈ 0.96 인데 L1 단독 실측이 0.12 다.
+
+    ⚠ Goodhart: 이걸 손실에 넣으면 **로컬 코사인은 더 이상 진단이 아니다.**
+      오염되지 않은 판정은 리더보드 λ 스윕(008 §9-b)이 맡는다. 역할을 분리한다.
+    """
+    pr = (out - first.unsqueeze(2))[:, :, 1:].reshape(out.shape[0], -1)
+    gr = (gt - first.unsqueeze(2))[:, :, 1:].reshape(out.shape[0], -1)
+    return (1.0 - F.cosine_similarity(pr.float(), gr.float(), dim=1)).mean()
+
+
+def tau_diff_div_reg(out, gt, tau=0.1, eps=1e-12):
+    """TAU 자체 손실 L_reg — 시간 차분 분포의 KL.
+
+    [코드] OpenSTL methods/tau.py:22-31 을 우리 축 (B,C,T,H,W) 에 맞게 옮긴 것.
+    참조 alpha = 0.1 (bair·kitticaltech·taxibj·mmnist·kinetics 전 config 공통).
+    002 §2.3 이 "정지영상 함정을 억제할 여지"라 가설을 세웠고 005 중-8 이 소멸을 지적했다.
+    """
+    p = out.permute(0, 2, 1, 3, 4)                    # (B,T,C,H,W)
+    g = gt.permute(0, 2, 1, 3, 4)
+    B, Tn = p.shape[:2]
+    if Tn <= 2:
+        return out.new_zeros(())
+    gp = (p[:, 1:] - p[:, :-1]).reshape(B, Tn - 1, -1).float()
+    gb = (g[:, 1:] - g[:, :-1]).reshape(B, Tn - 1, -1).float()
+    sp = F.softmax(gp / tau, -1)
+    sb = F.softmax(gb / tau, -1)
+    return (sp * torch.log(sp / (sb + eps) + eps)).mean()
+
+
+@torch.enable_grad()
+def calibrate_lambda(model, out, gt, first, target_ratio=0.25):
+    """λ_c 를 **1회 측정해 고정**한다 (005 치-7 / 001 §4.5 — PCGrad 배제).
+
+    디코더 마지막 층(readout) gradient norm 비율로 맞춘다:
+      λ_c 를 곱한 방향항의 grad norm 이 L1 항의 target_ratio 배가 되게.
+    """
+    w = model.net.dec.readout.weight
+    l1 = (out - gt).abs().mean()
+    lc = residual_cos_loss(out, gt, first)
+    g1 = torch.autograd.grad(l1, w, retain_graph=True)[0].float().norm()
+    gc = torch.autograd.grad(lc, w, retain_graph=True)[0].float().norm()
+    lam = float(target_ratio * g1 / (gc + 1e-12))
+    return lam, float(g1), float(gc)
+
+
 # ═══════════════════════ 계기판 ═══════════════════════
 
 @torch.no_grad()
@@ -194,6 +247,14 @@ def main():
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--monitor-every", type=int, default=None,
                     help="기본값은 gates.MONITOR_EVERY. 스모크에서만 줄인다")
+    ap.add_argument("--dir-loss", action="store_true",
+                    help="방향(잔차 코사인) 항을 켠다. 008 §8-② 1순위")
+    ap.add_argument("--dir-ratio", type=float, default=0.25,
+                    help="방향항 grad norm 을 L1 의 이 비율로 맞춘다 (005 치-7)")
+    ap.add_argument("--cal-step", type=int, default=1000,
+                    help="이 스텝에서 λ_c 를 1회 측정해 고정한다")
+    ap.add_argument("--tau-alpha", type=float, default=0.0,
+                    help="TAU L_reg 가중. OpenSTL 전 config 참조값은 0.1 (005 중-8)")
     args = ap.parse_args()
     mon_every = args.monitor_every or G.MONITOR_EVERY
 
@@ -206,6 +267,12 @@ def main():
     print(f"[out] 그림       {vizdir}")
     print(f"[gates] ρ≥{G.RHO_NULL_P95}(N={G.RHO_N_SAMPLES}) · Δcos≥{G.DCOS_MIN} · "
           f"wake={G.WAKE_RATIO} · 감시주기 {mon_every}")
+    print(f"[loss] L1"
+          + (f" + λ_c·(1−코사인)  [λ_c 는 step {args.cal_step} 에서 자동 교정, 목표비 {args.dir_ratio}]"
+             if args.dir_loss else "")
+          + (f" + {args.tau_alpha}·L_reg(TAU)" if args.tau_alpha > 0 else "")
+          + ("   ⚠ 방향항을 켜면 로컬 코사인은 진단이 아니다 — 판정은 리더보드 λ스윕"
+             if args.dir_loss else ""))
 
     seed = args.seed + (1 if args.resume else 0)      # 016 §6: 재개 시 seed+1
     torch.manual_seed(seed); np.random.seed(seed)
@@ -230,6 +297,7 @@ def main():
     it = iter(dl)
 
     hist, dcos_hist, wake_step = [], [], None
+    lam_c = None   # 방향항 가중. cal_step 에서 1회 측정 후 고정
     t0 = time.perf_counter()
     for step in range(start, args.steps):
         lr = args.lr * min(1.0, (step + 1) / max(1, args.warmup))
@@ -244,10 +312,20 @@ def main():
             first = v[:, :, 0]
             with torch.autocast("cuda", dtype=torch.bfloat16):
                 out = model(first, a)
-                # ── 손실 (008 이 정해지면 여기에 항을 끼운다) ──
-                loss = (out - v).abs().mean()               # L1
-                # + lam_f * frequency_loss(out, v)          ← G2.5 점화 후
-                # + lam_a * action_loss(out, a)             ← 008 대기
+                loss = (out - v).abs().mean()                        # L1
+                if args.tau_alpha > 0:
+                    loss = loss + args.tau_alpha * tau_diff_div_reg(out, v)
+                if args.dir_loss:
+                    if lam_c is None:                                # 아직 미교정
+                        if step >= args.cal_step:
+                            lam_c, g1_, gc_ = calibrate_lambda(
+                                model, out, v, first, args.dir_ratio)
+                            print(f"  ⭐ λ_c 고정 = {lam_c:.4g}  "
+                                  f"(readout grad norm  L1 {g1_:.3e} · dir {gc_:.3e}, "
+                                  f"목표비 {args.dir_ratio})", flush=True)
+                    else:
+                        loss = loss + lam_c * residual_cos_loss(out, v, first)
+                # + lam_f * frequency_loss(out, v)                   ← G2.5 점화 후
             (loss / args.accum).backward()
             tot += loss.item() / args.accum
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -292,7 +370,7 @@ def main():
                 torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
                             "step": step + 1, "args": vars(args)},
                            ckdir / f"full_{step+1:06d}.pt")
-            json.dump({"history": hist, "wake_step": wake_step,
+            json.dump({"history": hist, "wake_step": wake_step, "lam_c": lam_c,
                        "gates": {k: v["when"] for k, v in G.GATES.items()}},
                       open(ckdir / "history.json", "w"), indent=2, ensure_ascii=False)
 

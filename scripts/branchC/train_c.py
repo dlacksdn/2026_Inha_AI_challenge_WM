@@ -251,6 +251,13 @@ def main():
     ap.add_argument("--warmup", type=int, default=200)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--resume", default=None)
+    ap.add_argument("--wake-step", type=int, default=None,
+                    help="이미 관측된 wake 스텝을 재개 런에 복원한다. "
+                         "체크포인트가 wake_step 을 안 싣기 때문에 필요하다 — 안 주면 "
+                         "재개 런이 첫 감시 시점을 wake 로 재판정해 G2 발동 시점이 뒤로 밀린다")
+    ap.add_argument("--no-ckpt", action="store_true",
+                    help="gradient checkpointing 을 끈다. 수학적으로 동일하고 메모리만 더 쓴다. "
+                         "96GB 기계에서 속도를 사는 용도")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--monitor-every", type=int, default=None,
                     help="기본값은 gates.MONITOR_EVERY. 스모크에서만 줄인다")
@@ -288,7 +295,7 @@ def main():
     val = load_holdout_val96()
     print(f"[data] 학습 에피소드 {len(eps)} · 평가 {len(val)}\n")
 
-    model = ResidualSimVPC(hid_S=args.hid_s, use_ckpt=True).to(dev)
+    model = ResidualSimVPC(hid_S=args.hid_s, use_ckpt=not args.no_ckpt).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
     start = 0
     if args.resume:
@@ -303,7 +310,9 @@ def main():
         prefetch_factor=4, persistent_workers=True)
     it = iter(dl)
 
-    hist, dcos_hist, wake_step = [], [], None
+    hist, dcos_hist, wake_step = [], [], args.wake_step
+    if wake_step is not None:
+        print(f"[wake] 관측된 wake step {wake_step} 복원 → G2 발동 {wake_step + 4000}")
     lam_c = None   # 방향항 가중. cal_step 에서 1회 측정 후 고정
     t0 = time.perf_counter()
     for step in range(start, args.steps):

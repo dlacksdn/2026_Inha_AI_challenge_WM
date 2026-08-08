@@ -1,0 +1,87 @@
+{
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition",
+  "total_gib": 94.97021484375,
+  "effective_batch": 16,
+  "resolution": [
+    320,
+    512
+  ],
+  "rows": [
+    {
+      "micro": 2,
+      "accum": 8,
+      "ckpt": true,
+      "s_per_step": 4.7619120349991135,
+      "peak_gib": 19.63538932800293,
+      "oom": false
+    },
+    {
+      "micro": 2,
+      "accum": 8,
+      "ckpt": false,
+      "s_per_step": 3.6320771806058474,
+      "peak_gib": 31.745280742645264,
+      "oom": false
+    },
+    {
+      "micro": 4,
+      "accum": 4,
+      "ckpt": true,
+      "s_per_step": 5.059407471597661,
+      "peak_gib": 38.74067211151123,
+      "oom": false
+    },
+    {
+      "micro": 4,
+      "accum": 4,
+      "ckpt": false,
+      "s_per_step": 3.778623464994598,
+      "peak_gib": 62.96215534210205,
+      "oom": false
+    },
+    {
+      "micro": 8,
+      "accum": 2,
+      "ckpt": true,
+      "s_per_step": null,
+      "peak_gib": null,
+      "oom": true,
+      "fail": "32bit-index"
+    },
+    {
+      "micro": 8,
+      "accum": 2,
+      "ckpt": false,
+      "s_per_step": null,
+      "peak_gib": null,
+      "oom": true,
+      "fail": "32bit-index"
+    },
+    {
+      "micro": 16,
+      "accum": 1,
+      "ckpt": true,
+      "s_per_step": null,
+      "peak_gib": null,
+      "oom": true,
+      "fail": "32bit-index"
+    },
+    {
+      "micro": 16,
+      "accum": 1,
+      "ckpt": false,
+      "s_per_step": null,
+      "peak_gib": null,
+      "oom": true,
+      "fail": "32bit-index"
+    }
+  ],
+  "best": {
+    "micro": 2,
+    "accum": 8,
+    "ckpt": false,
+    "s_per_step": 3.6320771806058474,
+    "peak_gib": 31.745280742645264,
+    "oom": false
+  }
+}

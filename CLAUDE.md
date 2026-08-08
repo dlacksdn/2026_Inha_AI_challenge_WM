@@ -24,8 +24,27 @@
   - push 전 diff에 비밀값(키·토큰)·대용량 파일이 없는지 확인한다.
 - pull은 여전히 사용자 지시가 있을 때만 한다 (로컬 작업과의 충돌 방지).
 
-/home/rils/dlacksdn/ 에서만 수정을 허용한다. 나머지는 읽기 전용이다.
-다른 사람들도 쓰는 컴퓨터이기 때문에 이는 매우 중요하다.
+## 기계별 작업 경로·GPU 규칙 (둘 다 공용 컴퓨터다. 이건 매우 중요하다)
+
+**아래 경로 안에서만 수정을 허용한다. 나머지는 전부 읽기 전용이다.**
+
+| 기계 | 작업 허용 경로 | 쓸 수 있는 GPU |
+|---|---|---|
+| 연구실 5090 (32GB) | `/home/rils/dlacksdn/` | — |
+| **RTX PRO 6000 (96GB ×2)** | `/home/video_generation/dlacksdn/` | 🚨 **GPU 0 만** |
+
+- 🚨 **RTX PRO 6000 기계에서는 GPU 0 만 쓴다.** 카드가 2장 보이지만 **GPU 1 은 남의 자리다.**
+  모든 학습·추론·측정 명령 앞에 `CUDA_VISIBLE_DEVICES=0` 을 붙인다. 예외 없다.
+  `--device cuda` 나 `torch.cuda.set_device` 로 대신하지 마라 — 라이브러리가 몰래 다른 카드를
+  잡는 경로가 남는다. 환경변수로 아예 안 보이게 하는 것이 유일하게 확실한 방법이다.
+- 데이터(`open/`)는 기계마다 프로젝트 밖에 있고 심링크로만 건다. **읽기 전용으로 취급한다.**
+  - 5090: `/home/rils/inha_challenge_datasets/`, `/home/rils/다운로드/train`
+  - PRO 6000: `/home/video_generation/open` (→ `open` 심링크 한 줄)
+- 파이썬 환경도 기계마다 다르다. 상세는 [_thinking/env_file/001](_thinking/env_file/001-environment_setup.md) §0.
+  - 5090: conda `/home/rils/dlacksdn/miniconda3/envs/wm/bin/python`
+  - PRO 6000: venv `/home/video_generation/dlacksdn/2026_Inha_AI_challenge_WM/.venv/bin/python`
+- 주최 코드가 `../outputs` 같은 상대경로를 쓰면 **공유 폴더에 파일이 생긴다.**
+  우리 스크립트는 전부 절대경로로 프로젝트 안에만 쓴다.
 
 
 

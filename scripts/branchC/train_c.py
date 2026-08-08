@@ -344,11 +344,18 @@ def main():
                 wake_step = step + 1
                 print(f"  ⭐ wake! step {wake_step} (잔차비 {m['resid_ratio']:.3f})")
             g2 = G.check_g2(m["rho_median"], m["dcos"])
+            # G2 는 wake+4,000 에 **발동**한다. 그 전 표시는 진행 상태일 뿐이다
+            g2_due = wake_step is not None and (step + 1) >= wake_step + 4000
+            g2_tag = f"G2 {g2}" + ("  ⬅ 게이트 발동" if g2_due else " (경과 표시)")
             print(f"  [감시 {step+1}] 잔차비 {m['resid_ratio']:.3f}  "
                   f"코사인 {m['resid_cos']:+.3f}(뒤섞기 {m['resid_cos_shuf']:+.3f})  "
                   f"Δcos {m['dcos']:+.3f}  ρ중앙값 {m['rho_median']:+.2f}  "
                   f"프로파일기울기 {m['profile_slope']:+.3f}  "
-                  f"FiLM시간코사인 {m['film_temporal_cos']:.3f}  → G2 {g2}", flush=True)
+                  f"FiLM시간코사인 {m['film_temporal_cos']:.3f}  → {g2_tag}", flush=True)
+            if g2_due and not m.get("_g2_done"):
+                print(f"  ⭐ G2 판정 (wake {wake_step} + 4000): **{g2}**  — "
+                      f"{G.GATES['G2'][g2 if g2 in ('pass','fail') else 'tie']}", flush=True)
+                m["_g2_done"] = True
             # (a)(d) 는 잔차가 깨어나기 전에는 무의미하다.
             # zero-init 이라 wake 전에는 FiLM 출력도 잔차도 ~0 이고, 그러면
             # 시간코사인이 1 에 붙고 프로파일 기울기가 0 이 된다 — 붕괴가 아니라 초기화다

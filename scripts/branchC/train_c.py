@@ -385,11 +385,16 @@ def main():
             p = save_viz(model, val, dev, step + 1, vizdir)
             print(f"  [그림] {p.name}", flush=True)
             # 모델만 = 120MB, 옵티마이저 포함 = 367MB.
-            # 촘촘히 남기되(CLAUDE.md) 디스크를 낭비하지 않는다. 재개용 full 은 5회마다
+            # 재개용 full 은 **2회마다**(=1,000스텝). [정정 2026-08-09]
+            #   원래 5회마다(=2,500스텝)였다. 그 간격 때문에 dir 팔이 step 7,000 에 끝났는데
+            #   재개점이 full_005000 하나뿐이라 이어가려면 2,000 스텝을 버려야 했다.
+            #   010 §1 이 기록한 "1,350 스텝을 버렸다"와 같은 구조이고,
+            #   CLAUDE.md("저장 분기는 넓게 하지 말고 촘촘하게 — 중간에 끊어도 안 날아가게")와
+            #   정면으로 어긋난다. 비용은 디스크뿐이다: 30k 풀런에서 60회 → 22GB (여유 1.3T).
             torch.save({"model": model.state_dict(), "step": step + 1,
                         "args": vars(args), "monitor": m},
                        ckdir / f"ck_{step+1:06d}.pt")
-            if len(hist) % 5 == 0:
+            if len(hist) % 2 == 0:
                 torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
                             "step": step + 1, "args": vars(args)},
                            ckdir / f"full_{step+1:06d}.pt")

@@ -164,7 +164,9 @@ def save_viz(model, val, dev, step, outdir: Path, n=4):
             rg = (v[i, :, t] - f[i]).abs().mean(0).cpu().numpy()
             # ⚠ 같은 자로 그린다. imshow 자동정규화를 쓰면 미세한 예측 잔차가
             #   정답만큼 밝게 늘어나 그림을 오독한다 (스모크에서 실제로 겪었다)
-            vmax = max(float(rg.max()), 1e-6)
+            # t=0 은 정답 잔차가 구조적으로 0 이라 per-frame vmax 가 퇴화한다.
+            # 표본 단위 전역 vmax 를 쓴다 (프레임 간 비교도 가능해진다)
+            vmax = max(float((v[i] - f[i].unsqueeze(1)).abs().mean(0).max()), 1e-6)
             ax[i, j].imshow(np.concatenate([rg, rp], axis=0), cmap="inferno",
                             vmin=0.0, vmax=vmax)
             ax[i, j].set_title(f"t={t} top:GT bot:PRED  vmax={vmax:.2f}", fontsize=7)

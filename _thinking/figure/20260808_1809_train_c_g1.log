@@ -1,0 +1,103 @@
+/home/rils/dlacksdn/miniconda3/envs/wm/lib/python3.10/site-packages/torchvision/io/image.py:14: UserWarning: Failed to load image Python extension: 'libpng16.ca116d9f.so.16: cannot open shared object file: No such file or directory'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[out] 체크포인트 /home/rils/dlacksdn/2026_Inha_AI_challenge_WM/artifacts/branchC/train_20260808_1809_g1
+[out] 그림       /home/rils/dlacksdn/2026_Inha_AI_challenge_WM/artifacts/branchC/train_20260808_1809_g1/viz
+[gates] ρ≥0.2(N=32) · Δcos≥0.046 · wake=0.05 · 감시주기 500
+[data] 학습 에피소드 5027 · 평가 96
+
+step 50/6000  loss 0.0480  lr 7.50e-05  5.21s/step  경과 4분
+step 100/6000  loss 0.0741  lr 1.50e-04  4.75s/step  경과 8분
+step 150/6000  loss 0.0718  lr 2.25e-04  4.60s/step  경과 11분
+step 200/6000  loss 0.0654  lr 3.00e-04  4.52s/step  경과 15분
+step 250/6000  loss 0.0543  lr 3.00e-04  4.51s/step  경과 19분
+step 300/6000  loss 0.0599  lr 3.00e-04  4.56s/step  경과 23분
+step 350/6000  loss 0.0607  lr 3.00e-04  4.59s/step  경과 27분
+step 400/6000  loss 0.0686  lr 3.00e-04  4.61s/step  경과 31분
+step 450/6000  loss 0.0591  lr 3.00e-04  4.61s/step  경과 35분
+step 500/6000  loss 0.0732  lr 3.00e-04  4.58s/step  경과 38분
+  [감시 500] 잔차비 0.013  코사인 +0.065(뒤섞기 +0.062)  Δcos +0.002  ρ중앙값 +1.00  프로파일기울기 +0.048  FiLM시간코사인 0.998  → G2 tie
+  [그림] 20260808_1849_pred_step000500.png
+step 550/6000  loss 0.0700  lr 3.00e-04  4.65s/step  경과 43분
+step 600/6000  loss 0.0722  lr 3.00e-04  4.65s/step  경과 46분
+step 650/6000  loss 0.0683  lr 3.00e-04  4.65s/step  경과 50분
+step 700/6000  loss 0.0468  lr 3.00e-04  4.65s/step  경과 54분
+step 750/6000  loss 0.0572  lr 3.00e-04  4.64s/step  경과 58분
+step 800/6000  loss 0.0777  lr 3.00e-04  4.65s/step  경과 62분
+step 850/6000  loss 0.0805  lr 3.00e-04  4.65s/step  경과 66분
+step 900/6000  loss 0.0922  lr 3.00e-04  4.65s/step  경과 70분
+step 950/6000  loss 0.0562  lr 3.00e-04  4.66s/step  경과 74분
+step 1000/6000  loss 0.0541  lr 3.00e-04  4.66s/step  경과 78분
+  [감시 1000] 잔차비 0.037  코사인 +0.102(뒤섞기 +0.105)  Δcos -0.003  ρ중앙값 +1.00  프로파일기울기 +0.130  FiLM시간코사인 0.995  → G2 fail
+  [그림] 20260808_1928_pred_step001000.png
+step 1050/6000  loss 0.0452  lr 3.00e-04  4.70s/step  경과 82분
+step 1100/6000  loss 0.0545  lr 3.00e-04  4.71s/step  경과 86분
+step 1150/6000  loss 0.0665  lr 3.00e-04  4.71s/step  경과 90분
+step 1200/6000  loss 0.0557  lr 3.00e-04  4.71s/step  경과 94분
+step 1250/6000  loss 0.0706  lr 3.00e-04  4.71s/step  경과 98분
+step 1300/6000  loss 0.0832  lr 3.00e-04  4.71s/step  경과 102분
+step 1350/6000  loss 0.0598  lr 3.00e-04  4.71s/step  경과 106분
+step 1400/6000  loss 0.0502  lr 3.00e-04  4.71s/step  경과 110분
+step 1450/6000  loss 0.0579  lr 3.00e-04  4.71s/step  경과 114분
+step 1500/6000  loss 0.0516  lr 3.00e-04  4.70s/step  경과 118분
+  [감시 1500] 잔차비 0.017  코사인 +0.094(뒤섞기 +0.090)  Δcos +0.005  ρ중앙값 +1.00  프로파일기울기 +0.115  FiLM시간코사인 0.992  → G2 tie
+  [그림] 20260808_2008_pred_step001500.png
+step 1550/6000  loss 0.0656  lr 3.00e-04  4.73s/step  경과 122분
+step 1600/6000  loss 0.0614  lr 3.00e-04  4.73s/step  경과 126분
+step 1650/6000  loss 0.0632  lr 3.00e-04  4.73s/step  경과 130분
+step 1700/6000  loss 0.0830  lr 3.00e-04  4.72s/step  경과 134분
+step 1750/6000  loss 0.0617  lr 3.00e-04  4.72s/step  경과 138분
+step 1800/6000  loss 0.0532  lr 3.00e-04  4.72s/step  경과 142분
+step 1850/6000  loss 0.0596  lr 3.00e-04  4.72s/step  경과 146분
+step 1900/6000  loss 0.0799  lr 3.00e-04  4.72s/step  경과 149분
+step 1950/6000  loss 0.0545  lr 3.00e-04  4.72s/step  경과 153분
+step 2000/6000  loss 0.0602  lr 3.00e-04  4.72s/step  경과 157분
+  ⭐ wake! step 2000 (잔차비 0.102)
+  [감시 2000] 잔차비 0.102  코사인 +0.171(뒤섞기 +0.170)  Δcos +0.001  ρ중앙값 +1.00  프로파일기울기 +0.140  FiLM시간코사인 0.990  → G2 tie
+  ⚠ (a) 16프레임이 하나로 무너지는 중
+  [그림] 20260808_2048_pred_step002000.png
+step 2050/6000  loss 0.0607  lr 3.00e-04  4.73s/step  경과 162분
+step 2100/6000  loss 0.0462  lr 3.00e-04  4.73s/step  경과 166분
+step 2150/6000  loss 0.0565  lr 3.00e-04  4.73s/step  경과 170분
+step 2200/6000  loss 0.0605  lr 3.00e-04  4.73s/step  경과 173분
+step 2250/6000  loss 0.0549  lr 3.00e-04  4.73s/step  경과 177분
+step 2300/6000  loss 0.0522  lr 3.00e-04  4.73s/step  경과 181분
+step 2350/6000  loss 0.0653  lr 3.00e-04  4.73s/step  경과 185분
+step 2400/6000  loss 0.0656  lr 3.00e-04  4.73s/step  경과 189분
+step 2450/6000  loss 0.0395  lr 3.00e-04  4.73s/step  경과 193분
+step 2500/6000  loss 0.0504  lr 3.00e-04  4.73s/step  경과 197분
+  [감시 2500] 잔차비 0.358  코사인 +0.318(뒤섞기 +0.288)  Δcos +0.030  ρ중앙값 +1.00  프로파일기울기 +0.101  FiLM시간코사인 0.986  → G2 tie
+  ⚠ (a) 16프레임이 하나로 무너지는 중
+  [그림] 20260808_2128_pred_step002500.png
+step 2550/6000  loss 0.0572  lr 3.00e-04  4.74s/step  경과 202분
+step 2600/6000  loss 0.0586  lr 3.00e-04  4.74s/step  경과 206분
+step 2650/6000  loss 0.0656  lr 3.00e-04  4.74s/step  경과 209분
+step 2700/6000  loss 0.0594  lr 3.00e-04  4.74s/step  경과 213분
+step 2750/6000  loss 0.0630  lr 3.00e-04  4.74s/step  경과 217분
+step 2800/6000  loss 0.0596  lr 3.00e-04  4.74s/step  경과 221분
+step 2850/6000  loss 0.0613  lr 3.00e-04  4.74s/step  경과 225분
+step 2900/6000  loss 0.0512  lr 3.00e-04  4.74s/step  경과 229분
+step 2950/6000  loss 0.0555  lr 3.00e-04  4.74s/step  경과 233분
+step 3000/6000  loss 0.0660  lr 3.00e-04  4.73s/step  경과 237분
+  [감시 3000] 잔차비 0.476  코사인 +0.337(뒤섞기 +0.312)  Δcos +0.025  ρ중앙값 +1.00  프로파일기울기 +0.071  FiLM시간코사인 0.986  → G2 tie
+  ⚠ (a) 16프레임이 하나로 무너지는 중
+  [그림] 20260808_2207_pred_step003000.png
+step 3050/6000  loss 0.0533  lr 3.00e-04  4.73s/step  경과 241분
+step 3100/6000  loss 0.0601  lr 3.00e-04  4.73s/step  경과 244분
+step 3150/6000  loss 0.0504  lr 3.00e-04  4.72s/step  경과 248분
+step 3200/6000  loss 0.0405  lr 3.00e-04  4.71s/step  경과 251분
+step 3250/6000  loss 0.0501  lr 3.00e-04  4.71s/step  경과 255분
+step 3300/6000  loss 0.0377  lr 3.00e-04  4.70s/step  경과 259분
+step 3350/6000  loss 0.0460  lr 3.00e-04  4.69s/step  경과 262분
+step 3400/6000  loss 0.0504  lr 3.00e-04  4.69s/step  경과 266분
+step 3450/6000  loss 0.0549  lr 3.00e-04  4.68s/step  경과 269분
+step 3500/6000  loss 0.0533  lr 3.00e-04  4.68s/step  경과 273분
+  [감시 3500] 잔차비 0.560  코사인 +0.374(뒤섞기 +0.339)  Δcos +0.035  ρ중앙값 +1.00  프로파일기울기 +0.094  FiLM시간코사인 0.986  → G2 tie
+  ⚠ (a) 16프레임이 하나로 무너지는 중
+  [그림] 20260808_2243_pred_step003500.png
+step 3550/6000  loss 0.0605  lr 3.00e-04  4.68s/step  경과 277분
+step 3600/6000  loss 0.0560  lr 3.00e-04  4.68s/step  경과 281분
+step 3650/6000  loss 0.0755  lr 3.00e-04  4.68s/step  경과 285분
+step 3700/6000  loss 0.0524  lr 3.00e-04  4.69s/step  경과 289분
+step 3750/6000  loss 0.0836  lr 3.00e-04  4.69s/step  경과 293분
+step 3800/6000  loss 0.0497  lr 3.00e-04  4.69s/step  경과 297분
+step 3850/6000  loss 0.0634  lr 3.00e-04  4.69s/step  경과 301분

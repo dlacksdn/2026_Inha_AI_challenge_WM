@@ -26,7 +26,7 @@ branch C 추론 — 체크포인트 → eval 216 mp4 (+ 008 §9-b λ 스윕)
 """
 from __future__ import annotations
 
-import argparse, json, sys, time
+import argparse, contextlib, json, sys, time
 from datetime import datetime
 from pathlib import Path
 
@@ -98,7 +98,9 @@ def run(ckpt: Path, lams: list[float], outroot: Path, limit=None, device="cuda")
         first_m = to_model_space(img).to(device)                 # (1,3,320,512)
         act = np.load(EVAL / "actions" / f"{p.stem}.npy").astype(np.float32)
         a = ((torch.from_numpy(act).to(device) - mu) / sd)[None]  # (1,T,6)
-        with torch.autocast("cuda", dtype=torch.bfloat16):
+        amp = (torch.autocast("cuda", dtype=torch.bfloat16) if device == "cuda"
+               else contextlib.nullcontext())
+        with amp:
             _, res = model(first_m, a, return_residual=True)
         res_n = residual_to_native(res.float())                   # (1,3,T,480,640)
         base = torch.from_numpy(img).float().permute(2, 0, 1)[None, :, None].to(device)
@@ -145,6 +147,8 @@ if __name__ == "__main__":
     ap.add_argument("--ckpt")
     ap.add_argument("--lam", type=float, nargs="+", default=[0.0, 0.25, 0.5, 0.75, 1.0])
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--device", default="auto",
+                    help="auto|cuda|cpu. 학습이 GPU 를 채우고 있으면 cpu 로 돌린다")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest or not args.ckpt:
@@ -152,7 +156,11 @@ if __name__ == "__main__":
     else:
         ts = datetime.now().strftime("%Y%m%d_%H%M")
         out = REPO / "artifacts" / "branchC" / f"infer_{ts}"
-        dirs = run(Path(args.ckpt), args.lam, out, limit=args.limit)
+        dev = args.device
+        if dev == "auto":
+            dev = "cuda" if torch.cuda.is_available() else "cpu"
+        print(f"[device] {dev}")
+        dirs = run(Path(args.ckpt), args.lam, out, limit=args.limit, device=dev)
         json.dump({"ckpt": args.ckpt, "lams": args.lam,
                    "dirs": {str(k): str(v) for k, v in dirs.items()}},
                   open(out / "manifest.json", "w"), indent=2, ensure_ascii=False)

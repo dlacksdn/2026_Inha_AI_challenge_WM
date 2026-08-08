@@ -54,7 +54,13 @@ nvidia-nvjitlink-cu12==12.6.85
 nvidia-nvtx-cu12==12.6.77
 omegaconf==2.1.1
 open-clip-torch==2.22.0
-opencv-python==5.0.0.93
+# opencv-python==5.0.0.93   ← 주석 처리했다 [측정 2026-08-09]
+#   이 핀은 numpy==1.26.4(위)와 **해결 불가**다: opencv-python 5.0.0.93 이
+#   'numpy>=2; python_version >= "3.9"' 를 요구한다 → pip ResolutionImpossible.
+#   즉 이 파일은 그대로는 설치되지 않았다.
+#   저장소 전체에서 cv2 를 쓰는 곳은 scripts/branchC/probe_warp_vs_add.py:150 한 줄뿐이고
+#   (함수 안 지연 import, branch-B 시절 탐침) branch C 학습·추론에는 필요 없다.
+#   그 탐침을 돌려야 하면 numpy 2 환경을 따로 만들어라.
 packaging==26.0
 pandas==2.2.3
 pillow==11.3.0

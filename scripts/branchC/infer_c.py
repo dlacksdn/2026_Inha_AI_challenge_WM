@@ -74,6 +74,37 @@ def residual_to_native(res: torch.Tensor, h=NATIVE_H, w=NATIVE_W) -> torch.Tenso
     return r.reshape(B, Tn, Cc, h, w).permute(0, 2, 1, 3, 4)
 
 
+CPU_SEC_PER_SAMPLE = 65.0      # [측정] 2026-08-08, OMP_NUM_THREADS=8, hid_S=64
+VRAM_NEED_GB = 6.0             # [추측] 보수적 가드. GPU 추론 peak 는 아직 실측 안 했다
+
+
+def pick_device(want: str, n: int) -> str:
+    """--device auto 를 '카드가 있나'가 아니라 '지금 자리가 있나'로 판단한다.
+
+    ⚠ 자동 폴백을 **하지 않는다.** make_compare_video.py 는 3장이라 폴백이 싸지만
+      여기는 216장이고 CPU 는 표본당 65초다. 조용히 CPU 로 내려가면 밤새 도는 걸 모른다.
+      auto 는 고르되 **이유와 대가를 반드시 찍는다.** 명시 지정은 그대로 따른다.
+    """
+    if want != "auto":
+        return want
+    if not torch.cuda.is_available():
+        print("[device] CUDA 없음 → cpu")
+        return "cpu"
+    try:
+        free_gb = torch.cuda.mem_get_info()[0] / 1024 ** 3
+    except RuntimeError as e:
+        # [측정] 2026-08-08: GPU 가 꽉 차면 **재는 행위 자체가** OOM 난다.
+        # mem_get_info 가 CUDA 컨텍스트를 새로 만들어야 하기 때문이다. 그 실패가 곧 답이다.
+        print(f"[device] ⚠ CUDA 컨텍스트조차 못 만든다 ({type(e).__name__}) — GPU 가 꽉 찼다")
+        free_gb = 0.0
+    if free_gb >= VRAM_NEED_GB:
+        return "cuda"
+    print(f"[device] ⚠ GPU 여유 {free_gb:.1f}GB < {VRAM_NEED_GB}GB (학습이 쓰는 중으로 보인다)")
+    print(f"          → cpu 로 돌린다. {n}장이면 약 {n * CPU_SEC_PER_SAMPLE / 3600:.1f}시간 걸린다")
+    print(f"          GPU 가 비면 --device cuda 로 다시 돌려라")
+    return "cpu"
+
+
 @torch.no_grad()
 def run(ckpt: Path, lams: list[float], outroot: Path, limit=None, device="cuda"):
     ck = torch.load(ckpt, map_location="cpu")
@@ -156,11 +187,20 @@ if __name__ == "__main__":
     else:
         ts = datetime.now().strftime("%Y%m%d_%H%M")
         out = REPO / "artifacts" / "branchC" / f"infer_{ts}"
-        dev = args.device
-        if dev == "auto":
-            dev = "cuda" if torch.cuda.is_available() else "cpu"
+        dev = pick_device(args.device, n=args.limit or 216)
         print(f"[device] {dev}")
-        dirs = run(Path(args.ckpt), args.lam, out, limit=args.limit, device=dev)
+        try:
+            dirs = run(Path(args.ckpt), args.lam, out, limit=args.limit, device=dev)
+        except RuntimeError as e:
+            # 컨텍스트 생성 단계의 OOM 은 torch.cuda.OutOfMemoryError 가 아니라
+            # 평범한 RuntimeError 로 온다 [측정 2026-08-08]. 문자열로 가른다.
+            if "out of memory" not in str(e).lower():
+                raise
+            n = args.limit or 216
+            print(f"\n[OOM] GPU 에 자리가 없다 (학습이 쓰는 중일 가능성이 높다).")
+            print(f"      --device cpu 로 다시 돌려라. {n}장이면 약 "
+                  f"{n * CPU_SEC_PER_SAMPLE / 3600:.1f}시간 걸린다")
+            raise SystemExit(1)
         json.dump({"ckpt": args.ckpt, "lams": args.lam,
                    "dirs": {str(k): str(v) for k, v in dirs.items()}},
                   open(out / "manifest.json", "w"), indent=2, ensure_ascii=False)

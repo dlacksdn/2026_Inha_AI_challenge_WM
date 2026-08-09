@@ -1,0 +1,38 @@
+{
+  "cut_move": 0.5,
+  "cut_dir": 0.5,
+  "rows": [
+    {
+      "ckpt": "artifacts/branchC/train_20260809_1205_long/ck_009500.pt",
+      "step": 9500,
+      "n": 32,
+      "gt_shift_px": 35.3846435546875,
+      "pred_shift_px": 30.24044418334961,
+      "move_ratio": 0.720784068107605,
+      "dir_cos": 0.3193889260292053,
+      "gt_shift_px_top10": 44.47260284423828,
+      "pred_shift_px_top10": 24.089025497436523,
+      "move_ratio_top10": 0.4176572859287262,
+      "dir_cos_top10": 0.16554316878318787,
+      "gt_spread_growth": 0.9806837439537048,
+      "pred_spread_growth": 0.9088906049728394,
+      "moves": false
+    },
+    {
+      "ckpt": "artifacts/branchC/train_20260809_1205_long/ck_008500.pt",
+      "step": 8500,
+      "n": 32,
+      "gt_shift_px": 35.3846435546875,
+      "pred_shift_px": 30.257389068603516,
+      "move_ratio": 0.847793698310852,
+      "dir_cos": 0.2204807698726654,
+      "gt_shift_px_top10": 44.47260284423828,
+      "pred_shift_px_top10": 25.58851432800293,
+      "move_ratio_top10": 0.524945080280304,
+      "dir_cos_top10": 0.12957462668418884,
+      "gt_spread_growth": 0.9806837439537048,
+      "pred_spread_growth": 1.0480936765670776,
+      "moves": false
+    }
+  ]
+}

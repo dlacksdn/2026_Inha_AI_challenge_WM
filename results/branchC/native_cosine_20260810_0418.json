@@ -1,0 +1,10 @@
+{
+  "ckpt": "artifacts/branchC/train_20260809_1205_long/ck_015000.pt",
+  "step": 15000,
+  "lam": 1.0,
+  "n": 16,
+  "cos_model": 0.5486710811965168,
+  "cos_native": 0.5417062574997544,
+  "cos_native_mp4": 0.548879038683354,
+  "path_ok": true
+}

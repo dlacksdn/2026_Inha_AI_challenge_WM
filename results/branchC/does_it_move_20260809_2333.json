@@ -1,0 +1,22 @@
+{
+  "cut_move": 0.5,
+  "cut_dir": 0.5,
+  "rows": [
+    {
+      "ckpt": "artifacts/branchC/train_20260809_1205_long/ck_013000.pt",
+      "step": 13000,
+      "n": 32,
+      "gt_shift_px": 35.3846435546875,
+      "pred_shift_px": 29.346485137939453,
+      "move_ratio": 0.8811737298965454,
+      "dir_cos": 0.2508750557899475,
+      "gt_shift_px_top10": 44.47260284423828,
+      "pred_shift_px_top10": 31.587194442749023,
+      "move_ratio_top10": 0.6978137493133545,
+      "dir_cos_top10": 0.1659873127937317,
+      "gt_spread_growth": 0.9806837439537048,
+      "pred_spread_growth": 0.9304156303405762,
+      "moves": false
+    }
+  ]
+}

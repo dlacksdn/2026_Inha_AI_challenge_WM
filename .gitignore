@@ -82,3 +82,4 @@ Thumbs.db
 
 # 외부 저장소 clone (OpenSTL 등). 각 기계에서 직접 clone 한다
 third_party/
+results/submission/*.csv

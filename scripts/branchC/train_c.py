@@ -267,6 +267,11 @@ def main():
                     help="방향항 grad norm 을 L1 의 이 비율로 맞춘다 (005 치-7)")
     ap.add_argument("--cal-step", type=int, default=1000,
                     help="이 스텝에서 λ_c 를 1회 측정해 고정한다")
+    ap.add_argument("--lam-c", type=float, default=None,
+                    help="λ_c 를 재측정하지 않고 이 값으로 고정한다. 재개용. "
+                         "005 치-7 은 'λ 를 1회 측정해 고정'을 처방했는데, 재개할 때마다 "
+                         "다시 재면 이어붙인 런의 손실이 조금씩 달라진다 — 같은 런의 연속이 "
+                         "아니게 된다. 이어가는 런에는 원래 값을 그대로 넘겨라")
     ap.add_argument("--tau-alpha", type=float, default=0.0,
                     help="TAU L_reg 가중. OpenSTL 전 config 참조값은 0.1 (005 중-8)")
     args = ap.parse_args()
@@ -313,7 +318,9 @@ def main():
     hist, dcos_hist, wake_step = [], [], args.wake_step
     if wake_step is not None:
         print(f"[wake] 관측된 wake step {wake_step} 복원 → G2 발동 {wake_step + 4000}")
-    lam_c = None   # 방향항 가중. cal_step 에서 1회 측정 후 고정
+    lam_c = args.lam_c   # 방향항 가중. None 이면 cal_step 에서 1회 측정 후 고정
+    if lam_c is not None:
+        print(f"[λ_c] 재측정 안 함 — 넘겨받은 값 {lam_c:.4g} 로 고정")
     t0 = time.perf_counter()
     for step in range(start, args.steps):
         lr = args.lr * min(1.0, (step + 1) / max(1, args.warmup))

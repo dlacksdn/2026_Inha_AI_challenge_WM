@@ -1,0 +1,42 @@
+{
+  "cut_move": 0.5,
+  "cut_dir": 0.5,
+  "rows": [
+    {
+      "ckpt": "artifacts/branchC/train_20260809_1205_long/ck_008500.pt",
+      "step": 8500,
+      "n": 32,
+      "gt_shift_px": 35.3846435546875,
+      "pred_shift_px": 30.257389068603516,
+      "move_ratio": 0.847793698310852,
+      "dir_cos": 0.2204807698726654,
+      "gt_spread_growth": 0.9806837439537048,
+      "pred_spread_growth": 1.0480936765670776,
+      "moves": false
+    },
+    {
+      "ckpt": "artifacts/branchC/train_20260809_0059_dir/ck_007000.pt",
+      "step": 7000,
+      "n": 32,
+      "gt_shift_px": 35.3846435546875,
+      "pred_shift_px": 24.74022674560547,
+      "move_ratio": 0.5847644209861755,
+      "dir_cos": 0.18780545890331268,
+      "gt_spread_growth": 0.9806837439537048,
+      "pred_spread_growth": 0.9739735722541809,
+      "moves": false
+    },
+    {
+      "ckpt": "artifacts/branchC/train_20260808_1809_g1/ck_003500.pt",
+      "step": 3500,
+      "n": 32,
+      "gt_shift_px": 35.3846435546875,
+      "pred_shift_px": 41.29599380493164,
+      "move_ratio": 1.090614676475525,
+      "dir_cos": 0.2929672300815582,
+      "gt_spread_growth": 0.9806837439537048,
+      "pred_spread_growth": 0.6467114686965942,
+      "moves": false
+    }
+  ]
+}

@@ -56,8 +56,14 @@ def heat(x):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", required=True)
-    ap.add_argument("--n", type=int, default=6)
+    ap.add_argument("--n", type=int, default=3,
+                    help="만들 표본 수. 기본 3 — 영상이 쌓이면 뭘 봐야 할지 모르게 된다")
+    ap.add_argument("--skip", type=int, default=0,
+                    help="앞에서 몇 개를 건너뛸지. 매번 다른 장면을 보려고 쓴다. "
+                         "예) 처음 --skip 0 (0,1,2) → 다음 --skip 3 (3,4,5)")
     ap.add_argument("--lam", type=float, default=1.0)
+    ap.add_argument("--res", action="store_true",
+                    help="잔차 히트맵(res_*)도 만든다. 기본은 cmp_* 만 — 영상이 두 배가 된다")
     ap.add_argument("--out", default=None)
     ap.add_argument("--device", default="auto",
                     help="auto=GPU 시도 후 OOM 이면 CPU. 학습 중에는 CPU 가 안전하다")
@@ -89,7 +95,10 @@ def main():
 
     man = json.load(open(HOLDOUT / "manifest.json"))
     # 4:3 표본만 (학습 분포와 같다). 007 확인: 96개 중 4개가 16:9
-    samples = [s for s in man["samples"] if tuple(s["native_hw"]) == (480, 640)][:args.n]
+    pool = [s for s in man["samples"] if tuple(s["native_hw"]) == (480, 640)]
+    samples = pool[args.skip:args.skip + args.n]
+    if not samples:
+        print(f"[!] --skip {args.skip} 이 4:3 표본 {len(pool)}개를 넘어섰다"); return
 
     made = []
     for s in samples:
@@ -113,16 +122,17 @@ def main():
         # ① [정답 | 예측]
         D.save_mp4_uint8(np.concatenate([gt, white, pr], axis=2),
                          out / f"cmp_step{step:06d}_lam{args.lam:g}_{sid}.mp4", fps=FPS)
-        # ② [정답 잔차 | 예측 잔차]  — 같은 자로 그린다
+        # ② [정답 잔차 | 예측 잔차]  — 같은 자로 그린다. --res 를 줄 때만
         rg = np.abs(gt.astype(np.float32) - img[None]).mean(-1)
         rp = np.abs(pr.astype(np.float32) - img[None]).mean(-1)
-        vm = max(rg.max(), 1e-6)
-        D.save_mp4_uint8(np.concatenate([heat(rg / vm), white, heat(rp / vm)], axis=2),
-                         out / f"res_step{step:06d}_lam{args.lam:g}_{sid}.mp4", fps=FPS)
+        if args.res:
+            vm = max(rg.max(), 1e-6)
+            D.save_mp4_uint8(np.concatenate([heat(rg / vm), white, heat(rp / vm)], axis=2),
+                             out / f"res_step{step:06d}_lam{args.lam:g}_{sid}.mp4", fps=FPS)
         made.append(sid)
         print(f"  {sid}  |잔차| 정답 {rg.mean():.2f} vs 예측 {rp.mean():.2f}  (0~255)")
 
-    print(f"\n[완료] {len(made)*2}개 mp4 → {out}")
+    print(f"\n[완료] {len(made) * (2 if args.res else 1)}개 mp4 → {out}")
     print("  cmp_*  왼쪽 정답 · 오른쪽 예측")
     print("  res_*  왼쪽 정답잔차 · 오른쪽 예측잔차 (같은 밝기 자)")
 

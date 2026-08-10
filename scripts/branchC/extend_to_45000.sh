@@ -42,12 +42,17 @@ echo "[extend] full_030000.pt 확인 $(date '+%F %T')"
 while pgrep -f "train_c.py --tag long " > /dev/null; do sleep 60; done
 echo "[extend] 원 런 종료 확인. 연장 시작 $(date '+%F %T')"
 
+# 원 런이 22:50 까지 더 만든 감시 그림을 치운다 (사용자가 안 본다고 확인, 2026-08-10)
+#   체크포인트·history.json·로그는 건드리지 않는다 — 판정 근거는 그쪽에 있다
+find "$REPO/artifacts/branchC" -path "*/viz/*" -name "*.png" -delete 2>/dev/null
+echo "[extend] 감시 png 정리 완료"
+
 LOG="$REPO/run_logs/$(date +%Y%m%d_%H%M)_train_c_long45_nockpt.log"
 "$PY" scripts/branchC/train_c.py \
   --tag long45 --steps 45000 --resume "$SRC" \
   --wake-step 2000 --micro-batch 2 --accum 8 \
   --dir-loss --tau-alpha 0.1 --lam-c 0.012 \
-  --no-ckpt \
+  --no-ckpt --no-viz \
   2>&1 | tee "$LOG" &
 TRAIN_PID=$!
 echo "[extend] 학습 pid $TRAIN_PID · 로그 ${LOG#$REPO/}"

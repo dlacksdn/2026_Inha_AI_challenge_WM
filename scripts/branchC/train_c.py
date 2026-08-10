@@ -256,8 +256,15 @@ def main():
                          "체크포인트가 wake_step 을 안 싣기 때문에 필요하다 — 안 주면 "
                          "재개 런이 첫 감시 시점을 wake 로 재판정해 G2 발동 시점이 뒤로 밀린다")
     ap.add_argument("--no-ckpt", action="store_true",
-                    help="gradient checkpointing 을 끈다. 수학적으로 동일하고 메모리만 더 쓴다. "
-                         "96GB 기계에서 속도를 사는 용도")
+                    help="gradient checkpointing 을 끈다. 96GB 기계에서 속도를 사는 용도 "
+                         "(3.63 vs 4.76 s/step = ×1.31, 31.8 vs 19.6 GiB — 011 §2 격자). "
+                         "⚠ 수학적으로 동일하지 않다: ckpt 는 backward 에서 forward 를 다시 "
+                         "돌려 BatchNorm 러닝통계를 micro-step 당 2회 갱신한다(3스텝에 "
+                         "num_batches_tracked 6 vs 3). 런 중간에 켰다 끄면 BN 이력이 끊긴다")
+    ap.add_argument("--no-viz", action="store_true",
+                    help="감시 시점마다 저장하는 pred_*/resid_*.png 를 만들지 않는다. "
+                         "사용자가 안 본다고 확인했고 런당 76MB 가 쌓인다 (2026-08-10). "
+                         "체크포인트·history.json·로그는 그대로 남으므로 판정에는 영향이 없다")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--monitor-every", type=int, default=None,
                     help="기본값은 gates.MONITOR_EVERY. 스모크에서만 줄인다")
@@ -389,8 +396,9 @@ def main():
                     print("  ⚠ (d) 잔차 프로파일이 평평하다 — 첫 프레임만 다시 그리는 중일 수 있다")
             if G.check_g2_5(dcos_hist):
                 print("  ⭐ G2.5 충족 — 선명도 항(λ_f) 점화 조건 성립")
-            p = save_viz(model, val, dev, step + 1, vizdir)
-            print(f"  [그림] {p.name}", flush=True)
+            if not args.no_viz:
+                p = save_viz(model, val, dev, step + 1, vizdir)
+                print(f"  [그림] {p.name}", flush=True)
             # 모델만 = 120MB, 옵티마이저 포함 = 367MB.
             # 재개용 full 은 **2회마다**(=1,000스텝). [정정 2026-08-09]
             #   원래 5회마다(=2,500스텝)였다. 그 간격 때문에 dir 팔이 step 7,000 에 끝났는데

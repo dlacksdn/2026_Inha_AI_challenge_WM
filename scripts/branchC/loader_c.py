@@ -121,10 +121,26 @@ def _fmt(template, ep_idx, chunks, video_key=None):
     return s
 
 
+def ep_key(p) -> str:
+    """에피소드 식별자 — `data/train/` 이후의 경로 꼬리.
+
+    ⚠ 2026-08-11 추가. 이게 없어서 **누수 차단이 10일 동안 0건 작동했다.**
+      holdout_val96 은 5090 기계에서 만들어져 manifest 의 경로가 `/home/rils/…` 인데
+      이 기계의 학습 영상은 `/home/video_generation/…` 이다. 절대경로로 비교하니
+      교집합이 늘 공집합이었다 [측정 020 §3].
+      기계가 달라도 `data/train/` 아래 구조는 같으므로 꼬리로 비교한다.
+    """
+    s = str(p)
+    return s.split("data/train/", 1)[-1]
+
+
 def holdout_episode_refs() -> set[str]:
-    """평가에 쓰는 96 샘플의 영상 경로. 학습에서 제외한다 (누수 차단)."""
+    """평가에 쓰는 96 샘플의 영상 경로. 학습에서 제외한다 (누수 차단).
+
+    ⚠ 반환값은 **경로 꼬리**다 (ep_key). 절대경로가 아니다 — 위 주석 참조.
+    """
     m = json.load(open(HOLDOUT / "manifest.json"))
-    return {str(s["video_ref"]) for s in m["samples"]}
+    return {ep_key(s["video_ref"]) for s in m["samples"]}
 
 
 def list_train_episodes(min_length: int = WINDOW + 1, exclude: set[str] | None = None,
@@ -156,7 +172,8 @@ def list_train_episodes(min_length: int = WINDOW + 1, exclude: set[str] | None =
             shape = feats[cam].get("shape") or []
             hw = tuple(shape[:2]) if len(shape) >= 2 else None
             if only_hw is not None and hw != tuple(only_hw):
-                break
+                continue        # ⚠ 2026-08-11: break 였다. 16:9 데이터셋 하나를 만나면
+                                #   같은 소유자의 나머지를 전부 건너뛰었다 [측정 020 §2]
             chunks = int(info.get("chunks_size", 1000))
             for ep in _read_jsonl(meta / "episodes.jsonl"):
                 L = int(ep["length"])
@@ -165,10 +182,11 @@ def list_train_episodes(min_length: int = WINDOW + 1, exclude: set[str] | None =
                 i = int(ep["episode_index"])
                 vid = sub / _fmt(info["video_path"], i, chunks, cam)
                 pq = sub / _fmt(info["data_path"], i, chunks)
-                if not vid.exists() or not pq.exists() or str(vid) in exclude:
+                if not vid.exists() or not pq.exists() or ep_key(vid) in exclude:
                     continue
                 eps.append(Episode(vid, pq, L, sub.name, i, hw))
-            break
+            # ⚠ 2026-08-11: 여기에 break 가 있었다. 소유자 폴더에서 **첫 데이터셋만**
+            #   쓰고 나머지를 버렸다 — 123개 중 54개만 학습에 들어갔다 [측정 020 §2]
     return eps
 
 
